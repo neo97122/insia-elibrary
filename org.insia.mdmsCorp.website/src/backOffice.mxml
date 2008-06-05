@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application styleName="mainContainer" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	xmlns:mdms="org.insia.mdmsCorp.website.flex.*"
+	preloader="org.insia.mdmsCorp.website.as3.CustomPreloader">
+	
+	<mx:Style source="org/insia/mdmsCorp/website/ressources/css/default_style.css"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import org.insia.mdmsCorp.website.as3.Localizator;
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
+	
+		<mx:HBox styleName="backOfficeMenuHBox" width="100%" height="50" horizontalAlign="center">
+			<mx:Label text="MDMSCorp"/>
+			<mx:Canvas>
+				<mx:LinkBar id="menu" styleName="backOfficeMenuLinkBar" dataProvider="{backOfficeViewStack}" />	
+			</mx:Canvas>
+			<mx:HBox>
+				<mx:SWFLoader source="org/insia/mdmsCorp/website/ressources/swf/flag_fr.swf" click="{Localizator.getInstance(null).setLang(1)}"/>	
+				<mx:SWFLoader source="org/insia/mdmsCorp/website/ressources/swf/flag_uk.swf" click="{Localizator.getInstance(null).setLang(2)}"/>
+			</mx:HBox>
+		</mx:HBox>
+		<mx:ViewStack id="backOfficeViewStack">	
+			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasLabel')}">
+				<mdms:UsersCanvas verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasLabel')}">
+				<mdms:BooksCanvas verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeMediasCanvasLabel')}">
+				<mdms:MediasCanvas verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasLabel')}">
+				<mdms:EBooksCanvas verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeBookingCanvasLabel')}">
+				<mdms:BookingCanvas verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+		</mx:ViewStack>
+		
+		<mx:Canvas styleName="backOfficeFooterCanvas">
+			<mx:Label text="© 2008 - MDMSCORP - Projet scolaire INSIA" />
+		</mx:Canvas>
+		
+	</mx:VBox>
+</mx:Application>
