@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!-- Application context DAO layer -->
+
+<beans>
+
+	<!-- data source -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="org.gjt.mm.mysql.Driver" />
+		<property name="url" value="jdbc:mysql://localhost/mbride" />
+		<property name="username" value="mbride" />
+		<property name="password" value="mbride" />
+		<property name="defaultAutoCommit" value="false" />
+		<property name="maxActive" value="5" />
+		<property name="maxIdle" value="3" />
+		<property name="minIdle" value="1" />
+		<property name="maxWait" value="100" />
+		<property name="validationQuery" value="SELECT 1+1" />
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxOpenPreparedStatements" value="50" />
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="1800" />
+		<property name="logAbandoned" value="true" />
+	</bean>
+
+	<!-- session factory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>org.insia.eLibrary.model.User</value>
+				<value>org.insia.eLibrary.model.Book</value>
+				<value>org.insia.eLibrary.model.Media</value>
+				<value>org.insia.eLibrary.model.EBook</value>
+				<!--<value>org.insia.eLibrary.model.Reservation</value>-->
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.jdbc.batch_size">30</prop>
+				<prop key="hibernate.jdbc.fetch_size">30</prop>
+				<prop key="hibernate.max_fetch_depth">1</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!--  creation d'un bean proxy général pour les bean transactionnel -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="transactionProxy" abstract="true"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED, readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+
+</beans>
