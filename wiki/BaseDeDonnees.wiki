@@ -1,35 +1,35 @@
 User
--> user_id   int
--> user_login  string
--> user_password   string
--> user_name  string
--> user_firstname   string
--> user_mail  string
--> user_admin  boolean
+ user_id   int;
+ user_login  string;
+ user_password   string;
+ user_name  string;
+ user_firstname   string;
+ user_mail  string;
+ user_admin  boolean;
 
 Media
--> media_id
-//-> media_type_id
--> media_reference (isbn)
--> media_titre
+ media_id;
+ media_type_id (voir si utile);
+ media_reference (isbn);
+ media_titre;
 
 Livre
--> livre_media_id
--> livre_quantite
--> livre_image_url
--> livre_resume
+ livre_media_id;
+ livre_quantite;
+ livre_image_url;
+ livre_resume;
 
 EBook
--> ebook_media_id
--> ebook_url
+ ebook_media_id;
+ ebook_url;
 
-//TypeMedia
-//-> type_id
-//-> type_libelle
+TypeMedia (voir si utile)
+ type_id;
+ type_libelle;
 
 Reservation
--> res_id
--> res_user_id
--> res_media_id
--> res_date_debut
--> res_date_retour
+ res_id;
+ res_user_id;
+ res_media_id;
+ res_date_debut;
+ res_date_retour;
