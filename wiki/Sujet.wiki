@@ -1,0 +1,42 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
+ Intitulé : Développement d'une application web de bibliothèque en ligne.
+
+Language imposé : Aucun
+
+Base de donnée imposée : Aucune
+
+Serveur Web imposé : Apache 1.3 ou 2.0
+
+Cachier des charges :
+
+- L'application devra gérer le référencement de livres en prennant en compte les quantités ,disponibilité et réservation.
+
+- L'application devra gérer également des livres électroniques (ebook) que les personnes pourrons téléchargés.
+
+- Pour accèder a l'application il faudra possèder un login et un mot de passe que ça soit pour la partie administration ou pour la partie consultation.
+
+ 
+
+Barème :
+
+Le projet sera noté sur 100points au total.
+
+*30 points* pour l'intégration des trois points obligatoires
+
+*10 points* pour le design
+
+*10 points* pour la sécurité (du code ou de l'application)
+
+*10 points* pour l'érgonomie
+
+*10 points* pour la flexibilité (maintien du code source, ajout de fonctionnalité par la suite)
+
+*30 points* pour votre touche personnelle de fonctionnalité (par ex : gestion documentaire, vidéo, photo,alerte par mail,... ) 
