@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" >
+
+ 	<mx:Model id="checkModel">
+        <user>
+            <userId>{userId.text}</userId>
+            <userLogin>{userLogin.text}</userLogin>
+            <userPassword>{userPassword.text}</userPassword>
+            <userName>{userName.text}</userName>
+            <userFirstName>{userFirstName.text}</userFirstName>
+            <userMail>{userMail.text}</userMail>
+            <userAdmin>{userAdmin}</userAdmin>
+        </user>
+    </mx:Model>
+    
+    <mx:XMLList id="users">
+        <user>
+            <userId>1</userId>
+            <userLogin>DanyTomato</userLogin>
+            <userPassword>secret</userPassword>
+            <userName>Lao</userName>
+            <userFirstName>Daniel</userFirstName>
+            <userMail>laodaniel@gmail.com</userMail>
+            <userAdmin>true</userAdmin>
+        </user>
+        <user>
+            <userId>2</userId>
+            <userLogin>TiTi</userLogin>
+            <userPassword>black</userPassword>
+            <userName>Le Morzadec</userName>
+            <userFirstName>Steven</userFirstName>
+            <userMail>slemorza@gmail.com</userMail>
+            <userAdmin>true</userAdmin>
+        </user>
+        <user>
+            <userId>3</userId>
+            <userLogin>MickOM</userLogin>
+            <userPassword>auchiotlarbitre</userPassword>
+            <userName>Bride</userName>
+            <userFirstName>Mickaël</userFirstName>
+            <userMail>mbride@gmail.com</userMail>
+            <userAdmin>false</userAdmin>
+        </user>
+    </mx:XMLList>
+    
+    <mx:Script>
+		<![CDATA[
+			import org.insia.mdmsCorp.website.as3.Localizator;
+		]]>
+	</mx:Script>
+
+    <mx:Panel title="{Localizator.getInstance(1).gT('backOfficeUsersCanvasLabel')}" >
+		<mx:VBox horizontalAlign="center">
+			<mx:HBox>
+		        <mx:DataGrid id="backOfficeUsersCanvasDataGrid" rowCount="7" dataProvider="{users}" height="100%">
+		            <mx:columns>
+		                <mx:DataGridColumn dataField="userId" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserIdLabel')}"/>
+		                <mx:DataGridColumn dataField="userLogin" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserLoginLabel')}"/>
+		                <mx:DataGridColumn dataField="userAdmin" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserAdminLabel')}"/>		               
+		                <mx:DataGridColumn dataField="userPassword" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserPasswordLabel')}" visible="false"/>
+		                <mx:DataGridColumn dataField="userName" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserNameLabel')}" visible="false"/>
+		                <mx:DataGridColumn dataField="userFirstName" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserFirstNameLabel')}" visible="false"/>
+		                <mx:DataGridColumn dataField="userMail" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserMailLabel')}" visible="false"/>
+		            </mx:columns>
+		        </mx:DataGrid>
+		        <mx:Form>
+		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserIdLabel')}">
+		                <mx:Label id="userId" text="{backOfficeUsersCanvasDataGrid.selectedItem.userId}"/>
+		            </mx:FormItem>
+		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserLoginLabel')}">
+		                <mx:TextInput id="userLogin" text="{backOfficeUsersCanvasDataGrid.selectedItem.userLogin}"/>
+		            </mx:FormItem>
+		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserPasswordLabel')}">
+		                <mx:TextInput id="userPassword" displayAsPassword="true" text="{backOfficeUsersCanvasDataGrid.selectedItem.userPassword}"/>
+		            </mx:FormItem>
+		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserNameLabel')}">
+		                <mx:TextInput id="userName" text="{backOfficeUsersCanvasDataGrid.selectedItem.userName}"/>
+		            </mx:FormItem>
+		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserFirstNameLabel')}">
+		                <mx:TextInput id="userFirstName" text="{backOfficeUsersCanvasDataGrid.selectedItem.userFirstName}"/>
+		            </mx:FormItem>
+		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserMailLabel')}">
+		                <mx:TextInput id="userMail" text="{backOfficeUsersCanvasDataGrid.selectedItem.userMail}"/>
+		            </mx:FormItem>
+		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserAdminLabel')}">
+						<mx:RadioButtonGroup id="userAdmin"/>
+		                <mx:HBox>
+		                	<mx:RadioButton groupName="userAdmin" id="admin" label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasAdminUserLabel')}"/>
+		        			<mx:RadioButton groupName="userAdmin" id="user" label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasSimpleUserLabel')}"/>
+		                </mx:HBox>
+		            </mx:FormItem>
+		        </mx:Form>
+	        </mx:HBox>
+	        <mx:HBox>
+	        	<mx:Button label="{Localizator.getInstance(1).gT('backOfficeUpdateButton')}"/>
+	        	<mx:Button label="{Localizator.getInstance(1).gT('backOfficeAddNewButton')}"/>
+	        	<mx:Button label="{Localizator.getInstance(1).gT('backOfficeDeleteButton')}"/>
+	        </mx:HBox>
+		</mx:VBox>
+    </mx:Panel>
+
+   <!-- 
+    <mx:StringValidator source="{fname}" property="text" minLength="4" maxLength="12"/>
+    <mx:PhoneNumberValidator source="{phone}" property="text"/>
+    <mx:DateValidator source="{dob}" property="text"/>
+    <mx:EmailValidator source="{email}" property="text"/>
+    <mx:NumberValidator source="{age}" property="text" integerError="Enter Integer value" minValue="18" maxValue="100" domain="int"/>
+    <mx:SocialSecurityValidator source="{ssn}" property="text"/>
+    <mx:ZipCodeValidator source="{zip}" property="text"/>
+    -->
+	
+</mx:Canvas>
