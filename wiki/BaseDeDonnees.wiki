@@ -23,9 +23,9 @@ EBook
 -> ebook_media_id
 -> ebook_url
 
-/*TypeMedia
--> type_id
--> type_libelle*/
+//TypeMedia
+//-> type_id
+//-> type_libelle
 
 Reservation
 -> res_id
