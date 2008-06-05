@@ -1,13 +1,8 @@
-#summary One-sentence summary of this page.
-
-= Introduction =
-
-Add your content here.
+= Intitulé =
+Développement d'une application web de bibliothèque en ligne.
 
 
 = Details =
-
- Intitulé : Développement d'une application web de bibliothèque en ligne.
 
 Language imposé : Aucun
 
