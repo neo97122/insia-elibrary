@@ -18,6 +18,8 @@ Livre
  livre_quantite;
  livre_image_url;
  livre_resume;
+ livre_auteur;
+ livre_editeur;
 
 EBook
  ebook_media_id;
