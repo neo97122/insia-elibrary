@@ -55,8 +55,7 @@ package org.insia.mdmsCorp.website.as3
         [Bindable(event="langChange")]
         public function getText( key:String ) : String 
         {
-        	//return ResourceManager.getInstance().getString(this.cur, key);
-            return this.cur.getString( key );
+        	return ResourceManager.getInstance().getString(this.cur.bundleName, key);
         }
 
         [Bindable(event="langChange")]

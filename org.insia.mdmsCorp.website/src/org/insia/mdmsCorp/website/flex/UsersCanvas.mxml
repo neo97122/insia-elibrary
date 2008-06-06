@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" >
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" initialize="{initCanvas();}">
 
- 	<mx:Model id="checkModel">
-        <user>
-            <userId>{userId.text}</userId>
-            <userLogin>{userLogin.text}</userLogin>
-            <userPassword>{userPassword.text}</userPassword>
-            <userName>{userName.text}</userName>
-            <userFirstName>{userFirstName.text}</userFirstName>
-            <userMail>{userMail.text}</userMail>
-            <userAdmin>{userAdmin}</userAdmin>
-        </user>
-    </mx:Model>
-    
     <mx:XMLList id="users">
         <user>
             <userId>1</userId>
@@ -45,14 +33,136 @@
     
     <mx:Script>
 		<![CDATA[
+			import mx.rpc.events.FaultEvent;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			import mx.messaging.AbstractConsumer;
+			import mx.controls.Spacer;
+			import mx.containers.ControlBar;
+			import mx.containers.Panel;
+			import mx.containers.VBox;
+			import mx.charts.renderers.DiamondItemRenderer;
+			import mx.controls.Alert;
 			import org.insia.mdmsCorp.website.as3.Localizator;
+			
+			[Embed(source='org/insia/mdmsCorp/website/ressources/img/exclamation.png')]
+			private var confirmIcon:Class;
+			
+			/**
+			 * Inits the canvas
+			 **/
+			private function initCanvas():void
+			{
+				setUserAdminRadioButton();
+			}
+			
+			/**
+			 * First state of the form : it initializes the value of the inputText,
+			 * turns off buttons and display a confirm popup if we try to insert a new user.
+			 **/
+			private function buttonsState1():void
+			{
+				if (backOfficeAddNewButton.label == Localizator.getInstance(1).gT('backOfficeInsertButton'))
+				{
+					confirmPopup(Localizator.getInstance(1).gT('backOfficePopupConfirmInsertTitle'),Localizator.getInstance(1).gT('backOfficePopupConfirmInsertLabel'), doInsertNewUser);
+				}
+				backOfficeUpdateButton.enabled = false;
+				backOfficeAddNewButton.label = Localizator.getInstance(1).gT('backOfficeInsertButton');
+				backOfficeDeleteButton.enabled = false;
+				userId.text = "";
+				userLogin.text = "";
+				userPassword.text = "";
+				userName.text = "";
+				userFirstName.text = "";
+				userMail.text = "";
+				userRadioButton.selected = true;
+				backOfficeUsersCanvasDataGrid.selectedIndex = -1;
+			} 
+			
+			/**
+			 * Second state of the form : it turns on buttons.
+			 **/
+			private function buttonsState2():void
+			{
+				backOfficeUpdateButton.enabled = true;
+				backOfficeAddNewButton.label = Localizator.getInstance(1).gT('backOfficeAddNewButton');
+				backOfficeDeleteButton.enabled = true;
+				setUserAdminRadioButton();
+			}
+			
+			/**
+			 * Sets the value of the radio button (admin or user)
+			 **/
+			private function setUserAdminRadioButton():void
+			{
+				if (backOfficeUsersCanvasDataGrid.selectedItem.userAdmin == "true")
+				{
+					adminRadioButton.selected = true;
+				}
+				else
+				{
+					userRadioButton.selected = true;
+				}
+			}
+			
+			/**
+			 * Calls the webservice to update the user.
+			 **/
+			private function doUpdateUser(event:CloseEvent):void
+			{
+				if (event.detail == Alert.YES) 
+				{
+					Alert.show("youpie");
+				}
+			}
+			
+			/**
+			 * Calls the webservice to insert a new user.
+			 **/
+			private function doInsertNewUser():void
+			{
+				
+			}
+			
+			/**
+			 * Calls the webservice to delete the user.
+			 **/
+			private function doDeleteUser():void
+			{
+				
+			}
+			
+			/**
+			 * Displays a confirming popup.
+			 * 
+			 * @param popupTitle String popup title
+			 * @param popupLabel String popup label
+			 * @param handler Function which is call after confirming the popup
+			 * 
+			 **/ 
+			private function confirmPopup(popupTitle:String, popupLabel:String, handler:Function):void 
+			{
+				var a:Alert = Alert.show(popupLabel, popupTitle, Alert.YES|Alert.NO, this, handler, confirmIcon, Alert.NO);
+			}
+			
+			/**
+			 * Displays a message if the httpservice failed.
+			 * 
+			 * @param event FaultEvent
+			 * @param httpService String
+			 **/
+			private function faultHandler(event:FaultEvent, httpService:String):void
+			{
+				Alert.show("HttpService " + httpService + " Failed : " + event.message);	
+			}
+			
 		]]>
 	</mx:Script>
 
     <mx:Panel title="{Localizator.getInstance(1).gT('backOfficeUsersCanvasLabel')}" >
 		<mx:VBox horizontalAlign="center">
 			<mx:HBox>
-		        <mx:DataGrid id="backOfficeUsersCanvasDataGrid" rowCount="7" dataProvider="{users}" height="100%">
+		        <mx:DataGrid id="backOfficeUsersCanvasDataGrid" rowCount="7" dataProvider="{users}" height="100%" click="{buttonsState2()}">
 		            <mx:columns>
 		                <mx:DataGridColumn dataField="userId" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserIdLabel')}"/>
 		                <mx:DataGridColumn dataField="userLogin" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserLoginLabel')}"/>
@@ -83,30 +193,26 @@
 		                <mx:TextInput id="userMail" text="{backOfficeUsersCanvasDataGrid.selectedItem.userMail}"/>
 		            </mx:FormItem>
 		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserAdminLabel')}">
-						<mx:RadioButtonGroup id="userAdmin"/>
+						<mx:RadioButtonGroup id="userAdminRadioButtonGroup" />
 		                <mx:HBox>
-		                	<mx:RadioButton groupName="userAdmin" id="admin" label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasAdminUserLabel')}"/>
-		        			<mx:RadioButton groupName="userAdmin" id="user" label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasSimpleUserLabel')}"/>
+		                	<mx:RadioButton groupName="userAdminRadioButtonGroup" id="userRadioButton" label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasSimpleUserLabel')}" />
+		                	<mx:RadioButton groupName="userAdminRadioButtonGroup" id="adminRadioButton" label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasAdminUserLabel')}" />  			
 		                </mx:HBox>
 		            </mx:FormItem>
 		        </mx:Form>
 	        </mx:HBox>
 	        <mx:HBox>
-	        	<mx:Button label="{Localizator.getInstance(1).gT('backOfficeUpdateButton')}"/>
-	        	<mx:Button label="{Localizator.getInstance(1).gT('backOfficeAddNewButton')}"/>
-	        	<mx:Button label="{Localizator.getInstance(1).gT('backOfficeDeleteButton')}"/>
+	        	<mx:Button id="backOfficeUpdateButton" label="{Localizator.getInstance(1).gT('backOfficeUpdateButton')}" enabled="false" 
+	        		click="confirmPopup(Localizator.getInstance(1).gT('backOfficePopupComfirmUpdateTitle'),Localizator.getInstance(1).gT('backOfficePopupComfirmUpdateLabel'), doUpdateUser)"/>
+	        	<mx:Button id="backOfficeAddNewButton" label="{Localizator.getInstance(1).gT('backOfficeAddNewButton')}" click="{buttonsState1()}"/>
+	        	<mx:Button id="backOfficeDeleteButton" label="{Localizator.getInstance(1).gT('backOfficeDeleteButton')}" enabled="false"
+	        		click="confirmPopup(Localizator.getInstance(1).gT('backOfficePopupConfirmDeleteTitle'),Localizator.getInstance(1).gT('backOfficePopupConfirmDeleteLabel'), doDeleteUser)"/>
 	        </mx:HBox>
 		</mx:VBox>
     </mx:Panel>
 
-   <!-- 
-    <mx:StringValidator source="{fname}" property="text" minLength="4" maxLength="12"/>
-    <mx:PhoneNumberValidator source="{phone}" property="text"/>
-    <mx:DateValidator source="{dob}" property="text"/>
-    <mx:EmailValidator source="{email}" property="text"/>
-    <mx:NumberValidator source="{age}" property="text" integerError="Enter Integer value" minValue="18" maxValue="100" domain="int"/>
-    <mx:SocialSecurityValidator source="{ssn}" property="text"/>
-    <mx:ZipCodeValidator source="{zip}" property="text"/>
-    -->
+    <mx:StringValidator source="{userLogin}" property="text" minLength="4" maxLength="16"/>
+ 	<mx:StringValidator source="{userPassword}" property="text" minLength="4" maxLength="16"/>
+    <mx:EmailValidator source="{userMail}" property="text"/>
 	
 </mx:Canvas>

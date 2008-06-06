@@ -19,8 +19,8 @@
 				<mx:LinkBar id="menu" styleName="backOfficeMenuLinkBar" dataProvider="{backOfficeViewStack}" />	
 			</mx:Canvas>
 			<mx:HBox>
-				<mx:SWFLoader source="org/insia/mdmsCorp/website/ressources/swf/flag_fr.swf" click="{Localizator.getInstance(null).setLang(1)}"/>	
-				<mx:SWFLoader source="org/insia/mdmsCorp/website/ressources/swf/flag_uk.swf" click="{Localizator.getInstance(null).setLang(2)}"/>
+				<mx:SWFLoader source="org/insia/mdmsCorp/website/ressources/swf/flag_fr.swf" click="{Localizator.getInstance(0).setLang(1)}"/>	
+				<mx:SWFLoader source="org/insia/mdmsCorp/website/ressources/swf/flag_uk.swf" click="{Localizator.getInstance(0).setLang(2)}"/>
 			</mx:HBox>
 		</mx:HBox>
 		<mx:ViewStack id="backOfficeViewStack">	
@@ -42,7 +42,7 @@
 		</mx:ViewStack>
 		
 		<mx:Canvas styleName="backOfficeFooterCanvas">
-			<mx:Label text="© 2008 - MDMSCORP - Projet scolaire INSIA" />
+			<mx:Label text="{Localizator.getInstance(1).gT('backOfficeCopyright')}" />
 		</mx:Canvas>
 		
 	</mx:VBox>
