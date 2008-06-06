@@ -6,18 +6,9 @@ import javax.persistence.Entity;
 @Entity
 public class Book extends Media
 {
-	//private Media media;
 	private int quantity;
 	private String image_url;
 	private String description;
-
-	/*
-	public Media getMedia() {
-		return media;
-	}
-	public void setMedia(Media media) {
-		this.media = media;
-	}*/
 
 	@Column
 	public int getQuantity() {

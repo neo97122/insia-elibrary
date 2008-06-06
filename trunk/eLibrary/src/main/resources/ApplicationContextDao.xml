@@ -36,7 +36,7 @@
 				<value>org.insia.eLibrary.model.Book</value>
 				<value>org.insia.eLibrary.model.Media</value>
 				<value>org.insia.eLibrary.model.EBook</value>
-				<!--<value>org.insia.eLibrary.model.Reservation</value>-->
+				<value>org.insia.eLibrary.model.Reservation</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
