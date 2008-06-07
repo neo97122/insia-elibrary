@@ -15,6 +15,7 @@ Media
 
 Livre
  livre_media_id;
+ livre_titre;
  livre_quantite;
  livre_image_url;
  livre_resume;
