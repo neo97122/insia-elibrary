@@ -13,7 +13,7 @@
             <artifactId>tapestry-core</artifactId>
             <version>${tapestry-release-version}</version>
         </dependency>
-        
+
         <!-- This can be removed if not desired. Tapestry uses commons-logging, not Log4J explicitly.
              However, if Log4J is not on the classpath, commons-logging tends to use its own internal
              logging which is not very configurable.  This project includes a log4j.properties file
@@ -34,12 +34,12 @@
             <classifier>jdk15</classifier>
             <scope>test</scope>
         </dependency>
-				
+
 				        <!-- dependency to hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>3.2.1.ga</version>            
+            <version>3.2.1.ga</version>
         </dependency>
 
         <!-- dependency to Spring -->
@@ -48,22 +48,22 @@
 			<artifactId>spring</artifactId>
 			<version>2.0.7</version>
 		</dependency>
-	
-	
+
+
 		<!-- dependency to the mysql connector -->
 		<dependency>
 						<groupId>mysql</groupId>
 						<artifactId>mysql-connector-java</artifactId>
 						<version>5.0.5</version>
 		</dependency>
-		
+
 		<!-- dependency to the servlet api -->
 		<dependency>
 						<groupId>javax.servlet</groupId>
 						<artifactId>servlet-api</artifactId>
 						<version>2.4</version>
 		</dependency>
-		
+
 		<!-- dependency for common datasource -->
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -71,12 +71,18 @@
 			<version>1.2</version>
 		</dependency>
 
-       <!--  dépendances à dbunit --> 
-	   <dependency> 
+       <!--  dépendances à dbunit -->
+	   <dependency>
 		   <groupId>dbunit</groupId>
   		   <artifactId>dbunit</artifactId>
   		   <version>2.2</version>
   	   </dependency>
+
+      <dependency>
+        <groupId>javax.xml.ws</groupId>
+        <artifactId>jaxws-api</artifactId>
+        <version>2.1</version>
+      </dependency>
 
     </dependencies>
     <build>
@@ -120,12 +126,32 @@
                     <archiveClasses>true</archiveClasses>
                 </configuration>
             </plugin>
+
+            <plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>jaxws-maven-plugin</artifactId>
+	          	<executions>
+		            <execution>
+		              <goals>
+		                <goal>wsgen</goal>
+		              </goals>
+		              <configuration>
+		              <sei>org.insia.eLibrary.services.impl.UserManagerImpl
+		              </sei>
+		              <!--for demo purpose only, the webapp does not-->
+		              <!--need the generated wsdl files-->
+		              <genWsdl>true</genWsdl>
+		              <keep>true</keep>
+		              </configuration>
+		            </execution>
+	          	</executions>
+	        </plugin>
         </plugins>
     </build>
-    
+
     <reporting>
-        
-        <!-- Adds a report detailing the components, mixins and base classes defined by this module. -->        
+
+        <!-- Adds a report detailing the components, mixins and base classes defined by this module. -->
         <plugins>
             <plugin>
                 <groupId>org.apache.tapestry</groupId>
@@ -141,16 +167,16 @@
   <repositories>
     <!-- This can be uncommented when the tapestry-release-version is a snapshot.
          The non-snapshot Tapestry artifacts are distributed through the central
-         repository at ibiblio. 
-  
+         repository at ibiblio.
+
     <repository>
       <id>tapestry-snapshots</id>
       <url>http://people.apache.org/~hlship/tapestry-snapshot-repository/</url>
     </repository>
-    
+
     -->
-    
-    
+
+
     <repository>
       <id>codehaus.snapshots</id>
       <url>http://snapshots.repository.codehaus.org</url>
@@ -161,20 +187,39 @@
       <name>OpenQA Maven Repository</name>
       <url>http://maven.openqa.org/</url>
     </repository>
+
+    <!-- needed to retrieve a working jaxws-api-2.1.pom -->
+      <repository>
+        <id>java.net - Dev</id>
+        <url>https://maven-repository.dev.java.net/repository</url>
+        <layout>legacy</layout>
+      </repository>
+      <!-- needed for the jaxws-maven-plugin -->
+      <repository>
+        <id>java.net - Maven2</id>
+        <url>http://download.java.net/maven/2</url>
+        <layout>legacy</layout>
+      </repository>
+
   </repositories>
-  
+
   <pluginRepositories>
-    
+
+  	<pluginRepository>
+       <id>maven2-repository.dev.java.net</id>
+       <url>http://download.java.net/maven/2/</url>
+     </pluginRepository>
+
     <!-- As above, this can be uncommented when access to the snapshot version
          of a Tapestry Maven plugin is required.
     <pluginRepository>
       <id>tapestry-snapshots</id>
       <url>http://people.apache.org/~hlship/tapestry-snapshot-repository/</url>
     </pluginRepository>
-    
+
     -->
   </pluginRepositories>
-  
+
 
     <properties>
         <tapestry-release-version>5.0.5</tapestry-release-version>

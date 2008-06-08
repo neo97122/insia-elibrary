@@ -1,9 +1,19 @@
 package org.insia.eLibrary.model;
 
+import static org.hibernate.annotations.CascadeType.ALL;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Cascade;
 
 @Entity
 public class User
@@ -15,6 +25,14 @@ public class User
 	private String firstname;
 	private String mail;
 	private boolean admin;
+
+	private Set<Reservation> reservations = new HashSet<Reservation>(0);
+
+	public User(String login, String password)
+	{
+		this.login = login;
+		this.password = password;
+	}
 
 	@Id
 	@GeneratedValue
@@ -71,5 +89,16 @@ public class User
 	}
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@Cascade({ALL})
+	public Set<Reservation> getReservations()
+	{
+		return reservations;
+	}
+	public void setReservations(Set<Reservation> reservations)
+	{
+		this.reservations = reservations;
 	}
 }
