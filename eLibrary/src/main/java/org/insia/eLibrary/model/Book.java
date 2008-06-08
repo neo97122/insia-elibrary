@@ -9,6 +9,8 @@ public class Book extends Media
 	private int quantity;
 	private String image_url;
 	private String description;
+	private String author;
+	private String editor;
 
 	@Column
 	public int getQuantity() {
@@ -26,11 +28,31 @@ public class Book extends Media
 		this.image_url = image_url;
 	}
 
-	@Column(unique = false, nullable = false, insertable = true, updatable = true, length = 40)
+	@Column(unique = false, nullable = false, insertable = true, updatable = true, length = 120)
 	public String getDescription() {
 		return description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Column(unique = false, nullable = false, insertable = true, updatable = true, length = 40)
+	public String getAuthor()
+	{
+		return author;
+	}
+	public void setAuthor(String author)
+	{
+		this.author = author;
+	}
+
+	@Column(unique = false, nullable = false, insertable = true, updatable = true, length = 40)
+	public String getEditor()
+	{
+		return editor;
+	}
+	public void setEditor(String editor)
+	{
+		this.editor = editor;
 	}
 }
