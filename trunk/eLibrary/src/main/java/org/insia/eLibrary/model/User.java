@@ -28,6 +28,8 @@ public class User
 
 	private Set<Reservation> reservations = new HashSet<Reservation>(0);
 
+	public User(){}
+
 	public User(String login, String password)
 	{
 		this.login = login;
