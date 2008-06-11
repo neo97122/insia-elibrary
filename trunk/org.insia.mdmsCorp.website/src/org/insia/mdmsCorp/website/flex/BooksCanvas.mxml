@@ -1,4 +1,263 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
-	
-</mx:Canvas>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" initialize="{initCanvas();}" width="100%">
+
+    <mx:XMLList id="books">
+        <book>
+            <bookId>1</bookId>
+            <bookMediaId>1</bookMediaId>
+            <bookIsbn>#ZERT09</bookIsbn>
+            <bookTitle><![CDATA[Le livre magique]]></bookTitle>
+            <bookQuantity>1</bookQuantity>
+            <bookURLCover>01.gif</bookURLCover>
+            <bookSummary><![CDATA[Oui oui va se promener DTC]]></bookSummary>
+            <bookAuthor><![CDATA[champi chomp]]></bookAuthor>
+            <bookEditor><![CDATA[YoupiEditor]]></bookEditor>
+        </book>
+        <book>
+            <bookId>2</bookId>
+            <bookMediaId>12</bookMediaId>
+            <bookIsbn>#zerzer</bookIsbn>
+            <bookTitle><![CDATA[Oui oui à la plage]]></bookTitle>
+            <bookQuantity>5</bookQuantity>
+            <bookURLCover></bookURLCover>
+            <bookSummary><![CDATA[Oui oui va se promener DTC]]></bookSummary>
+            <bookAuthor><![CDATA[Machupicchu]]></bookAuthor>
+            <bookEditor><![CDATA[lolilol]]></bookEditor>
+        </book>
+        <book>
+            <bookId>3</bookId>
+            <bookMediaId>5</bookMediaId>
+            <bookIsbn>#sdfsdf</bookIsbn>
+            <bookTitle><![CDATA[Bozo le clown]]></bookTitle>
+            <bookQuantity>51</bookQuantity>
+            <bookURLCover>02.gif</bookURLCover>
+            <bookSummary><![CDATA[<TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Verdana" SIZE="12" COLOR="#0000FF" LETTERSPACING="0" KERNING="0"><I><U>piiizerzerzer</U></I></FONT></P></TEXTFORMAT>]]></bookSummary>
+            <bookAuthor><![CDATA[Bozo]]></bookAuthor>
+            <bookEditor><![CDATA[chocapic]]></bookEditor>
+        </book>
+    </mx:XMLList>
+    
+    <mx:Script>
+		<![CDATA[
+			import mx.binding.utils.BindingUtils;
+			import mx.validators.EmailValidator;
+			import mx.rpc.events.FaultEvent;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			import mx.messaging.AbstractConsumer;
+			import mx.controls.Spacer;
+			import mx.containers.ControlBar;
+			import mx.containers.Panel;
+			import mx.containers.VBox;
+			import mx.charts.renderers.DiamondItemRenderer;
+			import mx.controls.Alert;
+			import org.insia.mdmsCorp.website.as3.Localizator;
+			
+			[Embed(source='org/insia/mdmsCorp/website/ressources/img/exclamation.png')]
+			private var confirmIcon:Class;
+			
+			[Bindable]
+			[Embed(source='org/insia/mdmsCorp/website/ressources/img/noImage.gif')]
+			private var coverNoImage:Class;
+				
+			/**
+			 * Inits the canvas
+			 **/
+			private function initCanvas():void
+			{
+			}
+			
+			/**
+			 * First state of the form : it initializes the value of the inputText,
+			 * turns off buttons and display a confirm popup if we try to insert a new book.
+			 **/
+			private function buttonsState1():void
+			{
+				if (backOfficeAddNewButton.label == Localizator.getInstance(1).gT('backOfficeInsertButton'))
+				{
+					confirmPopup(Localizator.getInstance(1).gT('backOfficePopupConfirmInsertTitle'),Localizator.getInstance(1).gT('backOfficePopupConfirmInsertLabel'), doInsertNewBook);
+				}
+				backOfficeUpdateButton.enabled = false;
+				backOfficeAddNewButton.label = Localizator.getInstance(1).gT('backOfficeInsertButton');
+				backOfficeDeleteButton.enabled = false;
+				bookId.text = "";
+				bookMediaId.text = "";
+				bookTitle.text = "";
+				bookIsbn.text = "";
+				bookSummary.text = "";
+				bookQuantity.text = "";
+				bookURLCover.text = "";
+				bookEditor.text = "";
+				bookAutor.text = "";
+				backOfficeBooksCanvasDataGrid.selectedIndex = -1;
+			} 
+			
+			/**
+			 * Second state of the form : it turns on buttons.
+			 **/
+			private function buttonsState2():void
+			{
+				backOfficeUpdateButton.enabled = true;
+				backOfficeAddNewButton.label = Localizator.getInstance(1).gT('backOfficeAddNewButton');
+				backOfficeDeleteButton.enabled = true;
+				setCover();
+			}
+			
+			/**
+			 * Calls the webservice to update the book.
+			 **/
+			private function doUpdateBook(event:CloseEvent):void
+			{
+				if (event.detail == Alert.YES) 
+				{
+					Alert.show("youpie");
+				}
+			}
+			
+			/**
+			 * Calls the webservice to insert a new book.
+			 **/
+			private function doInsertNewBook():void
+			{
+				
+			}
+			
+			/**
+			 * Calls the webservice to delete the book.
+			 **/
+			private function doDeleteBook():void
+			{
+				
+			}
+			
+			/**
+			 * Calls the webservice to upload cover. 
+			 **/
+			 private function doUploadCover():void
+			 {
+			 
+			 }
+			
+			/**
+			 * Displays a confirming popup.
+			 * 
+			 * @param popupTitle String popup title
+			 * @param popupLabel String popup label
+			 * @param handler Function which is call after confirming the popup
+			 * 
+			 **/ 
+			private function confirmPopup(popupTitle:String, popupLabel:String, handler:Function):void 
+			{
+				var a:Alert = Alert.show(popupLabel, popupTitle, Alert.YES|Alert.NO, this, handler, confirmIcon, Alert.NO);
+			}
+			
+			/**
+			 * Displays a message if the httpservice failed.
+			 * 
+			 * @param event FaultEvent
+			 * @param httpService String
+			 **/
+			private function faultHandler(event:FaultEvent, httpService:String):void
+			{
+				Alert.show("HttpService " + httpService + " Failed : " + event.message);	
+			}
+			
+			/**
+			 * Sets the book's cover.
+			 **/
+			private function setCover():void
+			{
+				if (backOfficeBooksCanvasDataGrid.selectedItem.bookURLCover != "")
+				{
+					coverSwfLoader.source = 'org/insia/mdmsCorp/website/ressources/upload/' + backOfficeBooksCanvasDataGrid.selectedItem.bookURLCover;
+				}
+				else
+				{
+					coverSwfLoader.source = coverNoImage;
+				}
+			}
+			
+		]]>
+	</mx:Script>
+
+    <mx:Panel title="{Localizator.getInstance(1).gT('backOfficeBooksCanvasLabel')}" width="100%">
+		<mx:VBox horizontalAlign="center" width="100%">
+			<mx:Spacer height="10"/>
+			<mx:HBox width="100%">
+				<mx:Spacer width="10"/>
+		        <mx:DataGrid id="backOfficeBooksCanvasDataGrid" rowCount="7" dataProvider="{books}" height="100%" click="{buttonsState2()}" width="50%">
+		            <mx:columns>
+		                <mx:DataGridColumn dataField="bookId" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIdLabel')}" visible="false"/>
+		                <mx:DataGridColumn dataField="bookMediaId" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIdMediaLabel')}" visible="false"/>
+		                <mx:DataGridColumn dataField="bookIsbn" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIsbnLabel')}" width="60"/>
+		                <mx:DataGridColumn dataField="bookTitle" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookTitleLabel')}"/>
+		                <mx:DataGridColumn dataField="bookQuantity" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookQuantityLabel')}" visible="false"/>		               
+		                <mx:DataGridColumn dataField="bookURLCover" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookURLCoverLabel')}" visible="false"/>
+		                <mx:DataGridColumn dataField="bookSummary" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookSummaryLabel')}" visible="false"/>
+		                <mx:DataGridColumn dataField="bookAuthor" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookAuthorLabel')}"/>
+		                <mx:DataGridColumn dataField="bookEditor" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookEditorLabel')}" visible="false"/>
+		            </mx:columns>
+		        </mx:DataGrid>
+		        <mx:Spacer width="10"/>
+		        <mx:VBox width="50%" styleName="subBox" verticalAlign="middle" horizontalAlign="top">
+			       <mx:HBox width="100%" verticalAlign="middle" horizontalAlign="top">
+				        <mx:Form width="100%">    
+				            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIdLabel')}" width="100%">
+				                <mx:Label id="bookId" text="{backOfficeBooksCanvasDataGrid.selectedItem.bookId}"/>
+				            </mx:FormItem>
+				            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIdMediaLabel')}" width="100%">
+				                <mx:Label id="bookMediaId" text="{backOfficeBooksCanvasDataGrid.selectedItem.bookMediaId}"/>
+				            </mx:FormItem>
+				            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookTitleLabel')}" width="100%">
+				                <mx:TextInput id="bookTitle" text="{backOfficeBooksCanvasDataGrid.selectedItem.bookTitle}"/>
+				            </mx:FormItem>
+				            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIsbnLabel')}" width="100%">
+				                <mx:TextInput id="bookIsbn" text="{backOfficeBooksCanvasDataGrid.selectedItem.bookIsbn}"/>
+				            </mx:FormItem>
+				            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookQuantityLabel')}" width="100%">
+				                <mx:TextInput id="bookQuantity" text="{backOfficeBooksCanvasDataGrid.selectedItem.bookQuantity}"/>
+				            </mx:FormItem>
+				            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookAuthorLabel')}" width="100%">
+				                <mx:TextInput id="bookAutor" text="{backOfficeBooksCanvasDataGrid.selectedItem.bookAuthor}"/>
+				            </mx:FormItem>
+				            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookEditorLabel')}" width="100%">
+				                <mx:TextInput id="bookEditor" text="{backOfficeBooksCanvasDataGrid.selectedItem.bookEditor}"/>
+				            </mx:FormItem>
+				            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookURLCoverLabel')}" width="100%">
+				            	<mx:HBox>
+				            		<mx:TextInput id="bookURLCover" text="{backOfficeBooksCanvasDataGrid.selectedItem.bookURLCover}" width="90"/>
+				                	<mx:Button label="upload" click="confirmPopup(Localizator.getInstance(1).gT('backOfficePopupConfirmUploadTitle'),Localizator.getInstance(1).gT('backOfficePopupConfirmUploadLabel'), doUploadCover)" />
+				            	</mx:HBox>
+				            </mx:FormItem>
+				        </mx:Form>
+				        <mx:SWFLoader id="coverSwfLoader" source="{coverNoImage}" />
+				        <mx:Spacer width="10"/>
+					</mx:HBox>
+			        <mx:Form width="100%">
+		        		<mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookSummaryLabel')}" width="100%">
+			                <mx:RichTextEditor height="220" width="100%"  id="bookSummary" htmlText="{backOfficeBooksCanvasDataGrid.selectedItem.bookSummary}"/>
+			            </mx:FormItem>
+			        </mx:Form>
+		        </mx:VBox>
+
+		        <mx:Spacer width="10"/>
+	        </mx:HBox>
+	        <mx:Spacer height="5"/>
+	        <mx:HBox width="100%" horizontalAlign="center">
+	        	<mx:Button id="backOfficeUpdateButton" label="{Localizator.getInstance(1).gT('backOfficeUpdateButton')}" enabled="false" 
+	        		click="confirmPopup(Localizator.getInstance(1).gT('backOfficePopupComfirmUpdateTitle'),Localizator.getInstance(1).gT('backOfficePopupComfirmUpdateLabel'), doUpdateBook)"/>
+	        	<mx:Button id="backOfficeAddNewButton" label="{Localizator.getInstance(1).gT('backOfficeAddNewButton')}" click="{buttonsState1()}"/>
+	        	<mx:Button id="backOfficeDeleteButton" label="{Localizator.getInstance(1).gT('backOfficeDeleteButton')}" enabled="false"
+	        		click="confirmPopup(Localizator.getInstance(1).gT('backOfficePopupConfirmDeleteTitle'),Localizator.getInstance(1).gT('backOfficePopupConfirmDeleteLabel'), doDeleteBook)"/>
+	        </mx:HBox>
+	        <mx:Spacer height="10"/>
+		</mx:VBox>
+    </mx:Panel>
+
+    <mx:StringValidator source="{bookTitle}" property="text" minLength="4"/>
+ 	<mx:StringValidator source="{bookAutor}" property="text" minLength="4"/>
+    <mx:StringValidator source="{bookEditor}" property="text" minLength="4"/>
+    <mx:StringValidator source="{bookIsbn}" property="text" minLength="4"/>
+    <mx:NumberValidator source="{bookQuantity}" property="text"/>
+
+</mx:Canvas>  

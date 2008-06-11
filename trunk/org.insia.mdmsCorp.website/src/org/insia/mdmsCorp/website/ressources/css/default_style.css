@@ -6,4 +6,67 @@
 
 /*  APPLICATION AND PAGE CONTAINERS
 -------------------------------------------------------------------------*/
-	
+Application 
+{
+   backgroundGradientColors: #000000, #333333;
+   backgroundGradientAlphas: 1, 1;
+}
+
+Panel {
+   titleStyleName: "title";
+}
+
+.title {
+   font-weight: bold;
+   color: #00ccff;
+   textAlign: left;
+}
+
+LinkBar {
+   borderStyle: solid;
+   border-thickness: 0;
+   cornerRadius: 5;
+   backgroundAlpha: 0.3;
+   backgroundColor: #ffffff;
+   separatorColor: #c4cccc;
+   color: #33ccff;
+}
+
+LinkButton {
+   borderStyle: solid;
+   border-thickness: 0;
+   cornerRadius: 5;
+   backgroundAlpha: 0.3;
+   backgroundColor: #ffffff;
+   separatorColor: #c4cccc;
+   color: #33ccff;
+}
+
+.subBox {
+   backgroundColor: #cccccc;
+}
+
+Label {
+   font-weight: bold;
+}
+
+Alert{
+	background-color: #000000;
+	cornerRadius: 8;
+	title-style-name:title;
+	color:#999999;
+	area-fill:#000000;
+	border-color:#000000;
+	border-style:solid;
+	drop-shadow-enabled:true;
+	shadow-direction:center;
+	shadow-distance:0;
+	drop-shadow-color:#000000;
+	fill-colors:#000000;
+}
+
+.backOfficeCopyright{
+   font-weight: bold;
+   color: #00ccff;
+   textAlign: center;
+}
