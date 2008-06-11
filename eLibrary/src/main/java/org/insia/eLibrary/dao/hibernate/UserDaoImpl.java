@@ -25,8 +25,8 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		// create a new criteria
 		Criteria crit = session.createCriteria(User.class);
-		crit.add(Expression.ilike("loginUser", login));
-		crit.add(Expression.eq("passwordUser", password));
+		crit.add(Expression.ilike("login", login));
+		crit.add(Expression.eq("password", password));
 
 		User user = (User)crit.uniqueResult();
 		return (user != null);
@@ -40,7 +40,7 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		// create a new criteria
 		Criteria crit = session.createCriteria(User.class);
-		crit.add(Expression.eq("loginUser", login));
+		crit.add(Expression.eq("login", login));
 
 		User user = (User)crit.uniqueResult();
 		return user;
