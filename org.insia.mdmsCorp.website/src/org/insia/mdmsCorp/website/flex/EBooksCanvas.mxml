@@ -1,4 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
-	
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" initialize="{initCanvas();}" width="100%">
+
+    <mx:XMLList id="eBooks">
+        <eBook>
+            <eBookId>1</eBookId>
+            <eBookMediaId>1</eBookMediaId>
+            <eBookIsbn>#ZERT09</eBookIsbn>
+            <eBookTitle><![CDATA[Le livre magique]]></eBookTitle>
+            <eBookURL>www.google.fr</eBookURL>
+        </eBook>
+        <eBook>
+            <eBookId>17</eBookId>
+            <eBookMediaId>61</eBookMediaId>
+            <eBookIsbn>#ZERT09</eBookIsbn>
+            <eBookTitle><![CDATA[Le livre youhou]]></eBookTitle>
+            <eBookURL>www.google.fr</eBookURL>
+        </eBook>
+        <eBook>
+            <eBookId>41</eBookId>
+            <eBookMediaId>51</eBookMediaId>
+            <eBookIsbn>#ZERT09</eBookIsbn>
+            <eBookTitle><![CDATA[Le livre papapaapa]]></eBookTitle>
+            <eBookURL>www.google.fr</eBookURL>
+        </eBook>
+    </mx:XMLList>
+    
+    <mx:Script>
+		<![CDATA[
+			import mx.binding.utils.BindingUtils;
+			import mx.validators.EmailValidator;
+			import mx.rpc.events.FaultEvent;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			import mx.messaging.AbstractConsumer;
+			import mx.controls.Spacer;
+			import mx.containers.ControlBar;
+			import mx.containers.Panel;
+			import mx.containers.VBox;
+			import mx.charts.renderers.DiamondItemRenderer;
+			import mx.controls.Alert;
+			import org.insia.mdmsCorp.website.as3.Localizator;
+			
+			[Embed(source='org/insia/mdmsCorp/website/ressources/img/exclamation.png')]
+			private var confirmIcon:Class;			
+				
+			/**
+			 * Inits the canvas
+			 **/
+			private function initCanvas():void
+			{
+			}
+			
+			/**
+			 * First state of the form : it initializes the value of the inputText,
+			 * turns off buttons and display a confirm popup if we try to insert a new book.
+			 **/
+			private function buttonsState1():void
+			{
+				if (backOfficeAddNewButton.label == Localizator.getInstance(1).gT('backOfficeInsertButton'))
+				{
+					confirmPopup(Localizator.getInstance(1).gT('backOfficePopupConfirmInsertTitle'),Localizator.getInstance(1).gT('backOfficePopupConfirmInsertLabel'), doInsertNewEBook);
+				}
+				backOfficeUpdateButton.enabled = false;
+				backOfficeAddNewButton.label = Localizator.getInstance(1).gT('backOfficeInsertButton');
+				backOfficeDeleteButton.enabled = false;
+				eBookId.text = "";
+				eBookMediaId.text = "";
+				eBookTitle.text = "";
+				eBookIsbn.text = "";
+				eBookURL.text = "";
+				backOfficeEBooksCanvasDataGrid.selectedIndex = -1;
+			} 
+			
+			/**
+			 * Second state of the form : it turns on buttons.
+			 **/
+			private function buttonsState2():void
+			{
+				backOfficeUpdateButton.enabled = true;
+				backOfficeAddNewButton.label = Localizator.getInstance(1).gT('backOfficeAddNewButton');
+				backOfficeDeleteButton.enabled = true;
+			}
+			
+			/**
+			 * Calls the webservice to update the ebook.
+			 **/
+			private function doUpdateEBook(event:CloseEvent):void
+			{
+				if (event.detail == Alert.YES) 
+				{
+					Alert.show("youpie");
+				}
+			}
+			
+			/**
+			 * Calls the webservice to insert a new ebook.
+			 **/
+			private function doInsertNewEBook():void
+			{
+				
+			}
+			
+			/**
+			 * Calls the webservice to delete the ebook.
+			 **/
+			private function doDeleteEBook():void
+			{
+				
+			}
+			
+			/**
+			 * Displays a confirming popup.
+			 * 
+			 * @param popupTitle String popup title
+			 * @param popupLabel String popup label
+			 * @param handler Function which is call after confirming the popup
+			 * 
+			 **/ 
+			private function confirmPopup(popupTitle:String, popupLabel:String, handler:Function):void 
+			{
+				var a:Alert = Alert.show(popupLabel, popupTitle, Alert.YES|Alert.NO, this, handler, confirmIcon, Alert.NO);
+			}
+			
+			/**
+			 * Displays a message if the httpservice failed.
+			 * 
+			 * @param event FaultEvent
+			 * @param httpService String
+			 **/
+			private function faultHandler(event:FaultEvent, httpService:String):void
+			{
+				Alert.show("HttpService " + httpService + " Failed : " + event.message);	
+			}
+			
+		]]>
+	</mx:Script>
+
+    <mx:Panel title="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasLabel')}" width="100%">
+		<mx:VBox horizontalAlign="center" width="100%">
+			<mx:Spacer height="10"/>
+			<mx:HBox width="100%">
+				<mx:Spacer width="10"/>
+		        <mx:DataGrid id="backOfficeEBooksCanvasDataGrid" rowCount="7" dataProvider="{eBooks}" height="100%" click="{buttonsState2()}" width="50%">
+		            <mx:columns>
+		                <mx:DataGridColumn dataField="eBookId" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookIdLabel')}" visible="false"/>
+		                <mx:DataGridColumn dataField="eBookMediaId" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookIdMediaLabel')}" visible="false"/>
+		                <mx:DataGridColumn dataField="eBookIsbn" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookIsbnLabel')}" width="60"/>
+		                <mx:DataGridColumn dataField="eBookTitle" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookTitleLabel')}"/>
+		                <mx:DataGridColumn dataField="eBookURL" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookURLLabel')}" visible="false"/>		               
+		            </mx:columns>
+		        </mx:DataGrid>
+		        <mx:Spacer width="10"/>
+		        <mx:HBox width="50%" styleName="subBox" verticalAlign="middle" horizontalAlign="top">
+			        <mx:Form width="100%">    
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookIdLabel')}" width="100%">
+			                <mx:Label id="eBookId" text="{backOfficeEBooksCanvasDataGrid.selectedItem.eBookId}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookIdMediaLabel')}" width="100%">
+			                <mx:Label id="eBookMediaId" text="{backOfficeEBooksCanvasDataGrid.selectedItem.eBookMediaId}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookTitleLabel')}" width="100%">
+			                <mx:TextInput id="eBookTitle" text="{backOfficeEBooksCanvasDataGrid.selectedItem.eBookTitle}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookIsbnLabel')}" width="100%">
+			                <mx:TextInput id="eBookIsbn" text="{backOfficeEBooksCanvasDataGrid.selectedItem.eBookIsbn}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookURLLabel')}" width="100%">
+			                <mx:TextInput id="eBookURL" text="{backOfficeEBooksCanvasDataGrid.selectedItem.eBookURL}"/>
+			            </mx:FormItem>
+			        </mx:Form>
+			        <mx:Spacer width="10"/>
+		        </mx:HBox>
+
+		        <mx:Spacer width="10"/>
+	        </mx:HBox>
+	        <mx:Spacer height="5"/>
+	        <mx:HBox width="100%" horizontalAlign="center">
+	        	<mx:Button id="backOfficeUpdateButton" label="{Localizator.getInstance(1).gT('backOfficeUpdateButton')}" enabled="false" 
+	        		click="confirmPopup(Localizator.getInstance(1).gT('backOfficePopupComfirmUpdateTitle'),Localizator.getInstance(1).gT('backOfficePopupComfirmUpdateLabel'), doUpdateEBook)"/>
+	        	<mx:Button id="backOfficeAddNewButton" label="{Localizator.getInstance(1).gT('backOfficeAddNewButton')}" click="{buttonsState1()}"/>
+	        	<mx:Button id="backOfficeDeleteButton" label="{Localizator.getInstance(1).gT('backOfficeDeleteButton')}" enabled="false"
+	        		click="confirmPopup(Localizator.getInstance(1).gT('backOfficePopupConfirmDeleteTitle'),Localizator.getInstance(1).gT('backOfficePopupConfirmDeleteLabel'), doDeleteEBook)"/>
+	        </mx:HBox>
+	        <mx:Spacer height="10"/>
+		</mx:VBox>
+    </mx:Panel>
+
+    <mx:StringValidator source="{eBookTitle}" property="text" minLength="4"/>
+    <mx:StringValidator source="{eBookURL}" property="text" minLength="4"/>
+    <mx:StringValidator source="{eBookIsbn}" property="text" minLength="4"/>
+
 </mx:Canvas>

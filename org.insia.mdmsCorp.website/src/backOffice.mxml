@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application styleName="mainContainer" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+<mx:Application styleName="mainContainer" xmlns:mx="http://www.adobe.com/2006/mxml" layout="horizontal" 
 	xmlns:mdms="org.insia.mdmsCorp.website.flex.*"
-	preloader="org.insia.mdmsCorp.website.as3.CustomPreloader">
+	preloader="org.insia.mdmsCorp.website.as3.CustomPreloader" horizontalAlign="center" verticalAlign="top">
 	
 	<mx:Style source="org/insia/mdmsCorp/website/ressources/css/default_style.css"/>
 	
@@ -11,39 +11,37 @@
 		]]>
 	</mx:Script>
 	
-	<mx:VBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
+	<mx:VBox width="1000" height="740" verticalAlign="middle" horizontalAlign="center">
 	
-		<mx:HBox styleName="backOfficeMenuHBox" width="100%" height="50" horizontalAlign="center">
-			<mx:Label text="MDMSCorp"/>
+		<mx:HBox width="1000" height="50" horizontalAlign="center" verticalAlign="middle">
+			<mx:Label text="MDMSCorp - BackOffice"/>
 			<mx:Canvas>
-				<mx:LinkBar id="menu" styleName="backOfficeMenuLinkBar" dataProvider="{backOfficeViewStack}" />	
+				<mx:LinkBar id="menu" dataProvider="{backOfficeViewStack}" />	
 			</mx:Canvas>
 			<mx:HBox>
-				<mx:SWFLoader source="org/insia/mdmsCorp/website/ressources/swf/flag_fr.swf" click="{Localizator.getInstance(0).setLang(1)}"/>	
-				<mx:SWFLoader source="org/insia/mdmsCorp/website/ressources/swf/flag_uk.swf" click="{Localizator.getInstance(0).setLang(2)}"/>
+				<mx:SWFLoader source="@Embed(source='org/insia/mdmsCorp/website/ressources/swf/flag_fr.swf')" click="{Localizator.getInstance(0).setLang(1)}"/>	
+				<mx:SWFLoader source="@Embed(source='org/insia/mdmsCorp/website/ressources/swf/flag_uk.swf')" click="{Localizator.getInstance(0).setLang(2)}"/>
 			</mx:HBox>
 		</mx:HBox>
-		<mx:ViewStack id="backOfficeViewStack">	
-			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasLabel')}">
+		<mx:ViewStack width="1000" id="backOfficeViewStack">	
+			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasLabel')}" width="100%">
 				<mdms:UsersCanvas verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
 			</mx:Canvas>
-			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasLabel')}">
+			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasLabel')}" width="100%">
 				<mdms:BooksCanvas verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
 			</mx:Canvas>
-			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeMediasCanvasLabel')}">
-				<mdms:MediasCanvas verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
-			</mx:Canvas>
-			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasLabel')}">
+			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasLabel')}" width="100%">
 				<mdms:EBooksCanvas verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
 			</mx:Canvas>
-			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeBookingCanvasLabel')}">
+			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeBookingCanvasLabel')}" width="100%">
 				<mdms:BookingCanvas verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
 			</mx:Canvas>
 		</mx:ViewStack>
 		
-		<mx:Canvas styleName="backOfficeFooterCanvas">
-			<mx:Label text="{Localizator.getInstance(1).gT('backOfficeCopyright')}" />
-		</mx:Canvas>
+		<mx:HBox verticalAlign="middle">
+			<mx:Label styleName="backOfficeCopyright" text="{Localizator.getInstance(1).gT('backOfficeCopyright')}"/>
+			<mx:LinkButton label="Insia" click="navigateToURL(new URLRequest('http://www.insia.org'), '_blank');"/>
+		</mx:HBox>
 		
 	</mx:VBox>
 </mx:Application>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" initialize="{initCanvas();}">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" initialize="{initCanvas();}" width="100%">
 
     <mx:XMLList id="users">
         <user>
@@ -159,12 +159,14 @@
 		]]>
 	</mx:Script>
 
-    <mx:Panel title="{Localizator.getInstance(1).gT('backOfficeUsersCanvasLabel')}" >
-		<mx:VBox horizontalAlign="center">
-			<mx:HBox>
-		        <mx:DataGrid id="backOfficeUsersCanvasDataGrid" rowCount="7" dataProvider="{users}" height="100%" click="{buttonsState2()}">
+    <mx:Panel title="{Localizator.getInstance(1).gT('backOfficeUsersCanvasLabel')}" width="100%">
+		<mx:VBox horizontalAlign="center" width="100%">
+			<mx:Spacer height="10"/>
+			<mx:HBox width="100%">
+				<mx:Spacer width="10"/>
+		        <mx:DataGrid id="backOfficeUsersCanvasDataGrid" rowCount="7" dataProvider="{users}" height="100%" click="{buttonsState2()}" width="50%">
 		            <mx:columns>
-		                <mx:DataGridColumn dataField="userId" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserIdLabel')}"/>
+		                <mx:DataGridColumn dataField="userId" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserIdLabel')}" width="40"/>
 		                <mx:DataGridColumn dataField="userLogin" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserLoginLabel')}"/>
 		                <mx:DataGridColumn dataField="userAdmin" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserAdminLabel')}"/>		               
 		                <mx:DataGridColumn dataField="userPassword" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserPasswordLabel')}" visible="false"/>
@@ -173,41 +175,47 @@
 		                <mx:DataGridColumn dataField="userMail" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserMailLabel')}" visible="false"/>
 		            </mx:columns>
 		        </mx:DataGrid>
-		        <mx:Form>
-		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserIdLabel')}">
-		                <mx:Label id="userId" text="{backOfficeUsersCanvasDataGrid.selectedItem.userId}"/>
-		            </mx:FormItem>
-		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserLoginLabel')}">
-		                <mx:TextInput id="userLogin" text="{backOfficeUsersCanvasDataGrid.selectedItem.userLogin}"/>
-		            </mx:FormItem>
-		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserPasswordLabel')}">
-		                <mx:TextInput id="userPassword" displayAsPassword="true" text="{backOfficeUsersCanvasDataGrid.selectedItem.userPassword}"/>
-		            </mx:FormItem>
-		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserNameLabel')}">
-		                <mx:TextInput id="userName" text="{backOfficeUsersCanvasDataGrid.selectedItem.userName}"/>
-		            </mx:FormItem>
-		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserFirstNameLabel')}">
-		                <mx:TextInput id="userFirstName" text="{backOfficeUsersCanvasDataGrid.selectedItem.userFirstName}"/>
-		            </mx:FormItem>
-		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserMailLabel')}">
-		                <mx:TextInput id="userMail" text="{backOfficeUsersCanvasDataGrid.selectedItem.userMail}"/>
-		            </mx:FormItem>
-		            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserAdminLabel')}">
-						<mx:RadioButtonGroup id="userAdminRadioButtonGroup" />
-		                <mx:HBox>
-		                	<mx:RadioButton groupName="userAdminRadioButtonGroup" id="userRadioButton" label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasSimpleUserLabel')}" />
-		                	<mx:RadioButton groupName="userAdminRadioButtonGroup" id="adminRadioButton" label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasAdminUserLabel')}" />  			
-		                </mx:HBox>
-		            </mx:FormItem>
-		        </mx:Form>
+		        <mx:Spacer width="10"/>
+		        <mx:Box width="50%" styleName="subBox">
+			        <mx:Form width="100%">
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserIdLabel')}" width="100%">
+			                <mx:Label id="userId" text="{backOfficeUsersCanvasDataGrid.selectedItem.userId}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserLoginLabel')}" width="100%">
+			                <mx:TextInput id="userLogin" text="{backOfficeUsersCanvasDataGrid.selectedItem.userLogin}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserPasswordLabel')}" width="100%">
+			                <mx:TextInput id="userPassword" displayAsPassword="true" text="{backOfficeUsersCanvasDataGrid.selectedItem.userPassword}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserNameLabel')}" width="100%">
+			                <mx:TextInput id="userName" text="{backOfficeUsersCanvasDataGrid.selectedItem.userName}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserFirstNameLabel')}" width="100%">
+			                <mx:TextInput id="userFirstName" text="{backOfficeUsersCanvasDataGrid.selectedItem.userFirstName}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserMailLabel')}" width="100%">
+			                <mx:TextInput id="userMail" text="{backOfficeUsersCanvasDataGrid.selectedItem.userMail}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserAdminLabel')}" width="100%">
+							<mx:RadioButtonGroup id="userAdminRadioButtonGroup" />
+			                <mx:HBox>
+			                	<mx:RadioButton groupName="userAdminRadioButtonGroup" id="userRadioButton" label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasSimpleUserLabel')}" />
+			                	<mx:RadioButton groupName="userAdminRadioButtonGroup" id="adminRadioButton" label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasAdminUserLabel')}" />  			
+			                </mx:HBox>
+			            </mx:FormItem>
+			        </mx:Form>
+		        </mx:Box>
+		        <mx:Spacer width="10"/>
 	        </mx:HBox>
-	        <mx:HBox>
+	        <mx:Spacer height="5"/>
+	        <mx:HBox width="100%" horizontalAlign="center">
 	        	<mx:Button id="backOfficeUpdateButton" label="{Localizator.getInstance(1).gT('backOfficeUpdateButton')}" enabled="false" 
 	        		click="confirmPopup(Localizator.getInstance(1).gT('backOfficePopupComfirmUpdateTitle'),Localizator.getInstance(1).gT('backOfficePopupComfirmUpdateLabel'), doUpdateUser)"/>
 	        	<mx:Button id="backOfficeAddNewButton" label="{Localizator.getInstance(1).gT('backOfficeAddNewButton')}" click="{buttonsState1()}"/>
 	        	<mx:Button id="backOfficeDeleteButton" label="{Localizator.getInstance(1).gT('backOfficeDeleteButton')}" enabled="false"
 	        		click="confirmPopup(Localizator.getInstance(1).gT('backOfficePopupConfirmDeleteTitle'),Localizator.getInstance(1).gT('backOfficePopupConfirmDeleteLabel'), doDeleteUser)"/>
 	        </mx:HBox>
+	        <mx:Spacer height="10"/>
 		</mx:VBox>
     </mx:Panel>
 
