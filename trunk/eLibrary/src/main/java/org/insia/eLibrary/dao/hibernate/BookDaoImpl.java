@@ -5,8 +5,8 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
-import org.insia.eLibrary.dao.UserDao;
-import org.insia.eLibrary.model.User;
+import org.insia.eLibrary.dao.BookDao;
+import org.insia.eLibrary.model.Book;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 
@@ -41,9 +41,9 @@ public class BookDaoImpl extends HibernateDaoSupport implements BookDao {
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		// create a new criteria
 		Criteria crit = session.createCriteria(Book.class);
-		crit.add(Expression.eq("titleBook", login));
+		crit.add(Expression.eq("titleBook", title));
 
-		Book Book = (book)crit.uniqueResult();
+		Book book = (Book)crit.uniqueResult();
 		return book;
 	}
 
@@ -78,6 +78,6 @@ public class BookDaoImpl extends HibernateDaoSupport implements BookDao {
 	public Book updateBook(Book book) {
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		session.update(book);
-		return Book;
+		return book;
 	}
 }
