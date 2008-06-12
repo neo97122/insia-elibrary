@@ -81,7 +81,6 @@
 				backOfficeAddNewButton.label = Localizator.getInstance(1).gT('backOfficeInsertButton');
 				backOfficeDeleteButton.enabled = false;
 				bookId.text = "";
-				bookMediaId.text = "";
 				bookTitle.text = "";
 				bookIsbn.text = "";
 				bookSummary.text = "";
@@ -185,17 +184,16 @@
 			<mx:Spacer height="10"/>
 			<mx:HBox width="100%">
 				<mx:Spacer width="10"/>
-		        <mx:DataGrid id="backOfficeBooksCanvasDataGrid" rowCount="7" dataProvider="{books}" height="100%" click="{buttonsState2()}" width="50%">
+		        <mx:DataGrid id="backOfficeBooksCanvasDataGrid" dataProvider="{books}" height="100%" click="{buttonsState2()}" width="50%">
 		            <mx:columns>
 		                <mx:DataGridColumn dataField="bookId" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIdLabel')}" visible="false"/>
-		                <mx:DataGridColumn dataField="bookMediaId" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIdMediaLabel')}" visible="false"/>
 		                <mx:DataGridColumn dataField="bookIsbn" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIsbnLabel')}" width="60"/>
 		                <mx:DataGridColumn dataField="bookTitle" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookTitleLabel')}"/>
-		                <mx:DataGridColumn dataField="bookQuantity" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookQuantityLabel')}" visible="false"/>		               
 		                <mx:DataGridColumn dataField="bookURLCover" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookURLCoverLabel')}" visible="false"/>
 		                <mx:DataGridColumn dataField="bookSummary" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookSummaryLabel')}" visible="false"/>
 		                <mx:DataGridColumn dataField="bookAuthor" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookAuthorLabel')}"/>
-		                <mx:DataGridColumn dataField="bookEditor" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookEditorLabel')}" visible="false"/>
+		                <mx:DataGridColumn dataField="bookEditor" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookEditorLabel')}"/>
+		           		<mx:DataGridColumn dataField="bookQuantity" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookQuantityLabel')}" width="70"/>	
 		            </mx:columns>
 		        </mx:DataGrid>
 		        <mx:Spacer width="10"/>
@@ -204,9 +202,6 @@
 				        <mx:Form width="100%">    
 				            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIdLabel')}" width="100%">
 				                <mx:Label id="bookId" text="{backOfficeBooksCanvasDataGrid.selectedItem.bookId}"/>
-				            </mx:FormItem>
-				            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIdMediaLabel')}" width="100%">
-				                <mx:Label id="bookMediaId" text="{backOfficeBooksCanvasDataGrid.selectedItem.bookMediaId}"/>
 				            </mx:FormItem>
 				            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookTitleLabel')}" width="100%">
 				                <mx:TextInput id="bookTitle" text="{backOfficeBooksCanvasDataGrid.selectedItem.bookTitle}"/>

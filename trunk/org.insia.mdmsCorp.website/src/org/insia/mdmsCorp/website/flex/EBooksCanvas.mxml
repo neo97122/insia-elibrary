@@ -65,7 +65,6 @@
 				backOfficeAddNewButton.label = Localizator.getInstance(1).gT('backOfficeInsertButton');
 				backOfficeDeleteButton.enabled = false;
 				eBookId.text = "";
-				eBookMediaId.text = "";
 				eBookTitle.text = "";
 				eBookIsbn.text = "";
 				eBookURL.text = "";
@@ -110,6 +109,14 @@
 			}
 			
 			/**
+			 * Calls the webservice to upload the Ebook. 
+			 **/
+			 private function doUploadEbook():void
+			 {
+			 
+			 }
+			
+			/**
 			 * Displays a confirming popup.
 			 * 
 			 * @param popupTitle String popup title
@@ -141,23 +148,19 @@
 			<mx:Spacer height="10"/>
 			<mx:HBox width="100%">
 				<mx:Spacer width="10"/>
-		        <mx:DataGrid id="backOfficeEBooksCanvasDataGrid" rowCount="7" dataProvider="{eBooks}" height="100%" click="{buttonsState2()}" width="50%">
+		        <mx:DataGrid id="backOfficeEBooksCanvasDataGrid" dataProvider="{eBooks}" height="100%" click="{buttonsState2()}" width="50%">
 		            <mx:columns>
 		                <mx:DataGridColumn dataField="eBookId" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookIdLabel')}" visible="false"/>
-		                <mx:DataGridColumn dataField="eBookMediaId" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookIdMediaLabel')}" visible="false"/>
 		                <mx:DataGridColumn dataField="eBookIsbn" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookIsbnLabel')}" width="60"/>
 		                <mx:DataGridColumn dataField="eBookTitle" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookTitleLabel')}"/>
-		                <mx:DataGridColumn dataField="eBookURL" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookURLLabel')}" visible="false"/>		               
+		                <mx:DataGridColumn dataField="eBookURL" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookURLLabel')}"/>		               
 		            </mx:columns>
 		        </mx:DataGrid>
 		        <mx:Spacer width="10"/>
-		        <mx:HBox width="50%" styleName="subBox" verticalAlign="middle" horizontalAlign="top">
+		        <mx:HBox width="50%" styleName="subBox" verticalAlign="middle" horizontalAlign="top" height="100%" >
 			        <mx:Form width="100%">    
 			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookIdLabel')}" width="100%">
 			                <mx:Label id="eBookId" text="{backOfficeEBooksCanvasDataGrid.selectedItem.eBookId}"/>
-			            </mx:FormItem>
-			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookIdMediaLabel')}" width="100%">
-			                <mx:Label id="eBookMediaId" text="{backOfficeEBooksCanvasDataGrid.selectedItem.eBookMediaId}"/>
 			            </mx:FormItem>
 			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookTitleLabel')}" width="100%">
 			                <mx:TextInput id="eBookTitle" text="{backOfficeEBooksCanvasDataGrid.selectedItem.eBookTitle}"/>
@@ -166,7 +169,10 @@
 			                <mx:TextInput id="eBookIsbn" text="{backOfficeEBooksCanvasDataGrid.selectedItem.eBookIsbn}"/>
 			            </mx:FormItem>
 			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookURLLabel')}" width="100%">
-			                <mx:TextInput id="eBookURL" text="{backOfficeEBooksCanvasDataGrid.selectedItem.eBookURL}"/>
+			                <mx:HBox>
+				            	<mx:TextInput id="eBookURL" text="{backOfficeEBooksCanvasDataGrid.selectedItem.eBookURL}" width="90"/>
+				                <mx:Button label="upload" click="confirmPopup(Localizator.getInstance(1).gT('backOfficePopupConfirmUploadTitle'),Localizator.getInstance(1).gT('backOfficePopupConfirmUploadLabel'), doUploadEbook)" />
+				            </mx:HBox>
 			            </mx:FormItem>
 			        </mx:Form>
 			        <mx:Spacer width="10"/>

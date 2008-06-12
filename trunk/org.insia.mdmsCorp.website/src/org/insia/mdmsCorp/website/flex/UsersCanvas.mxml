@@ -164,13 +164,13 @@
 			<mx:Spacer height="10"/>
 			<mx:HBox width="100%">
 				<mx:Spacer width="10"/>
-		        <mx:DataGrid id="backOfficeUsersCanvasDataGrid" rowCount="7" dataProvider="{users}" height="100%" click="{buttonsState2()}" width="50%">
+		        <mx:DataGrid id="backOfficeUsersCanvasDataGrid" dataProvider="{users}" height="100%" click="{buttonsState2()}" width="50%">
 		            <mx:columns>
 		                <mx:DataGridColumn dataField="userId" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserIdLabel')}" width="40"/>
 		                <mx:DataGridColumn dataField="userLogin" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserLoginLabel')}"/>
 		                <mx:DataGridColumn dataField="userAdmin" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserAdminLabel')}"/>		               
 		                <mx:DataGridColumn dataField="userPassword" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserPasswordLabel')}" visible="false"/>
-		                <mx:DataGridColumn dataField="userName" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserNameLabel')}" visible="false"/>
+		                <mx:DataGridColumn dataField="userName" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserNameLabel')}"/>
 		                <mx:DataGridColumn dataField="userFirstName" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserFirstNameLabel')}" visible="false"/>
 		                <mx:DataGridColumn dataField="userMail" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserMailLabel')}" visible="false"/>
 		            </mx:columns>

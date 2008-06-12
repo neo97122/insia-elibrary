@@ -14,10 +14,13 @@ Application
 
 Panel {
    titleStyleName: "title";
+   borderAlpha: 1;
+   borderColor: #666666;
 }
 
 .title {
    font-weight: bold;
+   borderAlpha: 1;
    color: #00ccff;
    textAlign: left;
 }
