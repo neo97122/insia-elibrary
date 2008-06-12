@@ -80,7 +80,7 @@
 			 **/
 			private function setUserAdminRadioButton():void
 			{
-				if (backOfficeUsersCanvasDataGrid.selectedItem.userAdmin == "true")
+				if (backOfficeUsersCanvasDataGrid.selectedItem.userAdmin)
 				{
 					adminRadioButton.selected = true;
 				}
@@ -116,7 +116,7 @@
 					var object:Object = new Object();
 					object.userId = userId.text;
 	                object.userLogin = userLogin.text;
-	                object.userPassword = MD5.encrypt(userPassword.text);
+	                object.userPassword = MD5.calculate(userPassword.text);
 	                object.userName = userName.text;
 	                object.userFirstName = userFirstName.text;
 	                object.userMail = userMail.text;
@@ -137,7 +137,7 @@
 				{
 					var object:Object = new Object();
 	                object.userLogin = userLogin.text;
-	                object.userPassword = MD5.encrypt(userPassword.text);
+	                object.userPassword = MD5.calculate(userPassword.text);
 	                object.userName = userName.text;
 	                object.userFirstName = userFirstName.text;
 	                object.userMail = userMail.text;
