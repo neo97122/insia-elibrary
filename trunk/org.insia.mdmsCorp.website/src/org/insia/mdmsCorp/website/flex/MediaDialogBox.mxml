@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="600" height="400"
+	showCloseButton="false" title="{Localizator.getInstance(1).gT('backOfficeMediaDialogBoxTitle')}"
+	creationComplete="{initDialogBox()}" >
+
+    <mx:XMLList id="books">
+        <book>
+            <bookId>1</bookId>
+            <bookMediaId>1</bookMediaId>
+            <bookIsbn>#ZERT09</bookIsbn>
+            <bookTitle><![CDATA[Le livre magique]]></bookTitle>
+            <bookQuantity>1</bookQuantity>
+            <bookURLCover>01.gif</bookURLCover>
+            <bookSummary><![CDATA[Oui oui va se promener DTC]]></bookSummary>
+            <bookAuthor><![CDATA[champi chomp]]></bookAuthor>
+            <bookEditor><![CDATA[YoupiEditor]]></bookEditor>
+        </book>
+        <book>
+            <bookId>2</bookId>
+            <bookMediaId>12</bookMediaId>
+            <bookIsbn>#zerzer</bookIsbn>
+            <bookTitle><![CDATA[Oui oui à la plage]]></bookTitle>
+            <bookQuantity>5</bookQuantity>
+            <bookURLCover></bookURLCover>
+            <bookSummary><![CDATA[Oui oui va se promener DTC]]></bookSummary>
+            <bookAuthor><![CDATA[Machupicchu]]></bookAuthor>
+            <bookEditor><![CDATA[lolilol]]></bookEditor>
+        </book>
+        <book>
+            <bookId>3</bookId>
+            <bookMediaId>5</bookMediaId>
+            <bookIsbn>#sdfsdf</bookIsbn>
+            <bookTitle><![CDATA[Bozo le clown]]></bookTitle>
+            <bookQuantity>51</bookQuantity>
+            <bookURLCover>02.gif</bookURLCover>
+            <bookSummary><![CDATA[<TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Verdana" SIZE="12" COLOR="#0000FF" LETTERSPACING="0" KERNING="0"><I><U>piiizerzerzer</U></I></FONT></P></TEXTFORMAT>]]></bookSummary>
+            <bookAuthor><![CDATA[Bozo]]></bookAuthor>
+            <bookEditor><![CDATA[chocapic]]></bookEditor>
+        </book>
+    </mx:XMLList>
+
+    <mx:Script>
+    	<![CDATA[
+    		import mx.controls.Alert;
+    		import mx.core.Application;
+    		import mx.managers.PopUpManager;
+			import org.insia.mdmsCorp.website.as3.Localizator;
+			
+			/**
+			 * Initializes the dialog box, retrieve the selected row in the data grid
+			 **/
+			private function initDialogBox():void
+			{
+				var i:int = 0;
+				for each (var book:Object in books) 
+				{
+				    if (book.bookMediaId == Application.application.bookingCanvas.bookingMediaId.text)
+				    {
+				    	backOfficeMediaCanvasDataGrid.selectedIndex = i;
+				    }
+				    i++;
+				}
+			}
+			
+			/**
+			 * Enables the validate button
+			 **/
+			private function buttonState():void
+			{
+				validateButton.enabled = true;
+			}
+			
+			/**
+			 * Closes the popup
+			 **/  
+			private function closePopup():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+			
+			/**
+			 * Pick the selected media and close the popup
+			 **/ 
+			private function pickThisUser():void
+			{
+				Application.application.bookingCanvas.bookingMediaId.text = backOfficeMediaCanvasDataGrid.selectedItem.bookMediaId;
+				closePopup();
+			}
+    	]]>
+    </mx:Script>
+    
+	<mx:VBox width="100%" height="100%" horizontalAlign="center">
+        <mx:Spacer height="10" />
+        <mx:HBox width="100%" height="100%" >
+        	<mx:Spacer width="10"/>
+	        <mx:DataGrid id="backOfficeMediaCanvasDataGrid" dataProvider="{books}" height="100%" click="{buttonState()}" width="100%">
+	            <mx:columns>
+	                <mx:DataGridColumn dataField="bookId" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIdLabel')}" width="40" visible="false"/>
+	                <mx:DataGridColumn dataField="bookMediaId" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIdMediaLabel')}"/>
+	                <mx:DataGridColumn dataField="bookIsbn" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIsbnLabel')}"/>		               
+	                <mx:DataGridColumn dataField="bookTitle" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookTitleLabel')}"/>
+	                <mx:DataGridColumn dataField="bookQuantity" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookQuantityLabel')}"/>
+	                <mx:DataGridColumn dataField="bookURLCover" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookURLCoverLabel')}" visible="false"/>
+	                <mx:DataGridColumn dataField="bookSummary" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookSummaryLabel')}" visible="false"/>
+	                <mx:DataGridColumn dataField="bookAuthor" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookAuthorLabel')}"/>
+	                <mx:DataGridColumn dataField="bookEditor" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookEditorLabel')}"/>
+	            </mx:columns>
+	        </mx:DataGrid>
+	        <mx:Spacer width="10"/>
+        </mx:HBox>
+        <mx:Spacer height="5" />
+        <mx:HBox>
+        	<mx:Button id="validateButton" label="{Localizator.getInstance(1).gT('backOfficeMediaDialogBoxValidateButton')}" enabled="false" click="{pickThisUser()}"/>
+        	<mx:Button label="{Localizator.getInstance(1).gT('backOfficeMediaDialogBoxCancelButton')}" click="{closePopup()}"/>
+        </mx:HBox>
+        <mx:Spacer height="10" />
+	</mx:VBox>
+</mx:TitleWindow>

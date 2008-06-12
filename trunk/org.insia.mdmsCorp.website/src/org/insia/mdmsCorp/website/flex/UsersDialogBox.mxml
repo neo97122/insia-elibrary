@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="600" height="400"
+	 showCloseButton="false" title="{Localizator.getInstance(1).gT('backOfficeUsersDialogBoxTitle')}"
+	creationComplete="{initDialogBox()}" >
+    <mx:XMLList id="users">
+        <user>
+            <userId>10</userId>
+            <userLogin>DanyTomato</userLogin>
+            <userPassword>secret</userPassword>
+            <userName>Lao</userName>
+            <userFirstName>Daniel</userFirstName>
+            <userMail>laodaniel@gmail.com</userMail>
+            <userAdmin>true</userAdmin>
+        </user>
+        <user>
+            <userId>20</userId>
+            <userLogin>TiTi</userLogin>
+            <userPassword>black</userPassword>
+            <userName>Le Morzadec</userName>
+            <userFirstName>Steven</userFirstName>
+            <userMail>slemorza@gmail.com</userMail>
+            <userAdmin>true</userAdmin>
+        </user>
+        <user>
+            <userId>58</userId>
+            <userLogin>MickOM</userLogin>
+            <userPassword>auchiotlarbitre</userPassword>
+            <userName>Bride</userName>
+            <userFirstName>Mickaël</userFirstName>
+            <userMail>mbride@gmail.com</userMail>
+            <userAdmin>false</userAdmin>
+        </user>
+        <user>
+            <userId>59</userId>
+            <userLogin>MickOM</userLogin>
+            <userPassword>auchiotlarbitre</userPassword>
+            <userName>Bride</userName>
+            <userFirstName>Mickaël</userFirstName>
+            <userMail>mbride@gmail.com</userMail>
+            <userAdmin>false</userAdmin>
+        </user>
+    </mx:XMLList>
+    <mx:Script>
+    	<![CDATA[
+    		import mx.controls.Alert;
+    		import mx.core.Application;
+    		import mx.managers.PopUpManager;
+			import org.insia.mdmsCorp.website.as3.Localizator;
+			
+			/**
+			 * Initializes the dialog box, retrieve the selected row in the data grid
+			 **/
+			private function initDialogBox():void
+			{
+				var i:int = 0;
+				for each (var user:Object in users) 
+				{
+				    if (user.userId == Application.application.bookingCanvas.bookingUserId.text)
+				    {
+				    	backOfficeUsersCanvasDataGrid.selectedIndex = i;
+				    }
+				    i++;
+				}
+			}
+			
+			/**
+			 * Enables the validate button
+			 **/
+			private function buttonState():void
+			{
+				validateButton.enabled = true;
+			}
+			
+			/**
+			 * Closes the popup
+			 **/  
+			private function closePopup():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+			
+			/**
+			 * Pick the selected user and close the popup
+			 **/ 
+			private function pickThisUser():void
+			{
+				Application.application.bookingCanvas.bookingUserId.text = backOfficeUsersCanvasDataGrid.selectedItem.userId;
+				closePopup();
+			}
+    	]]>
+    </mx:Script>
+    
+	<mx:VBox width="100%" height="100%" horizontalAlign="center">
+        <mx:Spacer height="10" />
+        <mx:HBox width="100%" height="100%" >
+        	<mx:Spacer width="10"/>
+	        <mx:DataGrid id="backOfficeUsersCanvasDataGrid" dataProvider="{users}" height="100%" click="{buttonState()}" width="100%">
+	            <mx:columns>
+	                <mx:DataGridColumn dataField="userId" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserIdLabel')}" width="40"/>
+	                <mx:DataGridColumn dataField="userLogin" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserLoginLabel')}"/>
+	                <mx:DataGridColumn dataField="userAdmin" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserAdminLabel')}"/>		               
+	                <mx:DataGridColumn dataField="userPassword" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserPasswordLabel')}" visible="false"/>
+	                <mx:DataGridColumn dataField="userName" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserNameLabel')}"/>
+	                <mx:DataGridColumn dataField="userFirstName" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserFirstNameLabel')}"/>
+	                <mx:DataGridColumn dataField="userMail" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserMailLabel')}"/>
+	            </mx:columns>
+	        </mx:DataGrid>
+	        <mx:Spacer width="10"/>
+        </mx:HBox>
+        <mx:Spacer height="5" />
+        <mx:HBox>
+        	<mx:Button id="validateButton" label="{Localizator.getInstance(1).gT('backOfficeUsersDialogBoxValidateButton')}" enabled="false" click="{pickThisUser()}"/>
+        	<mx:Button label="{Localizator.getInstance(1).gT('backOfficeUsersDialogBoxCancelButton')}" click="{closePopup()}"/>
+        </mx:HBox>
+        <mx:Spacer height="10" />
+	</mx:VBox>
+</mx:TitleWindow>
