@@ -1,38 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" initialize="{initCanvas();}" width="100%">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="{initCanvas();}" width="100%">
 
-    <mx:XMLList id="users">
-        <user>
-            <userId>1</userId>
-            <userLogin>DanyTomato</userLogin>
-            <userPassword>secret</userPassword>
-            <userName>Lao</userName>
-            <userFirstName>Daniel</userFirstName>
-            <userMail>laodaniel@gmail.com</userMail>
-            <userAdmin>true</userAdmin>
-        </user>
-        <user>
-            <userId>2</userId>
-            <userLogin>TiTi</userLogin>
-            <userPassword>black</userPassword>
-            <userName>Le Morzadec</userName>
-            <userFirstName>Steven</userFirstName>
-            <userMail>slemorza@gmail.com</userMail>
-            <userAdmin>true</userAdmin>
-        </user>
-        <user>
-            <userId>3</userId>
-            <userLogin>MickOM</userLogin>
-            <userPassword>auchiotlarbitre</userPassword>
-            <userName>Bride</userName>
-            <userFirstName>Mickaël</userFirstName>
-            <userMail>mbride@gmail.com</userMail>
-            <userAdmin>false</userAdmin>
-        </user>
-    </mx:XMLList>
+	<mx:HTTPService id="httpServiceGetUsers" url="org/insia/mdmsCorp/website/ressources/xml/getUsers.xml" 
+		method="POST" showBusyCursor="true" result="getUsersHandler(event);" fault="faultHandler(event, 'httpServiceGetUsers');"/>	
+	<mx:HTTPService id="httpServiceUpdateUser" url="www.google.com" 
+		method="POST" showBusyCursor="true" fault="faultHandler(event, 'httpServiceUpdateUser');"/>		
+	<mx:HTTPService id="httpServiceDeleteUser" url="www.google.com" 
+		method="POST" showBusyCursor="true" fault="faultHandler(event, 'httpServiceDeleteUser');"/>
+	<mx:HTTPService id="httpServiceInsertNewUser" url="www.google.com" 
+		method="POST" showBusyCursor="true" fault="faultHandler(event, 'httpServiceInsertNewUser');"/>
     
     <mx:Script>
 		<![CDATA[
+			import mx.rpc.events.ResultEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.events.CloseEvent;
 			import mx.managers.PopUpManager;
@@ -44,15 +24,20 @@
 			import mx.charts.renderers.DiamondItemRenderer;
 			import mx.controls.Alert;
 			import org.insia.mdmsCorp.website.as3.Localizator;
+			import org.insia.mdmsCorp.website.as3.MD5;
 			
 			[Embed(source='org/insia/mdmsCorp/website/ressources/img/exclamation.png')]
 			private var confirmIcon:Class;
+			
+			[Bindable]
+			private var users:Object;
 			
 			/**
 			 * Inits the canvas
 			 **/
 			private function initCanvas():void
 			{
+				httpServiceGetUsers.send();
 				setUserAdminRadioButton();
 			}
 			
@@ -106,30 +91,77 @@
 			}
 			
 			/**
+			 * Sets the users variable from the httpservice.
+			 **/
+			private function getUsersHandler(event:ResultEvent):void
+			{
+				users = event.result.users.user;
+			}
+			
+			/**
+			 * Refreshes the datagrid by calling the httpservice getUsers
+			 **/
+			 private function refreshUsers():void
+			 {
+			 	httpServiceGetUsers.send();
+			 }
+			
+			/**
 			 * Calls the webservice to update the user.
 			 **/
 			private function doUpdateUser(event:CloseEvent):void
 			{
 				if (event.detail == Alert.YES) 
 				{
-					Alert.show("youpie");
+					var object:Object = new Object();
+					object.userId = userId.text;
+	                object.userLogin = userLogin.text;
+	                object.userPassword = MD5.encrypt(userPassword.text);
+	                object.userName = userName.text;
+	                object.userFirstName = userFirstName.text;
+	                object.userMail = userMail.text;
+	                object.userAdmin = (adminRadioButton.enabled) ? true  : false;
+	                httpServiceUpdateUser.request = object;
+					httpServiceUpdateUser.send();
+					refreshUsers();
+					//TODO selectionner le user mis a jour
 				}
 			}
 			
 			/**
 			 * Calls the webservice to insert a new user.
 			 **/
-			private function doInsertNewUser():void
+			private function doInsertNewUser(event:CloseEvent):void
 			{
-				
+				if (event.detail == Alert.YES) 
+				{
+					var object:Object = new Object();
+	                object.userLogin = userLogin.text;
+	                object.userPassword = MD5.encrypt(userPassword.text);
+	                object.userName = userName.text;
+	                object.userFirstName = userFirstName.text;
+	                object.userMail = userMail.text;
+	                object.userAdmin = (adminRadioButton.enabled) ? true  : false;
+	                httpServiceInsertNewUser.request = object;
+					httpServiceInsertNewUser.send();
+					refreshUsers();
+					//TODO selectionner le user ajouté
+				}
 			}
 			
 			/**
 			 * Calls the webservice to delete the user.
 			 **/
-			private function doDeleteUser():void
+			private function doDeleteUser(event:CloseEvent):void
 			{
-				
+				if (event.detail == Alert.YES) 
+				{
+					var object:Object = new Object();
+					object.userId = userId.text;
+	                httpServiceDeleteUser.request = object;
+					httpServiceDeleteUser.send();
+					refreshUsers();
+				}
 			}
 			
 			/**
