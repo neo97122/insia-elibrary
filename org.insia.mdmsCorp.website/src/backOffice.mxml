@@ -11,7 +11,7 @@
 		]]>
 	</mx:Script>
 	
-	<mx:VBox width="1000" height="740" verticalAlign="middle" horizontalAlign="center">
+	<mx:VBox width="1000" height="740" verticalAlign="Top" horizontalAlign="center">
 	
 		<mx:HBox width="1000" height="50" horizontalAlign="center" verticalAlign="middle">
 			<mx:Label text="MDMSCorp - BackOffice"/>
@@ -25,16 +25,16 @@
 		</mx:HBox>
 		<mx:ViewStack width="1000" id="backOfficeViewStack">	
 			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasLabel')}" width="100%">
-				<mdms:UsersCanvas verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+				<mdms:UsersCanvas id="usersCanvas" verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
 			</mx:Canvas>
 			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasLabel')}" width="100%">
-				<mdms:BooksCanvas verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+				<mdms:BooksCanvas id="booksCanvas" verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
 			</mx:Canvas>
 			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasLabel')}" width="100%">
-				<mdms:EBooksCanvas verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+				<mdms:EBooksCanvas id="eBooksCanvas" verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
 			</mx:Canvas>
 			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeBookingCanvasLabel')}" width="100%">
-				<mdms:BookingCanvas verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+				<mdms:BookingCanvas id="bookingCanvas" verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
 			</mx:Canvas>
 		</mx:ViewStack>
 		
