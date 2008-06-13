@@ -12,6 +12,12 @@ Application
    backgroundGradientAlphas: 1, 1;
 }
 
+.indexApplication
+{
+    backgroundColor: #AAB2B7;
+    backgroundImage: Embed("../img/background.jpg");
+}
+
 Panel {
    titleStyleName: "title";
    borderAlpha: 1;
@@ -25,7 +31,7 @@ Panel {
    textAlign: left;
 }
 
-LinkBar {
+.linkBar {
    borderStyle: solid;
    border-thickness: 0;
    cornerRadius: 5;
@@ -72,4 +78,94 @@ Alert{
    font-weight: bold;
    color: #00ccff;
    textAlign: center;
+}
+
+.loginPopup{
+	modalTransparency: 1;
+	modalTransparencyBlur: 0;
+	modalTransparencyColor: #000000;
+}
+
+.indexControlBar
+{
+    fillAlphas: 			.60, .40;
+    fillColors: 			#4A6F81, #BDD6E2;
+    highlightAlphas:		.05, .25;
+    cornerRadius: 			3;
+	shadowDistance:         4;
+	paddingLeft:            0;
+	paddingRight:           0;
+	paddingTop:             0;
+	paddingBottom:          0;
+	horizontalGap:          0;
+}
+
+.indexButtonBar
+{
+    cornerRadius:           0;
+    buttonStyleName:        "indexButton";
+    themeColor:             #456F84;
+}
+
+.indexButton
+{
+    cornerRadius:           0;
+    fillColors:             #4A6F81, #BDD6E2, #456F84, #9ABBC9;
+    fillAlphas:             1, 1;
+    highlightAlphas:        .5, .25;
+    fontWeight:             "normal";
+    selectedOverSkin:       ClassReference("org.insia.mdmsCorp.website.as3.ButtonBarButtonSkin");
+    selectedUpSkin:         ClassReference("org.insia.mdmsCorp.website.as3.ButtonBarButtonSkin");
+    overSkin:               ClassReference("org.insia.mdmsCorp.website.as3.ButtonBarButtonSkin");
+}
+
+.userInterfaceCopyright
+{
+}
+
+.button {
+   borderStyle: solid;
+   border-thickness: 0;
+   cornerRadius: 5;
+   backgroundAlpha: 0.3;
+   backgroundColor: #ffffff;
+   separatorColor: #000000;
+   color: #33ccff;
+}
+
+.colorPanel
+{
+    borderStyle:            "solid";
+    borderThickness:        0;
+    backgroundColor:		#BDD6E2;
+    backgroundAlpha:		0.4;
+    color: 					#170505;
+    cornerRadius:           4;
+    dropShadowEnabled:      true;
+}
+
+.homeSection
+{
+    cornerRadius:           4;
+    borderStyle:            "solid";
+}
+
+.glass {
+    borderColor:		    #767473;
+    fillAlphas: 		    .60, .60, .60, .60;
+    fillColors: 		    #888888, #F3F3F3, #9E9E9E, #FCFCFC;
+    highlightAlphas:	    .07, .45;
+}
+
+.sectionHeader
+{
+    fontWeight:             "bold";
+    fontSize:               11;
+}
+
+.homeProgramHeader
+{
+    fontWeight:             "bold";
+    fontSize:               13;
+    color:                  #7AA4B9;
 }

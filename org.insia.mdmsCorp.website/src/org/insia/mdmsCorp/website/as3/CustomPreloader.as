@@ -2,17 +2,12 @@ package org.insia.mdmsCorp.website.as3
 {
     import flash.display.Sprite;
     import flash.events.Event;
-    import flash.events.ProgressEvent;
-    import flash.utils.Timer;
-    import flash.events.TimerEvent;
-    import mx.events.*;
-    import mx.preloaders.Preloader;
-    import mx.preloaders.DownloadProgressBar;
-    import org.insia.mdmsCorp.website.as3.WelcomeScreen;
-    import mx.core.Application;
-    import mx.controls.Alert;
-    import flash.filters.BlurFilter;
     import flash.filters.BitmapFilterQuality;
+    import flash.filters.BlurFilter;
+    
+    import mx.core.Application;
+    import mx.events.*;
+    import mx.preloaders.DownloadProgressBar;
 
     public class CustomPreloader extends DownloadProgressBar 
     {
