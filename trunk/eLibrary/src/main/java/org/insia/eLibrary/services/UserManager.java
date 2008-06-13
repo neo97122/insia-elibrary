@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.insia.eLibrary.model.User;
 import org.insia.eLibrary.operations.ActionMessage;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface UserManager {
 

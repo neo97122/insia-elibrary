@@ -2,9 +2,6 @@ package org.insia.eLibrary.services.impl;
 
 import java.util.List;
 
-import javax.jws.WebMethod;
-import javax.jws.WebService;
-
 import org.insia.eLibrary.dao.UserDao;
 import org.insia.eLibrary.model.User;
 import org.insia.eLibrary.operations.ActionMessage;
@@ -14,7 +11,6 @@ import org.insia.eLibrary.services.base.BaseManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@WebService
 @Transactional(readOnly=true, propagation=Propagation.REQUIRED)
 public class UserManagerImpl extends BaseManager implements UserManager{
 
@@ -82,7 +78,6 @@ public class UserManagerImpl extends BaseManager implements UserManager{
 	 *
 	 * @see org.apache.tutorial.tapestrySpringHibernate.services.UserManager#getUsers()
 	 */
-    @WebMethod
 	public List<User> getUsers() {
 		return userDao.getUsers();
 	}

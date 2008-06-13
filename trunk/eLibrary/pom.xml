@@ -14,6 +14,12 @@
             <version>${tapestry-release-version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.tapestry</groupId>
+            <artifactId>tapestry-spring</artifactId>
+            <version>${tapestry-release-version}</version>
+        </dependency>
+
         <!-- This can be removed if not desired. Tapestry uses commons-logging, not Log4J explicitly.
              However, if Log4J is not on the classpath, commons-logging tends to use its own internal
              logging which is not very configurable.  This project includes a log4j.properties file
@@ -78,12 +84,6 @@
   		   <version>2.2</version>
   	   </dependency>
 
-      <dependency>
-        <groupId>javax.xml.ws</groupId>
-        <artifactId>jaxws-api</artifactId>
-        <version>2.1</version>
-      </dependency>
-
     </dependencies>
     <build>
         <finalName>eLibrary</finalName>
@@ -127,25 +127,6 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-		        <groupId>org.codehaus.mojo</groupId>
-		        <artifactId>jaxws-maven-plugin</artifactId>
-	          	<executions>
-		            <execution>
-		              <goals>
-		                <goal>wsgen</goal>
-		              </goals>
-		              <configuration>
-		              <sei>org.insia.eLibrary.services.impl.UserManagerImpl
-		              </sei>
-		              <!--for demo purpose only, the webapp does not-->
-		              <!--need the generated wsdl files-->
-		              <genWsdl>true</genWsdl>
-		              <keep>true</keep>
-		              </configuration>
-		            </execution>
-	          	</executions>
-	        </plugin>
         </plugins>
     </build>
 

@@ -1,0 +1,44 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_0_0.xsd">
+	<head>
+		<title>Liste des utilisateurs</title>
+	</head>
+	<body>
+		<h1>Liste des utilisateurs</h1>
+		<t:if test="emptyList">
+
+           	<p>Il n'y a aucun user dans la liste</p>
+
+           	<t:parameter name="else">
+           		<ul>
+              		<t:loop source="users" value="user">
+                 		<li>
+                 			${user.login}
+                 		</li>
+               		</t:loop>
+               	</ul>
+           </t:parameter>
+
+        </t:if>
+
+        <h1>Inscription d'un nouvel utilisateur</h1>
+        <t:form>
+	        <t:errors />
+		   	<table>
+		       	<tr>
+			     	<td><label t:type="Label" for="login" class="login_label"/></td>
+			     	<td><input t:type="TextField" t:id="login" t:value="login" t:label="Login "
+				 					 class="login_input" /></td>
+			 	</tr>
+				<tr>
+			 		<td><label t:type="Label" for="password" class="login_label"/></td>
+					<td><input t:type="PasswordField" t:id="password" t:value="password" t:label="Mot de passe "
+				  					  class="login_input" /></td>
+	    		</tr>
+		    	<tr>
+		        	<td><input t:id="submitform" t:type="Submit" t:value="submit" class="login_submit"/></td>
+		    	</tr>
+			</table>
+	   	</t:form>
+
+	</body>
+</html>
