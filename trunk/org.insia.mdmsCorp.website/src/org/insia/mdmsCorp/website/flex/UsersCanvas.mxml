@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="{initCanvas();}" width="100%">
 
-	<mx:HTTPService id="httpServiceGetUsers" url="org/insia/mdmsCorp/website/ressources/xml/getUsers.xml" 
+	<mx:HTTPService id="httpServiceGetUsers" url="http://localhost:8181/eLibrary/user/list" 
 		method="POST" showBusyCursor="true" result="getUsersHandler(event);" fault="faultHandler(event, 'httpServiceGetUsers');"/>	
 	<mx:HTTPService id="httpServiceUpdateUser" url="www.google.com" 
 		method="POST" showBusyCursor="true" fault="faultHandler(event, 'httpServiceUpdateUser');"/>		

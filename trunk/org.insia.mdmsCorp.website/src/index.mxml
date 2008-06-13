@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+	layout="absolute" minWidth="990" minHeight="550"
+	xmlns:mdms="org.insia.mdmsCorp.website.flex.*"
+	preloader="org.insia.mdmsCorp.website.as3.CustomPreloader" 
+	styleName="indexApplication">
+	
+	<mx:Style source="org/insia/mdmsCorp/website/ressources/css/default_style.css"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import org.insia.mdmsCorp.website.as3.Localizator;
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="990" paddingLeft="0" paddingRight="0" horizontalCenter="0" top="12">
+	
+	    <mx:ApplicationControlBar width="100%" styleName="indexControlBar">
+            <mx:Image id="image" source="@Embed(source='org/insia/mdmsCorp/website/ressources/img/logoBlue.png')"/>
+            <mx:ToggleButtonBar height="100%" dataProvider="{indexViewStack}" styleName="indexButtonBar"/>
+            <mx:Spacer width="100%"/>
+            <mx:SWFLoader source="@Embed(source='org/insia/mdmsCorp/website/ressources/swf/flag_fr.swf')" click="{Localizator.getInstance(0).setLang(1)}"/>	
+			<mx:Spacer width="6"/>
+			<mx:SWFLoader source="@Embed(source='org/insia/mdmsCorp/website/ressources/swf/flag_uk.swf')" click="{Localizator.getInstance(0).setLang(2)}"/>
+       		<mx:Spacer width="6"/>
+        </mx:ApplicationControlBar>
+		
+		<mx:ViewStack width="100%" id="indexViewStack">	
+			<mx:Canvas label="{Localizator.getInstance(1).gT('userInterfaceHomeCanvasLabel')}" width="100%">
+				<mdms:IndexHomeCanvas id="indexHomeCanvas" verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+			<mx:Canvas label="{Localizator.getInstance(1).gT('userInterfaceMediasCanvasLabel')}" width="100%">
+				<mdms:IndexMediasCanvas id="indexMediasCanvas" verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+			<mx:Canvas label="{Localizator.getInstance(1).gT('userInterfaceAboutCanvasLabel')}" width="100%">
+				<mdms:IndexAboutCanvas id="indexAboutCanvas" verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+		</mx:ViewStack>
+		
+		<mx:HBox width="100%" horizontalAlign="center" verticalAlign="middle">
+			<mx:Label styleName="userInterfaceCopyright" text="{Localizator.getInstance(1).gT('userInterfaceCopyright')}"/>
+			<mx:LinkButton styleName="button" label="Insia" click="navigateToURL(new URLRequest('http://www.insia.org'), '_blank');"/>
+			<mx:LinkButton styleName="button" label="{Localizator.getInstance(1).gT('userInterfaceBackOfficeLink')}"  click="navigateToURL(new URLRequest('backOffice.html'), '_parent');" />
+		</mx:HBox>
+		
+	</mx:VBox>
+</mx:Application>

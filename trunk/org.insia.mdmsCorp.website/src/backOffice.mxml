@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application styleName="mainContainer" xmlns:mx="http://www.adobe.com/2006/mxml" layout="horizontal" 
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="horizontal" 
 	xmlns:mdms="org.insia.mdmsCorp.website.flex.*"
-	preloader="org.insia.mdmsCorp.website.as3.CustomPreloader" horizontalAlign="center" verticalAlign="top">
+	preloader="org.insia.mdmsCorp.website.as3.CustomPreloader" horizontalAlign="center" verticalAlign="top"
+	initialize="{initApplication()}">
 	
 	<mx:Style source="org/insia/mdmsCorp/website/ressources/css/default_style.css"/>
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.managers.PopUpManager;
+			import org.insia.mdmsCorp.website.flex.LoginDialogBox;
 			import org.insia.mdmsCorp.website.as3.Localizator;
+			
+			private function initApplication():void
+			{
+				var loginDialogBox:LoginDialogBox = LoginDialogBox(PopUpManager.createPopUp(this,LoginDialogBox,true));
+				PopUpManager.centerPopUp(loginDialogBox);
+			}
 		]]>
 	</mx:Script>
 	
@@ -16,7 +25,7 @@
 		<mx:HBox width="1000" height="50" horizontalAlign="center" verticalAlign="middle">
 			<mx:Label text="MDMSCorp - BackOffice"/>
 			<mx:Canvas>
-				<mx:LinkBar id="menu" dataProvider="{backOfficeViewStack}" />	
+				<mx:LinkBar id="menu" dataProvider="{backOfficeViewStack}" styleName="linkBar"/>	
 			</mx:Canvas>
 			<mx:HBox>
 				<mx:SWFLoader source="@Embed(source='org/insia/mdmsCorp/website/ressources/swf/flag_fr.swf')" click="{Localizator.getInstance(0).setLang(1)}"/>	
