@@ -21,6 +21,12 @@ public class Reservation
 	private Date outDate;
 	private Date returnDate;
 
+	public Reservation (Media media, User user){
+		this.media = media;
+		this.user = user;
+		this.outDate = new Date();
+	}
+
 	@Id
 	@GeneratedValue
 	public long getId() {
