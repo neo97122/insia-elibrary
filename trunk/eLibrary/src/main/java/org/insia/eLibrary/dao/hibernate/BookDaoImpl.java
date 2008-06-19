@@ -25,7 +25,35 @@ public class BookDaoImpl extends HibernateDaoSupport implements BookDao {
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		// create a new criteria
 		Criteria crit = session.createCriteria(Book.class);
-		crit.add(Expression.eq("titleBook", title));
+		crit.add(Expression.eq("title", title));
+
+		Book book = (Book)crit.uniqueResult();
+		return book;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Book getBookByReference(String reference) {
+		logger.info("get Book with reference: "+reference);
+		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+		// create a new criteria
+		Criteria crit = session.createCriteria(Book.class);
+		crit.add(Expression.eq("reference", reference));
+
+		Book book = (Book)crit.uniqueResult();
+		return book;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Book getBookById(int id) {
+		logger.info("get Book with id: "+id);
+		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+		// create a new criteria
+		Criteria crit = session.createCriteria(Book.class);
+		crit.add(Expression.eq("id", id));
 
 		Book book = (Book)crit.uniqueResult();
 		return book;

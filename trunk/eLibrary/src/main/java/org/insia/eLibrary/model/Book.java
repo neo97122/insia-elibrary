@@ -12,6 +12,15 @@ public class Book extends Media
 	private String author;
 	private String editor;
 
+	public Book(Media media, int quantity, String image_url, String description, String author, String editor){
+		super(media.getReference(), media.getTitle());
+		this.quantity = quantity;
+		this.description = description;
+		this.image_url = image_url;
+		this.editor = editor;
+		this.author = author;
+	}
+
 	@Column
 	public int getQuantity() {
 		return quantity;

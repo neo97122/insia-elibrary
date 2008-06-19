@@ -12,6 +12,20 @@
 		</property>
 	</bean>
 
+	<bean id="reservationDao"
+		class="org.insia.eLibrary.dao.hibernate.ReservationDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
+	<bean id="mediaDao"
+		class="org.insia.eLibrary.dao.hibernate.MediaDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
 	<!-- data source -->
 	<bean id="dataSource"
 		class="org.apache.commons.dbcp.BasicDataSource"

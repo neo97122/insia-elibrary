@@ -15,6 +15,10 @@ public interface BookDao {
      */
     public Book getBook(String title);
 
+    public Book getBookByReference(String reference);
+
+    public Book getBookById(int id);
+
     /**
      * Return the list of Books
      * @return
