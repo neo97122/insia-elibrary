@@ -28,5 +28,19 @@
 			<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
 		</property>
 	</bean>
+	<bean id="mediaManagerTarget" class="org.insia.eLibrary.services.impl.MediaManagerImpl">
+		<property name="mediaDao">
+			<ref bean="mediaDao" />
+		</property>
+	</bean>
+	<bean id="mediaManager" parent="transactionProxy">
+		<property name="target">
+			<ref bean="mediaManagerTarget"/>
+		</property>
+		<property name="transactionAttributeSource">
+			<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+		</property>
+	</bean>
+
 
 </beans>
