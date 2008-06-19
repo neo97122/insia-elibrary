@@ -3,7 +3,6 @@ package org.insia.eLibrary.services.impl;
 import java.util.List;
 
 import org.insia.eLibrary.dao.BookDao;
-import org.insia.eLibrary.dao.MediaDao;
 import org.insia.eLibrary.model.Book;
 import org.insia.eLibrary.model.Media;
 import org.insia.eLibrary.operations.ActionMessage;
