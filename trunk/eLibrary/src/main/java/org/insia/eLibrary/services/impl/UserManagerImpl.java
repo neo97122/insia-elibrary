@@ -93,17 +93,14 @@ public class UserManagerImpl extends BaseManager implements UserManager{
 	 * @see org.apache.tutorial.tapestrySpringHibernate.services.UserManager#createUser(java.lang.String, java.lang.String)
 	 */
 	 @Transactional(readOnly=false)
-	public ActionMessage createUser(String login, String password) {
+	public ActionMessage createUser(String login, String password, String name, String firstname, String email, boolean admin) {
 		logger.info("verifions que ce user n'existe pas deja");
 		User user = userDao.getUser(login);
 		if (user!=null){
 			logger.info("L'utilisateur "+ login + " existe dï¿½jï¿½");
 			return new ActionMessage("Cet utilisateur existe dï¿½jï¿½",Crud.ALREADY);
 		}else{
-			user = new User(login,password);
-			//Right right = rightDao.saveRight(getBasicRight());
-			//user.addRight(getBasicRight());
-			//user.addRight(getAdminRight());
+			user = new User(login,password, name, firstname, email, admin);
 			user = userDao.createUser(user);
 			logger.info("L'utilisateur "+login+" a ï¿½tï¿½ crï¿½ï¿½ avec succï¿½s");
 			return new ActionMessage();
@@ -130,4 +127,11 @@ public class UserManagerImpl extends BaseManager implements UserManager{
 			return new ActionMessage("L'utilisateur "+login+" n'existe pas on ne peut pas le supprimer ",Crud.IMPOSSIBLE);
 		}
 	}
+
+	public ActionMessage updateUser(User user) {
+		logger.info("L'utilisateur "+ user.getLogin() + " existe bien on peut le mettre ˆ jour");
+		userDao.updateUser(user);
+		return new ActionMessage();
+	}
+
 }

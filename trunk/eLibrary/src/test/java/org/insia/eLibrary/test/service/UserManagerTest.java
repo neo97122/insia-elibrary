@@ -32,10 +32,10 @@ public class UserManagerTest extends Integration{
 	public void testCreateUser(){
 		log.info("Test la cr�ation d'un user existant d�j� dans la base");
 		UserManager userManager = (UserManager) context.getBean("userManager");
-		ActionMessage actionMessage = userManager.createUser("test", "test");
+		ActionMessage actionMessage = userManager.createUser("test", "test", "test", "test", "test", false);
 		assert actionMessage.getCrud().equals(Crud.ALREADY);
 		log.info("Test la cr�ation d'un user n'existant pas d�j� dans la base");
-		actionMessage = userManager.createUser("test14", "test");
+		actionMessage = userManager.createUser("test14", "test", "test", "test", "test", false);
 		assert actionMessage.getCrud().equals(Crud.SUCCESSFUL);
 	}
 
