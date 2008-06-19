@@ -36,6 +36,16 @@ public class User
 		this.password = password;
 	}
 
+	public User(String login, String password, String name, String firstname, String mail, boolean admin)
+	{
+		this.login = login;
+		this.password = password;
+		this.name =  name;
+		this.firstname = firstname;
+		this.mail = mail;
+		this.admin = admin;
+	}
+
 	@Id
 	@GeneratedValue
 	public long getId() {

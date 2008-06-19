@@ -46,7 +46,7 @@ public interface UserManager {
      * @param password le password du user que l'on veut cr�er
      * @return ActionMessage traduisant la r�ussite ou l'�chec de cette op�ration
      */
-    public ActionMessage createUser (String login, String password);
+    public ActionMessage createUser (String login, String password, String name, String firstname, String email, boolean admin);
 
 
     /**
@@ -55,6 +55,8 @@ public interface UserManager {
      * @return ActionMessage traduisant la r�ussite ou l'�chec de cette op�ration
      */
     public ActionMessage deleteUser (String login);
+
+    public ActionMessage updateUser(User user);
 
 
 

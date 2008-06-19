@@ -57,7 +57,7 @@ public class ListUser {
 
 	String onSuccess()
 	{
-		userManager.createUser(login, password);
+		//userManager.createUser(login, password);
 		return null;
 	}
 
