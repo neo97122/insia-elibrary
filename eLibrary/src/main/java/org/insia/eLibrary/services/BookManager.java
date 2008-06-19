@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.insia.eLibrary.model.Book;
 import org.insia.eLibrary.model.Media;
-import org.insia.eLibrary.model.Reservation;
-import org.insia.eLibrary.model.User;
 import org.insia.eLibrary.operations.ActionMessage;
 
 public interface BookManager {
