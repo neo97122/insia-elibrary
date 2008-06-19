@@ -20,7 +20,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  */
 public class EBookDaoImpl extends HibernateDaoSupport implements EBookDao {
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.insia.eLibrary.dao.EBookDao#createEBook(org.insia.eLibrary.model.EBook)
 	 */
 	public EBook createEBook(EBook eBook) {
@@ -30,7 +30,7 @@ public class EBookDaoImpl extends HibernateDaoSupport implements EBookDao {
 		return eBook;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.insia.eLibrary.dao.EBookDao#deleteEBook(org.insia.eLibrary.model.EBook)
 	 */
 	public void deleteEBook(EBook eBook) {
@@ -39,7 +39,7 @@ public class EBookDaoImpl extends HibernateDaoSupport implements EBookDao {
 		session.delete(eBook);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.insia.eLibrary.dao.EBookDao#getEBook(java.lang.String)
 	 */
 	public EBook getEBook(String title) {
@@ -53,7 +53,35 @@ public class EBookDaoImpl extends HibernateDaoSupport implements EBookDao {
 		return eBook;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * @see org.insia.eLibrary.dao.EBookDao#getEBook(java.lang.String)
+	 */
+	public EBook getEBookByReference(String reference) {
+		logger.info("get EBook with reference: "+reference);
+		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+		// create a new criteria
+		Criteria crit = session.createCriteria(EBook.class);
+		crit.add(Expression.eq("reference", reference));
+
+		EBook eBook = (EBook)crit.uniqueResult();
+		return eBook;
+	}
+
+	/**
+	 * @see org.insia.eLibrary.dao.EBookDao#getEBook(java.lang.String)
+	 */
+	public EBook getEBookById(int id) {
+		logger.info("get EBook with id: "+id);
+		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+		// create a new criteria
+		Criteria crit = session.createCriteria(EBook.class);
+		crit.add(Expression.eq("id", id));
+
+		EBook eBook = (EBook)crit.uniqueResult();
+		return eBook;
+	}
+
+	/**
 	 * @see org.insia.eLibrary.dao.EBookDao#getEBooks()
 	 */
 	public List<EBook> getEBooks() {
@@ -62,7 +90,7 @@ public class EBookDaoImpl extends HibernateDaoSupport implements EBookDao {
 		return (ArrayList<EBook>)session.createQuery("From EBook").list();
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.insia.eLibrary.dao.EBookDao#updateEBook(org.insia.eLibrary.model.EBook)
 	 */
 	public EBook updateEBook(EBook eBook) {
