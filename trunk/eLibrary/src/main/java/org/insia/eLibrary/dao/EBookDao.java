@@ -8,6 +8,10 @@ public interface EBookDao {
 
 	public EBook getEBook(String title);
 
+	public EBook getEBookByReference(String reference);
+
+	public EBook getEBookById(int id);
+
 	public List<EBook> getEBooks();
 
 	public void deleteEBook(EBook eBook);

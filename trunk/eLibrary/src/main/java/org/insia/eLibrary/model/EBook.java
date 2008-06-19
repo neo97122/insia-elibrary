@@ -8,8 +8,9 @@ public class EBook extends Media
 {
 	private String url;
 
-	public EBook(Media media){
+	public EBook(Media media, String url){
 		super(media.getReference(), media.getTitle());
+		this.url = url;
 	}
 
 	@Column(unique = false, nullable = false, insertable = true, updatable = true, length = 25)
