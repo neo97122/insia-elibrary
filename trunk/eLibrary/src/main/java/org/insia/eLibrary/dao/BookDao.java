@@ -6,18 +6,6 @@ import org.insia.eLibrary.model.Book;
 
 public interface BookDao {
 
-	/**
-     * Check if the login exists and if the password is correct in datasource.
-     * @param login : Book login
-     * @param password : Book password
-     * @return true if the login exists and if the password is correct.
-     * Otherwise, return false.
-     * @throws DataAccessException in case of Data access errors
-     * (database unreachable, etc.)
-     */
-    /*
-	public boolean checkLogin (String login, String password);
-	*/
     /**
      * Return a Book object from a given login.
      * @param login : Book login
@@ -51,9 +39,9 @@ public interface BookDao {
 
 
 	/**
-	 * Met ï¿½ jour le Book
+	 * Met ˆ jour le Book
 	 * @param Book
-	 * @return le Book mis ï¿½ jour
+	 * @return le Book mis ˆ jour
 	 */
 	public Book updateBook(Book book);
 

@@ -26,6 +26,11 @@ public class Media
 	private String title;
 	private Set<Reservation> reservations = new HashSet<Reservation>(0);
 
+	public Media(String reference, String title){
+		this.reference = reference;
+		this.title = title;
+	}
+
 	@Id
 	@GeneratedValue
 	public long getId() {

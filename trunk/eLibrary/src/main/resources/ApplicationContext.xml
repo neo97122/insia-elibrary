@@ -15,5 +15,18 @@
 			<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
 		</property>
 	</bean>
+	<bean id="reservationManagerTarget" class="org.insia.eLibrary.services.impl.ReservationManagerImpl">
+		<property name="reservationDao">
+			<ref bean="reservationDao" />
+		</property>
+	</bean>
+	<bean id="reservationManager" parent="transactionProxy">
+		<property name="target">
+			<ref bean="reservationManagerTarget"/>
+		</property>
+		<property name="transactionAttributeSource">
+			<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+		</property>
+	</bean>
 
 </beans>

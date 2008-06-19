@@ -1,6 +1,5 @@
 package org.insia.eLibrary.dao.hibernate;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class ReservationDaoImpl extends HibernateDaoSupport implements Reservati
 	 * {@inheritDoc}
 	 */
 	public void deleteReservation(Reservation reservation) {
-		logger.info("Deleting the reservation " + reservation);
+		logger.info("Deleting the reservation " + reservation.getId());
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		session.delete(reservation);
 	}
