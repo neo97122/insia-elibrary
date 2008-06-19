@@ -20,22 +20,6 @@ public class BookDaoImpl extends HibernateDaoSupport implements BookDao {
 	/**
 	 * {@inheritDoc}
 	 */
-	/*
-	public boolean checkLogin(String login, String password) {
-		logger.info("Check Book with login: "+login+" and password : [PROTECTED]");
-		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
-		// create a new criteria
-		Criteria crit = session.createCriteria(Book.class);
-		crit.add(Expression.ilike("loginBook", login));
-		crit.add(Expression.eq("passwordBook", password));
-
-		Book Book = (Book)crit.uniqueResult();
-		return (Book != null);
-	}
-	*/
-	/**
-	 * {@inheritDoc}
-	 */
 	public Book getBook(String title) {
 		logger.info("get Book with title: "+title);
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
