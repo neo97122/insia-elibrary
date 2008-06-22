@@ -13,7 +13,7 @@ public interface ReservationDao {
 	 * @param id : id reservation
 	 * @return the corresponding reservation object
 	 */
-	public Reservation getReservation(int id);
+	public Reservation getReservation(Long id);
 
 	/**
 	 * Return a Reservation object from a given media and date.

@@ -13,11 +13,13 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Reservation
 {
-	private long id;
+	private Long id;
 	private User user;
 	private Media media;
 	private Date outDate;
 	private Date returnDate;
+
+	public Reservation(){}
 
 	public Reservation (Media media, User user){
 		this.media = media;
@@ -27,10 +29,10 @@ public class Reservation
 
 	@Id
 	@GeneratedValue
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -41,6 +43,15 @@ public class Reservation
 	}
 	public void setMedia(Media media) {
 		this.media = media;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(nullable=false)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Column
@@ -58,14 +69,4 @@ public class Reservation
 	public void setReturnDate(Date returnDate) {
 		this.returnDate = returnDate;
 	}
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(nullable=false)
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 }

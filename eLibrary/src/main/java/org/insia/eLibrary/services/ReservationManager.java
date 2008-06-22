@@ -13,7 +13,7 @@ public interface ReservationManager {
 	 * @param id : id reservation
 	 * @return the corresponding reservation object
 	 */
-	public Reservation getReservation(int id);
+	public Reservation getReservation(Long id);
 
 	/**
 	 * Return list of reservations

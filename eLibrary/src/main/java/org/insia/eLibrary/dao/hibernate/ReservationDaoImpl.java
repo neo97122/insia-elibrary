@@ -35,15 +35,10 @@ public class ReservationDaoImpl extends HibernateDaoSupport implements Reservati
 	/**
 	 * {@inheritDoc}
 	 */
-	public Reservation getReservation(int id) {
+	public Reservation getReservation(Long id) {
 		logger.info("get Reservation with id: "+id);
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
-		// create a new criteria
-		Criteria crit = session.createCriteria(Reservation.class);
-		crit.add(Expression.eq("id", id));
-
-		Reservation reservation = (Reservation)crit.uniqueResult();
-		return reservation;
+		return (Reservation)session.load(Reservation.class,id);
 	}
 
 	/**
