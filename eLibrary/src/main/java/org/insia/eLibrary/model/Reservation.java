@@ -2,7 +2,6 @@ package org.insia.eLibrary.model;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Reservation
@@ -36,7 +34,7 @@ public class Reservation
 		this.id = id;
 	}
 
-	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(nullable=false)
 	public Media getMedia() {
 		return media;
@@ -61,7 +59,7 @@ public class Reservation
 		this.returnDate = returnDate;
 	}
 
-	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(nullable=false)
 	public User getUser() {
 		return user;
