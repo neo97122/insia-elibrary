@@ -42,5 +42,33 @@
 		</property>
 	</bean>
 
+	<bean id="bookManagerTarget" class="org.insia.eLibrary.services.impl.BookManagerImpl">
+		<property name="bookDao">
+			<ref bean="bookDao" />
+		</property>
+	</bean>
+	<bean id="bookManager" parent="transactionProxy">
+		<property name="target">
+			<ref bean="bookManagerTarget"/>
+		</property>
+		<property name="transactionAttributeSource">
+			<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+		</property>
+	</bean>
+
+	<bean id="ebookManagerTarget" class="org.insia.eLibrary.services.impl.EBookManagerImpl">
+		<property name="EBookDao">
+			<ref bean="EBookDao" />
+		</property>
+	</bean>
+	<bean id="ebookManager" parent="transactionProxy">
+		<property name="target">
+			<ref bean="ebookManagerTarget"/>
+		</property>
+		<property name="transactionAttributeSource">
+			<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+		</property>
+	</bean>
+
 
 </beans>

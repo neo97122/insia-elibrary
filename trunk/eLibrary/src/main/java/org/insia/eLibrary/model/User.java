@@ -1,7 +1,5 @@
 package org.insia.eLibrary.model;
 
-import static org.hibernate.annotations.CascadeType.ALL;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,8 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.Cascade;
 
 @Entity
 public class User
@@ -63,7 +59,7 @@ public class User
 		this.login = login;
 	}
 
-	@Column(unique = true, nullable = false, insertable = true, updatable = true, length = 25)
+	@Column(unique = true, nullable = false, insertable = true, updatable = true, length = 100)
 	public String getPassword() {
 		return password;
 	}
@@ -103,8 +99,7 @@ public class User
 		this.admin = admin;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-	@Cascade({ALL})
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
 	public Set<Reservation> getReservations()
 	{
 		return reservations;

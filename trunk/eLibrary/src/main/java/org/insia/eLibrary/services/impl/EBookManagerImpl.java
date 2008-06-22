@@ -21,22 +21,22 @@ public class EBookManagerImpl extends BaseManager implements EBookManager {
      * injection du dao par la fabrique
      * @param eBookDao  : une implementation de EBookDao
      */
-    public void setBookDao(EBookDao eBookDao) {
-        this.eBookDao = eBookDao;
-    }
-
+	public void setEBookDao(EBookDao bookDao)
+	{
+		eBookDao = bookDao;
+	}
 
     @Transactional(readOnly=false)
 	public ActionMessage createEBook(Media media, String url) {
     	logger.info("verifions que cet eBook n'existe pas deja");
 		EBook eBook = eBookDao.getEBookByReference(media.getReference());
 		if (eBook != null){
-			logger.info("Le ebook "+ media.getTitle() + " existe déjà");
-			return new ActionMessage("Création de ce ebook impossible",Crud.ALREADY);
+			logger.info("Le ebook "+ media.getTitle() + " existe dÔøΩjÔøΩ");
+			return new ActionMessage("CrÔøΩation de ce ebook impossible",Crud.ALREADY);
 		}else{
 			eBook = new EBook(media, url);
 			eBook = eBookDao.createEBook(eBook);
-			logger.info("Le book "+eBook.getTitle()+" a été créé avec succès");
+			logger.info("Le book "+eBook.getTitle()+" a ÔøΩtÔøΩ crÔøΩÔøΩ avec succÔøΩs");
 			return new ActionMessage();
 		}
 	}

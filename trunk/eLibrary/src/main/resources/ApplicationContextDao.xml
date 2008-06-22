@@ -26,6 +26,20 @@
 		</property>
 	</bean>
 
+	<bean id="bookDao"
+		class="org.insia.eLibrary.dao.hibernate.BookDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
+	<bean id="EBookDao"
+		class="org.insia.eLibrary.dao.hibernate.EBookDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
 	<!-- data source -->
 	<bean id="dataSource"
 		class="org.apache.commons.dbcp.BasicDataSource"
