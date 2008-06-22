@@ -3,7 +3,6 @@ package org.insia.eLibrary.services;
 import java.util.List;
 
 import org.insia.eLibrary.model.Book;
-import org.insia.eLibrary.model.Media;
 import org.insia.eLibrary.operations.ActionMessage;
 
 public interface BookManager {
@@ -25,13 +24,13 @@ public interface BookManager {
 	 * Delete the books of the given id
 	 * @param id
 	 */
-	public ActionMessage deleteBook(int id);
+	public ActionMessage deleteBook(Book book);
 
 	/**
 	 * Create book of the given book object
 	 * @param book
 	 * @return created book
 	 */
-	public ActionMessage createBook(Media media, int quantity, String image_url, String description, String author, String editor);
+	public ActionMessage createBook(String title, String reference, int quantity, String image_url, String description, String author, String editor);
 
 }

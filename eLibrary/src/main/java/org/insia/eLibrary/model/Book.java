@@ -12,8 +12,11 @@ public class Book extends Media
 	private String author;
 	private String editor;
 
-	public Book(Media media, int quantity, String image_url, String description, String author, String editor){
-		super(media.getReference(), media.getTitle());
+	public Book(){}
+
+	public Book(String title, String reference, int quantity, String image_url, String description, String author, String editor){
+		this.title = title;
+		this.reference = reference;
 		this.quantity = quantity;
 		this.description = description;
 		this.image_url = image_url;

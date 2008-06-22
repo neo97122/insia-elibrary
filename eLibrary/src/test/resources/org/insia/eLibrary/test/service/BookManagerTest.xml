@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+<media title="toto" reference="ibsntest01" quantity="100" image_url="toto.jpg" description="" author="mbride" editor="mbride" url="" DTYPE="Book" />
+</dataset>

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.insia.eLibrary.dao.BookDao;
 import org.insia.eLibrary.model.Book;
-import org.insia.eLibrary.model.Media;
 import org.insia.eLibrary.operations.ActionMessage;
 import org.insia.eLibrary.operations.Crud;
 import org.insia.eLibrary.services.BookManager;
@@ -27,31 +26,31 @@ public class BookManagerImpl extends BaseManager implements BookManager {
     }
 
     @Transactional(readOnly=false)
-	public ActionMessage createBook(Media media, int quantity,
+	public ActionMessage createBook(String title,String reference, int quantity,
 			String image_url, String description, String author, String editor) {
     	logger.info("verifions que cet reservation n'existe pas deja");
-		Book book = bookDao.getBookByReference(media.getReference());
+		Book book = bookDao.getBookByReference(reference);
 		if (book != null){
-			logger.info("Le book "+ media.getTitle() + " existe déjà");
-			return new ActionMessage("Création de ce book impossible",Crud.ALREADY);
+			logger.info("Le book "+ book.getTitle() + " existe d√©j√†");
+			return new ActionMessage("Cr√©ation de ce book impossible",Crud.ALREADY);
 		}else{
-			book = new Book(media, quantity, image_url, description, author, editor);
+			book = new Book(title, reference, quantity, image_url, description, author, editor);
 			book = bookDao.createBook(book);
-			logger.info("Le book "+book.getTitle()+" a été créé avec succès");
+			logger.info("Le book "+book.getTitle()+" a ÔøΩtÔøΩ crÔøΩÔøΩ avec succÔøΩs");
 			return new ActionMessage();
 		}
 	}
 
-	public ActionMessage deleteBook(int id) {
+	public ActionMessage deleteBook(Book book) {
 		logger.info("verifions que ce book existe bien");
-		Book book = bookDao.getBookById(id);
+		//Book book = bookDao.getBookById(id);
 		if (book!=null){
-			logger.info("Le book "+ id + " existe bien on peut le supprimer");
+			logger.info("Le book "+ book.getId() + " existe bien on peut le supprimer");
 			bookDao.deleteBook(book);
 			return new ActionMessage();
 		}else{
-			logger.info("Le book "+id+" n'existe pas on ne peut pas le supprimer ");
-			return new ActionMessage("Le book "+id+" n'existe pas on ne peut pas le supprimer ",Crud.IMPOSSIBLE);
+			logger.info("Le book "+book.getId()+" n'existe pas on ne peut pas le supprimer ");
+			return new ActionMessage("Le book "+book.getId()+" n'existe pas on ne peut pas le supprimer ",Crud.IMPOSSIBLE);
 		}
 	}
 

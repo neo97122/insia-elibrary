@@ -40,12 +40,12 @@ public class MediaManagerImpl extends BaseManager implements MediaManager {
 		logger.info("verifions que cet reservation n'existe pas deja");
 		Media media = mediaDao.getMediaByReference(reference);
 		if (media != null){
-			logger.info("Le media "+ media.getTitle() + " existe djˆ");
-			return new ActionMessage("Cration de ce mdia impossible",Crud.ALREADY);
+			logger.info("Le media "+ media.getTitle() + " existe dï¿½jï¿½");
+			return new ActionMessage("Crï¿½ation de ce mï¿½dia impossible",Crud.ALREADY);
 		}else{
-			media = new Media(reference, title);
+			//media = new Media(reference, title);
 			media = mediaDao.createMedia(media);
-			logger.info("Le mdia "+media.getTitle()+" a t cr avec succs");
+			logger.info("Le mï¿½dia "+media.getTitle()+" a ï¿½tï¿½ crï¿½ï¿½ avec succï¿½s");
 			return new ActionMessage();
 		}
 	}
@@ -61,8 +61,8 @@ public class MediaManagerImpl extends BaseManager implements MediaManager {
 			mediaDao.deleteMedia(media);
 			return new ActionMessage();
 		}else{
-			logger.info("Le mdia "+id+" n'existe pas on ne peut pas le supprimer ");
-			return new ActionMessage("Le mdia "+id+" n'existe pas on ne peut pas le supprimer ",Crud.IMPOSSIBLE);
+			logger.info("Le mï¿½dia "+id+" n'existe pas on ne peut pas le supprimer ");
+			return new ActionMessage("Le mï¿½dia "+id+" n'existe pas on ne peut pas le supprimer ",Crud.IMPOSSIBLE);
 		}
 	}
 
