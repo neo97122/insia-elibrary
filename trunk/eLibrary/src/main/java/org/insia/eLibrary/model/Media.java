@@ -56,8 +56,7 @@ public class Media
 		this.title = title;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "media")
-	@Cascade({ALL})
+	@OneToMany(cascade = CascadeType.REMOVE, mappedBy = "media")
 	public Set<Reservation> getReservations()
 	{
 		return reservations;

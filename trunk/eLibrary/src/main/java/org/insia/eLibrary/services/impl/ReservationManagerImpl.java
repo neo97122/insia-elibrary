@@ -27,40 +27,40 @@ public class ReservationManagerImpl extends BaseManager implements ReservationMa
     }
 
     /**
-     * Cree une rservation avec user et media
-     * mais s'assure que cet reservation n'existe pas djˆ
+     * Cree une rï¿½servation avec user et media
+     * mais s'assure que cet reservation n'existe pas dï¿½jï¿½
      *
      * @param user utilisateur qui emprunte
-     * @param media media ˆ emprunter
-     * @return  traduisant la russite ou l'chec de cette opration
+     * @param media media ï¿½ emprunter
+     * @return  traduisant la rï¿½ussite ou l'ï¿½chec de cette opï¿½ration
      *
 	 * @see org.apache.tutorial.tapestrySpringHibernate.services.ReservationManager#createReservation(org.insia.eLibrary.model.User, org.insia.eLibrary.model.Media)
 	 */
 	 @Transactional(readOnly=false)
 	public ActionMessage createReservation(User user, Media media) {
-		 logger.info("verifions que cet reservation n'existe pas deja");
+		 logger.info("verifions que cette reservation n'existe pas deja");
 			Reservation reservation = reservationDao.getReservation(media);
 			if (reservation != null){
-				logger.info("Le media "+ media.getTitle() + " est djˆ pris");
-				return new ActionMessage("Cet rservation est impossible",Crud.ALREADY);
+				logger.info("Le media "+ media.getTitle() + " est dÃ©jÃ  pris");
+				return new ActionMessage("Cet rÃ©servation est impossible",Crud.ALREADY);
 			}else{
 				reservation = new Reservation(media, user);
 				reservation = reservationDao.createReservation(reservation);
-				logger.info("La rservation "+reservation.getMedia().getTitle()+" a t cr avec succs");
+				logger.info("La rÃ©servation "+reservation.getMedia().getTitle()+" a Ã©tÃ© crÃ©Ã© avec succÃ¨s");
 				return new ActionMessage();
 			}
 	}
 
 	public ActionMessage deleteReservation(int id) {
-		logger.info("verifions que cette rservation existe bien");
-		Reservation reservation = reservationDao.getReservation(id);
+		logger.info("verifions que cette rÃ©servation existe bien");
+		Reservation reservation = reservationDao.getReservation(new Long(id));
 		if (reservation!=null){
-			logger.info("La rservation "+ id + " existe bien on peut la supprimer");
+			logger.info("La rÃ©servation "+ id + " existe bien on peut la supprimer");
 			reservationDao.deleteReservation(reservation);
 			return new ActionMessage();
 		}else{
-			logger.info("La rservation "+id+" n'existe pas on ne peut pas la supprimer ");
-			return new ActionMessage("La rservation "+id+" n'existe pas on ne peut pas la supprimer ",Crud.IMPOSSIBLE);
+			logger.info("La rÃ©servation "+id+" n'existe pas on ne peut pas la supprimer ");
+			return new ActionMessage("La rÃ©servation "+id+" n'existe pas on ne peut pas la supprimer ",Crud.IMPOSSIBLE);
 		}
 	}
 
@@ -68,19 +68,19 @@ public class ReservationManagerImpl extends BaseManager implements ReservationMa
 	 *
     * Return a Reservation object from a given id.
     * @param id : reservation id
-    * @return  La rservation coreespondant ˆ cet objet
+    * @return  La rï¿½servation coreespondant ï¿½ cet objet
     *
     * @see org.apache.tutorial.tapestrySpringHibernate.services.ReservationManager#getReservation(java.lang.int)
     */
 	@SuppressWarnings("finally")
-	public Reservation getReservation(int id) {
+	public Reservation getReservation(Long id) {
 		return reservationDao.getReservation(id);
 	}
 
 
 	/**
-	 * retourne la liste des rservations
-	 * @return la liste des rservations dans la base
+	 * retourne la liste des rï¿½servations
+	 * @return la liste des rï¿½servations dans la base
 	 *
 	 * @see org.apache.tutorial.tapestrySpringHibernate.services.ReservationManager#getReservations()
 	 */
