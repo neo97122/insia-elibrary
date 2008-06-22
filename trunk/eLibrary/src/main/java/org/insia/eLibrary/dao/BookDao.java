@@ -17,7 +17,7 @@ public interface BookDao {
 
     public Book getBookByReference(String reference);
 
-    public Book getBookById(int id);
+    public Book getBookById(Long id);
 
     /**
      * Return the list of Books
@@ -43,9 +43,9 @@ public interface BookDao {
 
 
 	/**
-	 * Met ˆ jour le Book
+	 * Met ï¿½ jour le Book
 	 * @param Book
-	 * @return le Book mis ˆ jour
+	 * @return le Book mis ï¿½ jour
 	 */
 	public Book updateBook(Book book);
 

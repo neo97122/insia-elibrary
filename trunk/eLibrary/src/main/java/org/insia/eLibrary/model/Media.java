@@ -21,22 +21,22 @@ import org.hibernate.annotations.Cascade;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class Media
 {
-	private long id;
-	private String reference;
-	private String title;
+	private Long id;
+	protected String reference;
+	protected String title;
 	private Set<Reservation> reservations = new HashSet<Reservation>(0);
 
-	public Media(String reference, String title){
+	/*public Media(String reference, String title){
 		this.reference = reference;
 		this.title = title;
-	}
+	}*/
 
 	@Id
 	@GeneratedValue
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

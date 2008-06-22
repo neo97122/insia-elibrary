@@ -48,15 +48,10 @@ public class BookDaoImpl extends HibernateDaoSupport implements BookDao {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Book getBookById(int id) {
+	public Book getBookById(Long id) {
 		logger.info("get Book with id: "+id);
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
-		// create a new criteria
-		Criteria crit = session.createCriteria(Book.class);
-		crit.add(Expression.eq("id", id));
-
-		Book book = (Book)crit.uniqueResult();
-		return book;
+		return(Book)session.load(Book.class, id);
 	}
 
 	public List<Book> getBooks(){
