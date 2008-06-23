@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.insia.eLibrary.dao.BookDao;
 import org.insia.eLibrary.model.Book;
+import org.insia.eLibrary.model.User;
 import org.insia.eLibrary.operations.ActionMessage;
 import org.insia.eLibrary.operations.Crud;
 import org.insia.eLibrary.services.BookManager;
@@ -52,6 +53,19 @@ public class BookManagerImpl extends BaseManager implements BookManager {
 			logger.info("Le book "+book.getId()+" n'existe pas on ne peut pas le supprimer ");
 			return new ActionMessage("Le book "+book.getId()+" n'existe pas on ne peut pas le supprimer ",Crud.IMPOSSIBLE);
 		}
+	}
+
+	@Transactional(readOnly=false)
+	public ActionMessage updateBook(String title,String reference, int quantity, String image_url, String description, String author, String editor) {
+		Book book = bookDao.getBook(title);
+		book.setReference(reference);
+		book.setQuantity(quantity);
+		book.setImage_url(image_url);
+		book.setDescription(description);
+		book.setAuthor(author);
+		book.setEditor(editor);
+		bookDao.updateBook(book);
+		return new ActionMessage();
 	}
 
 	public Book getBook(String title) {

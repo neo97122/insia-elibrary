@@ -33,4 +33,6 @@ public interface BookManager {
 	 */
 	public ActionMessage createBook(String title, String reference, int quantity, String image_url, String description, String author, String editor);
 
+	public ActionMessage updateBook(String title,String reference, int quantity, String image_url, String description, String author, String editor);
+
 }
