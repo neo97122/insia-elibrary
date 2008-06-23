@@ -11,10 +11,10 @@ public interface UserManager {
      * Check if the login exists and if the password is correct.
      * @param login : user login
      * @param password : user password
-     * @return true if the login exists and if the password is correct.
-     * Otherwise, return false.
+     * @return a user if the login exists and if the password is correct.
+     * Otherwise, return null.
      */
-    public boolean checkLogin (String login, String password);
+    public User checkLogin (String login, String password);
 
     /**
      * Return a User object from a given login.
