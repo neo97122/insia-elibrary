@@ -3,7 +3,6 @@ package org.insia.eLibrary.services;
 import java.util.List;
 
 import org.insia.eLibrary.model.EBook;
-import org.insia.eLibrary.model.Media;
 import org.insia.eLibrary.operations.ActionMessage;
 
 public interface EBookManager {
@@ -15,7 +14,7 @@ public interface EBookManager {
 	 */
 	public EBook getEBook(String title);
 
-	/**
+	/**O
 	 * Return list of ebooks
 	 * @return
 	 */
@@ -32,5 +31,14 @@ public interface EBookManager {
 	 * @param ebook
 	 * @return created ebook
 	 */
-	public ActionMessage createEBook(Media media, String url);
+	public ActionMessage createEBook(String title,String reference,
+		String image_url, String description, String author, String editor, String url);
+
+	/**
+	 * Update ebook of the given ebook object
+	 * @param ebook
+	 * @return created ebook
+	 */
+	public ActionMessage updateEBook(String title,String reference,
+		String image_url, String description, String author, String editor, String url);
 }

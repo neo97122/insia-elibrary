@@ -32,6 +32,6 @@ public interface ReservationManager {
 	 * @param reservation
 	 * @return created reservation
 	 */
-	public ActionMessage createReservation(User user, Media media);
+	public ActionMessage createReservation(int user_id, int media_id);
 
 }

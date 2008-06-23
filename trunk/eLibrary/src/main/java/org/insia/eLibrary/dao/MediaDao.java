@@ -10,7 +10,7 @@ public interface MediaDao {
 
 	public Media getMediaByReference(String reference);
 
-	public Media getMediaById(int id);
+	public Media getMediaById(Long id);
 
 	public List<Media> getMedias();
 

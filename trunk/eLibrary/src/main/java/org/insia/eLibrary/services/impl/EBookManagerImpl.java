@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.insia.eLibrary.dao.EBookDao;
 import org.insia.eLibrary.model.EBook;
-import org.insia.eLibrary.model.Media;
 import org.insia.eLibrary.operations.ActionMessage;
 import org.insia.eLibrary.operations.Crud;
 import org.insia.eLibrary.services.EBookManager;
@@ -27,16 +26,17 @@ public class EBookManagerImpl extends BaseManager implements EBookManager {
 	}
 
     @Transactional(readOnly=false)
-	public ActionMessage createEBook(Media media, String url) {
-    	logger.info("verifions que cet eBook n'existe pas deja");
-		EBook eBook = eBookDao.getEBookByReference(media.getReference());
+	public ActionMessage createEBook(String title,String reference,
+		String image_url, String description, String author, String editor, String url) {
+    	logger.info("verifions que cet ebook n'existe pas deja");
+		EBook eBook = eBookDao.getEBookByReference(reference);
 		if (eBook != null){
-			logger.info("Le ebook "+ media.getTitle() + " existe d�j�");
-			return new ActionMessage("Cr�ation de ce ebook impossible",Crud.ALREADY);
+			logger.info("Le book "+ eBook.getTitle() + " existe déjà");
+			return new ActionMessage("Création de ce book impossible",Crud.ALREADY);
 		}else{
-			eBook = new EBook(media, url);
+			eBook = new EBook(title, reference, image_url, description, author, editor, url);
 			eBook = eBookDao.createEBook(eBook);
-			logger.info("Le book "+eBook.getTitle()+" a �t� cr�� avec succ�s");
+			logger.info("Le ebook "+eBook.getTitle()+" a été créé avec succès");
 			return new ActionMessage();
 		}
 	}
@@ -60,6 +60,19 @@ public class EBookManagerImpl extends BaseManager implements EBookManager {
 
 	public List<EBook> getEBooks() {
 		return eBookDao.getEBooks();
+	}
+
+	public ActionMessage updateEBook(String title, String reference, String image_url, String description, String author, String editor, String url)
+	{
+		EBook eBook = eBookDao.getEBook(title);
+		eBook.setReference(reference);
+		eBook.setImage_url(image_url);
+		eBook.setDescription(description);
+		eBook.setAuthor(author);
+		eBook.setEditor(editor);
+		eBook.setUrl(url);
+		eBookDao.updateEBook(eBook);
+		return new ActionMessage();
 	}
 
 }

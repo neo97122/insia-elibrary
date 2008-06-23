@@ -10,6 +10,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.insia.eLibrary.dao.MediaDao;
+import org.insia.eLibrary.model.Book;
 import org.insia.eLibrary.model.EBook;
 import org.insia.eLibrary.model.Media;
 import org.insia.eLibrary.model.Reservation;
@@ -71,15 +72,10 @@ public class MediaDaoImpl extends HibernateDaoSupport implements MediaDao {
 	/**
 	 * @see org.insia.eLibrary.dao.MediaDao#getMediaById(java.lang.String)
 	 */
-	public Media getMediaById(int id) {
+	public Media getMediaById(Long id) {
 		logger.info("get Media with id: "+id);
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
-		// create a new criteria
-		Criteria crit = session.createCriteria(Media.class);
-		crit.add(Expression.eq("id", id));
-
-		Media media = (Media)crit.uniqueResult();
-		return media;
+		return(Media)session.load(Media.class, id);
 	}
 
 	/**
