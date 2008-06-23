@@ -55,7 +55,7 @@ public class MediaManagerImpl extends BaseManager implements MediaManager {
 	 */
 	public ActionMessage deleteMedia(int id) {
 		logger.info("verifions que ce media existe bien");
-		Media media = mediaDao.getMediaById(id);
+		Media media = mediaDao.getMediaById(new Long(id));
 		if (media!=null){
 			logger.info("Le media "+ id + " existe bien on peut le supprimer");
 			mediaDao.deleteMedia(media);

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.insia.eLibrary.dao.BookDao;
 import org.insia.eLibrary.model.Book;
-import org.insia.eLibrary.model.User;
 import org.insia.eLibrary.operations.ActionMessage;
 import org.insia.eLibrary.operations.Crud;
 import org.insia.eLibrary.services.BookManager;
@@ -29,7 +28,7 @@ public class BookManagerImpl extends BaseManager implements BookManager {
     @Transactional(readOnly=false)
 	public ActionMessage createBook(String title,String reference, int quantity,
 			String image_url, String description, String author, String editor) {
-    	logger.info("verifions que cet reservation n'existe pas deja");
+    	logger.info("verifions que ce book n'existe pas deja");
 		Book book = bookDao.getBookByReference(reference);
 		if (book != null){
 			logger.info("Le book "+ book.getTitle() + " existe déjà");

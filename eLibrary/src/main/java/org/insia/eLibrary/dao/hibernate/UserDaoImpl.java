@@ -6,6 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.insia.eLibrary.dao.UserDao;
+import org.insia.eLibrary.model.Book;
 import org.insia.eLibrary.model.User;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -44,6 +45,13 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
 
 		User user = (User)crit.uniqueResult();
 		return user;
+	}
+
+	public User getUserById(Long id)
+	{
+		logger.info("get User with id: "+id);
+		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+		return(User)session.load(User.class, id);
 	}
 
 	public List<User> getUsers(){

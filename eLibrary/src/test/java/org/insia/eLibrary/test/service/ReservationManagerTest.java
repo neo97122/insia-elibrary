@@ -43,7 +43,7 @@ public class ReservationManagerTest extends Integration {
 		User user = userManager.getUser("mbride");
 		Book book = bookManager.getBook("tarzan");
 
-		ActionMessage actionMessage = reservationManager.createReservation(user, book);
+		ActionMessage actionMessage = reservationManager.createReservation(user.getId().intValue(), book.getId().intValue());
 		assertEquals(actionMessage.getCrud(),Crud.SUCCESSFUL);
 	}
 

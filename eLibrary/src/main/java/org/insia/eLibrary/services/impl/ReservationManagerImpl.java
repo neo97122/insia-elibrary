@@ -2,7 +2,9 @@ package org.insia.eLibrary.services.impl;
 
 import java.util.List;
 
+import org.insia.eLibrary.dao.MediaDao;
 import org.insia.eLibrary.dao.ReservationDao;
+import org.insia.eLibrary.dao.UserDao;
 import org.insia.eLibrary.model.Media;
 import org.insia.eLibrary.model.Reservation;
 import org.insia.eLibrary.model.User;
@@ -17,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReservationManagerImpl extends BaseManager implements ReservationManager {
 
 	private ReservationDao reservationDao = null;
+	private UserDao userDao = null;
+	private MediaDao mediaDao = null;
 
 	/**
      * injection du dao par la fabrique
@@ -26,7 +30,17 @@ public class ReservationManagerImpl extends BaseManager implements ReservationMa
         this.reservationDao = reservationDao;
     }
 
-    /**
+    public void setMediaDao(MediaDao mediaDao)
+	{
+		this.mediaDao = mediaDao;
+	}
+
+	public void setUserDao(UserDao userDao)
+	{
+		this.userDao = userDao;
+	}
+
+	/**
      * Cree une r�servation avec user et media
      * mais s'assure que cet reservation n'existe pas d�j�
      *
@@ -37,18 +51,22 @@ public class ReservationManagerImpl extends BaseManager implements ReservationMa
 	 * @see org.apache.tutorial.tapestrySpringHibernate.services.ReservationManager#createReservation(org.insia.eLibrary.model.User, org.insia.eLibrary.model.Media)
 	 */
 	 @Transactional(readOnly=false)
-	public ActionMessage createReservation(User user, Media media) {
-		 logger.info("verifions que cette reservation n'existe pas deja");
-			Reservation reservation = reservationDao.getReservation(media);
-			if (reservation != null){
-				logger.info("Le media "+ media.getTitle() + " est déjà pris");
-				return new ActionMessage("Cet réservation est impossible",Crud.ALREADY);
-			}else{
-				reservation = new Reservation(media, user);
-				reservation = reservationDao.createReservation(reservation);
-				logger.info("La réservation "+reservation.getMedia().getTitle()+" a été créé avec succès");
-				return new ActionMessage();
-			}
+	public ActionMessage createReservation(int user_id, int media_id) {
+
+		 User user = userDao.getUserById(new Long(user_id));
+		 Media media = mediaDao.getMediaById(new Long(media_id));
+
+		logger.info("verifions que cette reservation n'existe pas deja");
+		Reservation reservation = reservationDao.getReservation(media);
+		if (reservation != null){
+			logger.info("Le media "+ media.getTitle() + " est déjà pris");
+			return new ActionMessage("Cet réservation est impossible",Crud.ALREADY);
+		}else{
+			reservation = new Reservation(media, user);
+			reservation = reservationDao.createReservation(reservation);
+			logger.info("La réservation "+reservation.getMedia().getTitle()+" a été créé avec succès");
+			return new ActionMessage();
+		}
 	}
 
 	public ActionMessage deleteReservation(int id) {

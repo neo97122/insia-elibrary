@@ -26,6 +26,8 @@ public interface UserDao {
      */
     public User getUser(String login);
 
+    public User getUserById(Long id);
+
     /**
      * Return the list of Users
      * @return

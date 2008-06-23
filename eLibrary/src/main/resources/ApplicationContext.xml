@@ -19,6 +19,12 @@
 		<property name="reservationDao">
 			<ref bean="reservationDao" />
 		</property>
+		<property name="userDao">
+			<ref bean="userDao" />
+		</property>
+		<property name="mediaDao">
+			<ref bean="mediaDao" />
+		</property>
 	</bean>
 	<bean id="reservationManager" parent="transactionProxy">
 		<property name="target">
@@ -56,14 +62,14 @@
 		</property>
 	</bean>
 
-	<bean id="ebookManagerTarget" class="org.insia.eLibrary.services.impl.EBookManagerImpl">
+	<bean id="eBookManagerTarget" class="org.insia.eLibrary.services.impl.EBookManagerImpl">
 		<property name="EBookDao">
 			<ref bean="EBookDao" />
 		</property>
 	</bean>
-	<bean id="ebookManager" parent="transactionProxy">
+	<bean id="eBookManager" parent="transactionProxy">
 		<property name="target">
-			<ref bean="ebookManagerTarget"/>
+			<ref bean="eBookManagerTarget"/>
 		</property>
 		<property name="transactionAttributeSource">
 			<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
