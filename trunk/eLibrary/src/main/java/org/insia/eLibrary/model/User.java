@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Cascade;
+
 @Entity
 public class User
 {
@@ -99,7 +101,7 @@ public class User
 		this.admin = admin;
 	}
 
-	@OneToMany(cascade = CascadeType.REMOVE,mappedBy = "user")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
 	public Set<Reservation> getReservations()
 	{
 		return reservations;
