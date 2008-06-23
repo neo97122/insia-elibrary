@@ -26,17 +26,24 @@ public class UserManagerImpl extends BaseManager implements UserManager{
     }
 
 
-    /**
+	/**
      * Check if the login exists and if the password is correct.
      * @param login : user login
      * @param password : user password
-     * @return true if the login exists and if the password is correct.
-     * Otherwise, return false.
+     * @return a user if the login exists and if the password is correct.
+     * Otherwise, return null.
      *
      * @see org.apache.tutorial.tapestrySpringHibernate.services.UserManager#checkLogin(java.lang.String, java.lang.String)
      */
-    public boolean checkLogin (String login, String password) {
-        return userDao.checkLogin(login, password);
+    public User checkLogin (String login, String password) {
+        if (userDao.checkLogin(login, password))
+        {
+        	return userDao.getUser(login);
+        }
+        else
+        {
+        	return null;
+        }
     }
 
     /**
