@@ -128,8 +128,15 @@ public class UserManagerImpl extends BaseManager implements UserManager{
 		}
 	}
 
-	public ActionMessage updateUser(User user) {
+	@Transactional(readOnly=false)
+	public ActionMessage updateUser(String login, String password, String name, String firstname, String email, boolean admin) {
+		User user = userDao.getUser(login);
 		logger.info("L'utilisateur "+ user.getLogin() + " existe bien on peut le mettre ˆ jour");
+		user.setPassword(password);
+		user.setName(name);
+		user.setFirstname(firstname);
+		user.setMail(email);
+		user.setAdmin(admin);
 		userDao.updateUser(user);
 		return new ActionMessage();
 	}

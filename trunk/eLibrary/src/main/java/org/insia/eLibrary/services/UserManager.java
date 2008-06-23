@@ -56,7 +56,7 @@ public interface UserManager {
      */
     public ActionMessage deleteUser (String login);
 
-    public ActionMessage updateUser(User user);
+    public ActionMessage updateUser(String login, String password, String name, String firstname, String email, boolean admin);
 
 
 
