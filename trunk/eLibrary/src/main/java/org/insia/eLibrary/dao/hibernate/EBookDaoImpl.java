@@ -11,7 +11,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.insia.eLibrary.dao.EBookDao;
 import org.insia.eLibrary.model.EBook;
-import org.insia.eLibrary.model.Reservation;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**

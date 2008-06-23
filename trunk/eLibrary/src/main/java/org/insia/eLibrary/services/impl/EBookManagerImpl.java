@@ -62,6 +62,7 @@ public class EBookManagerImpl extends BaseManager implements EBookManager {
 		return eBookDao.getEBooks();
 	}
 
+	@Transactional(readOnly=false)
 	public ActionMessage updateEBook(String title, String reference, String image_url, String description, String author, String editor, String url)
 	{
 		EBook eBook = eBookDao.getEBook(title);
