@@ -24,7 +24,7 @@ public interface EBookManager {
 	 * Delete the ebook of the given id
 	 * @param id
 	 */
-	public ActionMessage deleteEBook(int id);
+	public ActionMessage deleteEBook(long id);
 
 	/**
 	 * Create ebook of the given ebook object

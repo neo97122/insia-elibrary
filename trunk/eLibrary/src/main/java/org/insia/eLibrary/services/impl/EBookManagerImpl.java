@@ -41,7 +41,8 @@ public class EBookManagerImpl extends BaseManager implements EBookManager {
 		}
 	}
 
-	public ActionMessage deleteEBook(int id) {
+    @Transactional(readOnly=false)
+	public ActionMessage deleteEBook(long id) {
 		logger.info("verifions que ce ebook existe bien");
 		EBook eBook = eBookDao.getEBookById(id);
 		if (eBook!=null){
