@@ -10,7 +10,7 @@ public interface EBookDao {
 
 	public EBook getEBookByReference(String reference);
 
-	public EBook getEBookById(int id);
+	public EBook getEBookById(long id);
 
 	public List<EBook> getEBooks();
 
