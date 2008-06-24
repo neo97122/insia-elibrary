@@ -41,9 +41,24 @@ public class BookManagerImpl extends BaseManager implements BookManager {
 		}
 	}
 
+    /*@Transactional(readOnly=false)
 	public ActionMessage deleteBook(Book book) {
 		logger.info("verifions que ce book existe bien");
 		//Book book = bookDao.getBookById(id);
+		if (book!=null){
+			logger.info("Le book "+ book.getId() + " existe bien on peut le supprimer");
+			bookDao.deleteBook(book);
+			return new ActionMessage();
+		}else{
+			logger.info("Le book "+book.getId()+" n'existe pas on ne peut pas le supprimer ");
+			return new ActionMessage("Le book "+book.getId()+" n'existe pas on ne peut pas le supprimer ",Crud.IMPOSSIBLE);
+		}
+	}*/
+
+    @Transactional(readOnly=false)
+	public ActionMessage deleteBook(long id) {
+		logger.info("verifions que ce book existe bien");
+		Book book = bookDao.getBookById(id);
 		if (book!=null){
 			logger.info("Le book "+ book.getId() + " existe bien on peut le supprimer");
 			bookDao.deleteBook(book);

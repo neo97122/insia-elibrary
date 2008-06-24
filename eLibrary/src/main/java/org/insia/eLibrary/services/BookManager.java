@@ -24,7 +24,13 @@ public interface BookManager {
 	 * Delete the books of the given id
 	 * @param id
 	 */
-	public ActionMessage deleteBook(Book book);
+	//public ActionMessage deleteBook(Book book);
+
+	/**
+	 * Delete the books of the given id
+	 * @param id
+	 */
+	public ActionMessage deleteBook(long id);
 
 	/**
 	 * Create book of the given book object

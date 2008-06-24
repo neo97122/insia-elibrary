@@ -69,7 +69,8 @@ public class ReservationManagerImpl extends BaseManager implements ReservationMa
 		}
 	}
 
-	public ActionMessage deleteReservation(int id) {
+	@Transactional(readOnly=false)
+	public ActionMessage deleteReservation(long id) {
 		logger.info("verifions que cette réservation existe bien");
 		Reservation reservation = reservationDao.getReservation(new Long(id));
 		if (reservation!=null){
@@ -91,7 +92,7 @@ public class ReservationManagerImpl extends BaseManager implements ReservationMa
     * @see org.apache.tutorial.tapestrySpringHibernate.services.ReservationManager#getReservation(java.lang.int)
     */
 	@SuppressWarnings("finally")
-	public Reservation getReservation(Long id) {
+	public Reservation getReservation(long id) {
 		return reservationDao.getReservation(id);
 	}
 
