@@ -53,6 +53,7 @@ public class MediaManagerImpl extends BaseManager implements MediaManager {
 	/**
 	 * @see org.insia.eLibrary.services.MediaManager#deleteMedia(int)
 	 */
+    @Transactional(readOnly=false)
 	public ActionMessage deleteMedia(int id) {
 		logger.info("verifions que ce media existe bien");
 		Media media = mediaDao.getMediaById(new Long(id));

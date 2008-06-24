@@ -72,14 +72,14 @@ public class EBookManagerTest extends Integration {
 	 * Test la suppression d'un media
 	 */
 	public void testDeleteEBook(){
-		/*EBookManager eBookManager = (EBookManager) context.getBean("eBookManager");
+		EBookManager eBookManager = (EBookManager) context.getBean("eBookManager");
 
 		log.info("Test la supression d'un ebook");
-		EBook eBook = eBookManager.getEBook("toto");
-		ActionMessage actionMessage = eBookManager.deleteEBook(eBook);
+		//EBook eBook = eBookManager.getEBook("toto");
+		ActionMessage actionMessage = eBookManager.deleteEBook(1);
 		assertEquals(actionMessage.getCrud(),Crud.SUCCESSFUL);
 
-		List<EBook> eBooks = bookManager.getBooks();
-		assertEquals(books.size(),0);*/
+		List<EBook> eBooks = eBookManager.getEBooks();
+		assertEquals(eBooks.size(),0);
 	}
 }

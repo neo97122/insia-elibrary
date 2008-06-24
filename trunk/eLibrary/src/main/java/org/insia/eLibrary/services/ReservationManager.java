@@ -13,7 +13,7 @@ public interface ReservationManager {
 	 * @param id : id reservation
 	 * @return the corresponding reservation object
 	 */
-	public Reservation getReservation(Long id);
+	public Reservation getReservation(long id);
 
 	/**
 	 * Return list of reservations
@@ -25,7 +25,7 @@ public interface ReservationManager {
 	 * Delete the reservation of the given id
 	 * @param reservation
 	 */
-	public ActionMessage deleteReservation(int id);
+	public ActionMessage deleteReservation(long id);
 
 	/**
 	 * Create reservation of the given user object
