@@ -62,7 +62,7 @@ public class BookManagerTest extends Integration {
 	/**
 	 * Test le listage des medias
 	 */
-	public void testGetMedias(){
+	public void testGetBooks(){
 		log.info("Test le listing des books");
 		BookManager bookManager = (BookManager) context.getBean("bookManager");
 		List<Book> books = bookManager.getBooks();
@@ -72,7 +72,7 @@ public class BookManagerTest extends Integration {
 	/**
 	 * Test la suppression d'un media
 	 */
-	public void testDeleteMedia(){
+	public void testDeleteBook(){
 		BookManager bookManager = (BookManager) context.getBean("bookManager");
 
 		log.info("Test la supression d'un book");
