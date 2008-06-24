@@ -69,7 +69,7 @@ public class EBookDaoImpl extends HibernateDaoSupport implements EBookDao {
 	/**
 	 * @see org.insia.eLibrary.dao.EBookDao#getEBook(java.lang.String)
 	 */
-	public EBook getEBookById(int id) {
+	public EBook getEBookById(long id) {
 		logger.info("get EBook with id: "+id);
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		// create a new criteria
