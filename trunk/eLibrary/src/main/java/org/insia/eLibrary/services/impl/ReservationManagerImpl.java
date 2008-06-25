@@ -52,21 +52,13 @@ public class ReservationManagerImpl extends BaseManager implements ReservationMa
 	 */
 	 @Transactional(readOnly=false)
 	public ActionMessage createReservation(int user_id, int media_id) {
+		User user = userDao.getUserById(new Long(user_id));
+		Media media = mediaDao.getMediaById(new Long(media_id));
 
-		 User user = userDao.getUserById(new Long(user_id));
-		 Media media = mediaDao.getMediaById(new Long(media_id));
-
-		logger.info("verifions que cette reservation n'existe pas deja");
-		Reservation reservation = reservationDao.getReservation(media);
-		if (reservation != null){
-			logger.info("Le media "+ media.getTitle() + " est déjà pris");
-			return new ActionMessage("Cet réservation est impossible",Crud.ALREADY);
-		}else{
-			reservation = new Reservation(media, user);
-			reservation = reservationDao.createReservation(reservation);
-			logger.info("La réservation "+reservation.getMedia().getTitle()+" a été créé avec succès");
-			return new ActionMessage();
-		}
+		Reservation reservation = new Reservation(media, user);
+		reservation = reservationDao.createReservation(reservation);
+		logger.info("La réservation "+reservation.getMedia().getTitle()+" a été créé avec succès");
+		return new ActionMessage();
 	}
 
 	@Transactional(readOnly=false)
