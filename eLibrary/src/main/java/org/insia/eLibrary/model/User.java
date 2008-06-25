@@ -101,7 +101,7 @@ public class User
 		this.admin = admin;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "user")
 	public Set<Reservation> getReservations()
 	{
 		return reservations;

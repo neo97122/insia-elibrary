@@ -2,6 +2,7 @@
 <dataset>
 	<media id="1" title="toto" reference="ibsntest01" quantity="100" image_url="toto.jpg" description="" author="mbride" editor="mbride" url="" DTYPE="Book" />
 	<media id="2" title="tarzan" reference="ibsntarzan01" quantity="100" image_url="toto.jpg" description="" author="mbride" editor="mbride" url="" DTYPE="Book" />
-	<user id="1" login="mbride" password="mbride" name="mick" firstname="bride" mail="mbride@insia.org" admin="true"/>
+	<user id="1" login="mbride" password="mbride" name="bride" firstname="mick" mail="mbride@insia.org" admin="true"/>
+	<user id="2" login="dlao" password="dlao" name="lao" firstname="daniel" mail="dlao@insia.org" admin="true"/>
 	<reservation id="1" outDate="2008-06-21" returnDate="2008-06-28" user_id="1" media_id="1" />
 </dataset>

@@ -40,10 +40,14 @@ public class ReservationManagerTest extends Integration {
 
 		log.info("Test la création d'une réservation dans la base");
 
-		User user = userManager.getUser("mbride");
+		User user1 = userManager.getUser("mbride");
+		User user2 = userManager.getUser("dlao");
 		Book book = bookManager.getBook("tarzan");
 
-		ActionMessage actionMessage = reservationManager.createReservation(user.getId().intValue(), book.getId().intValue());
+		ActionMessage actionMessage = reservationManager.createReservation(user1.getId().intValue(), book.getId().intValue());
+		assertEquals(actionMessage.getCrud(),Crud.SUCCESSFUL);
+
+		actionMessage = reservationManager.createReservation(user2.getId().intValue(), book.getId().intValue());
 		assertEquals(actionMessage.getCrud(),Crud.SUCCESSFUL);
 	}
 
@@ -60,7 +64,7 @@ public class ReservationManagerTest extends Integration {
 	/**
 	 * Test la suppression d'un media
 	 */
-	public void testDeleteMedia(){
+	public void testDeleteReservation(){
 		ReservationManager reservationManager = (ReservationManager) context.getBean("reservationManager");
 
 		log.info("Test la supression d'une réservation");

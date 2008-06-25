@@ -77,7 +77,7 @@ public class BookManagerTest extends Integration {
 
 		log.info("Test la supression d'un book");
 		Book book = bookManager.getBook("toto");
-		ActionMessage actionMessage = bookManager.deleteBook(book);
+		ActionMessage actionMessage = bookManager.deleteBook(book.getId());
 		assertEquals(actionMessage.getCrud(),Crud.SUCCESSFUL);
 
 		List<Book> books = bookManager.getBooks();
