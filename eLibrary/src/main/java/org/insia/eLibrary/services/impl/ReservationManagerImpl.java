@@ -1,5 +1,8 @@
 package org.insia.eLibrary.services.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.insia.eLibrary.dao.MediaDao;
@@ -60,6 +63,28 @@ public class ReservationManagerImpl extends BaseManager implements ReservationMa
 		logger.info("La réservation "+reservation.getMedia().getTitle()+" a été créé avec succès");
 		return new ActionMessage();
 	}
+
+	 @Transactional(readOnly=false)
+	public ActionMessage updateReservation(long id, int user_id, int media_id, String outDate, String returnDate) {
+		 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", java.util.Locale.FRANCE);
+
+		 	Reservation reservation = reservationDao.getReservation(id);
+		 	reservation.setMedia( mediaDao.getMediaById(new Long(media_id)));
+		 	reservation.setUser(userDao.getUserById(new Long(user_id)));
+		 	try
+		 	{
+				reservation.setOutDate(sdf.parse(outDate));
+				reservation.setReturnDate(sdf.parse(returnDate));
+			}
+		 	catch (ParseException e)
+		 	{
+		 		reservation.setOutDate(new Date());
+		 		reservation.setReturnDate(new Date());
+			}
+			reservation = reservationDao.updateReservation(reservation);
+			logger.info("La réservation "+reservation.getMedia().getTitle()+" mis � jour avec succ�s");
+			return new ActionMessage();
+		}
 
 	@Transactional(readOnly=false)
 	public ActionMessage deleteReservation(long id) {
