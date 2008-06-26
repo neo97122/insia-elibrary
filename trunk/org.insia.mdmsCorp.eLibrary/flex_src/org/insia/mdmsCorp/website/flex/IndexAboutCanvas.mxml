@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="*" width="960" height="520">
+
+<mx:Script>
+	<![CDATA[
+		import org.insia.mdmsCorp.website.as3.Localizator;
+		import mx.controls.Alert;
+	]]>
+</mx:Script>
+
+	<mx:HBox width="100%" height="100%" styleName="colorPanel">
+		<mx:Spacer width="4" />
+		<mx:VBox width="100%" height="100%" horizontalAlign="left">
+			<mx:Spacer height="5" />
+			<mx:Panel width="99%" height="100%" title="{Localizator.getInstance(1).gT('userInterfaceAboutCanvasLabel')}" styleName="catalogPanel">	
+				<mx:TextArea width="955" height="495" editable="false">
+					<mx:text><![CDATA[1.  Description du projet
+1.1 Intitulé
+
+   L’intitulé de ce projet est le développement d'une application web de bibliothèque en ligne.
+1.2 Cahier des charges
+ 
+
+    * L'application devra gérer le référencement de livres en prenant en compte les quantités, la disponibilité et les réservations.
+    * L'application devra gérer également des livres électroniques (e-book) que les personnes pourront télécharger.
+
+ 
+
+    * L'application devra gérer également des livres électroniques (e-book) que les personnes pourront télécharger.
+
+ 
+
+    * Pour accéder a l'application il faudra posséder un login et un mot de passe que ça soit pour la partie administration ou pour la partie consultation.
+
+   2. Participants
+
+ 
+
+Les participants  à ce projet sont :  
+
+    * Mickael BRIDE
+    * Ludovic CESAR
+    * Daniel LAO
+    * Steven LE MORZADEC
+    * Mickael RODRIGO
+
+   3. Partage des tâches
+
+3.1 FLEX :
+ 
+
+    * Daniel LAO
+    * Mickaël RODRIGO
+
+ 
+
+3.2 JAVA/J2EE :  
+
+    * Mickaël Bride
+    * Ludovic CESAR
+    * Steven LE MORZADEC
+
+   4. Choix des logiciels (versions et rôles dans le projet)
+
+               1. Flex
+
+           4.1.1 Présentation
+
+Flex est une solution de développement créée par Macromedia en 2004 puis reprise par Adobe en 2006, permettant de créer et de déployer des applications Internet riches (RIA) multi plates-formes. Son modèle de programmation fait appel à deux langages : 
+
+    - MXML (basé sur XML), qui permet la réalisation d’interfaces utilisateur très interactives. Son approche déclarative permet un très grand contrôle de l’aspect de l’application. Ce langage est comparable à XUL de la Fondation Mozilla ou XAML de la société Microsoft. 
+
+    - ActionScript 3.0, reposant sur ECMAScript, qui est un langage orienté objet similaire au Javascript et permettant de créer très rapidement des applications Internet riches. 
+
+Pour sa partie présentation, Flex utilise la technologie Flash (on estime aux alentours de 97% le nombre de machines équipées du Flash Player), ce qui rend par conséquent les applications Flex relativement multi plates-formes et facilement déployables. Ce dernier point étant discutable, étant donnée l'installation nécessaire d'un plug-in Flash Player sur les machines clientes, ce qui n'est pas le cas avec une interface écrite selon la méthode AJAX car tous les navigateurs Web autorisent par défaut le JavaScript. Cependant, l'interprétation de Javascript étant différente selon les navigateurs, un des intérêts de Flex est de proposer une interface homogène, quel que soit l'équipement de l'utilisateur. 
+
+La technologie Flex produit un .swf, intégré dans une page html.
+
+           4.1.2 Rôle dans le projet
+
+Flex nous a servi à concevoir la l’interface utilisateur et l’interface d’administration (à compléter)
+
+           4.1.3 Version
+
+La version utilisée dans ce projet est : (à compléter)
+
+               2. JAVA/J2EE
+
+           4.2.1 Présentation
+
+J2EE (Java 2 Enterprise Edition) est une norme proposée par la société Sun, portée par un consortium de sociétés internationales, visant à définir un standard de développement d'applications d'entreprises multi-niveaux, basées sur des composants. 
+
+On parle généralement de «plate-forme J2EE» pour désigner l'ensemble constitué des services (API) offerts et de l'infrastructure d'exécution. J2EE comprend notamment :
+
+- Les spécifications du serveur d'application, c'est-à-dire de l'environnement d'exécution : J2EE définit finement les rôles et les interfaces pour les applications ainsi que l'environnement dans lequel elles seront exécutées. Ces recommandations permettent ainsi à des entreprises tierces de développer des serveurs d'application conformes aux spécifications ainsi définies, sans avoir à redévelopper les principaux services. 
+
+    - Des services, au travers d'API, c'est-à-dire des extensions Java indépendantes permettant d'offrir en standard un certain nombre de fonctionnalités. Sun fournit une implémentation minimale de ces API appelée J2EE SDK (J2EE Software Development Kit).  
+
+Dans la mesure où J2EE s'appuie entièrement sur le Java, il bénéficie des avantages et inconvénients de ce langage, en particulier une bonne portabilité et une maintenabilité du code. 
+
+De plus, l'architecture J2EE repose sur des composants distincts, interchangeables et distribués, ce qui signifie notamment : 
+
+    - qu'il est simple d'étendre l'architecture ;
+
+    - qu'un système reposant sur J2EE peut posséder des mécanismes de haute-disponibilité, afin de garantir une bonne qualité de service ;
+
+    - que la maintenabilité des applications est facilitée.
+
+           4.2.2 Rôle dans le projet
+
+(à compléter)
+
+           4.2.3 Version
+
+La version utilisée dans ce projet est : (à compléter)
+
+               3. Maven
+
+           4.3.1 Présentation
+
+Apache Maven est un outil logiciel libre pour la gestion et l'automatisation de production des projets logiciels Java. L'objectif recherché est comparable au système Make sous Unix : produire un logiciel à partir de ses sources, en optimisant les taches réalisées à cette fin et en garantissant le bon ordre de fabrication. 
+
+Il fournit des moyens de configuration basés sur le format XML.  
+
+Maven utilise un paradigme connu sous le nom de Project Object Model (POM) afin de décrire un projet logiciel, ses dépendances avec des modules externes et l'ordre à suivre pour sa production. Il est livré avec un grand nombre de taches pré-définies, comme la compilation de code Java ou encore sa modularisation. 
+ 
+
+Un élément clé et relativement spécifique de Maven est son aptitude à fonctionner en réseau. Une des motivations historiques de cet outil est de fournir un moyen de synchroniser des projets indépendants : publication standardisée d'information, distribution automatique de modules jar. Ainsi en version de base, Maven peut dynamiquement télécharger du matériel sur des entrepôts logiciels connus. Il propose ainsi la synchronisation transparente de modules nécessaires.
+
+               4. Spring
+
+           4.4.1 Présentation
+
+Spring est considéré comme un conteneur dit « léger ». C'est-à-dire une infrastructure similaire à un serveur d'application J2EE. Il prend donc en charge la création d'objets et la mise en relation d'objets par l'intermédiaire d'un fichier de configuration qui décrit les objets à fabriquer et les relations de dépendances entre ces objets. Le gros avantage par rapport aux serveurs d'application est qu'avec SPRING, les classes n'ont pas besoin d'implémenter une quelconque interface pour être prises en charge par le framework ; 
+
+La couche d'abstraction permet d'intégrer d'autres frameworks et bibliothèques avec une plus grande facilité. Cela se fait par l'apport ou non de couches d'abstraction spécifique à des frameworks particuliers. Il est ainsi possible d'intégrer un module d'envoi de mails en toute facilité. 
+
+Ce framework, grâce à sa couche d'abstraction, ne concurrence pas d'autres frameworks dans une couche spécifique d'un modèle architectural MVC mais s'avère un framework multi-couches pouvant s'insérer au niveau de toutes les couches ; modèle, vue et contrôleur. Ainsi il permet d'intégrer Hibernate pour la couche de persistance ou encore Struts pour la couche présentation.
+
+           4.4.2 Rôle dans le projet
+
+Ce framework est dit « léger » et multi-couches pouvant s'insérer au niveau de toutes les couches ; modèle, vue et contrôleur. Ainsi il nous permet d'intégrer Hibernate pour la couche de persistance.
+
+           4.4.3 Version utilisée
+
+La version utilisée dans ce projet est : Tapestry 4.0.9
+
+               5. Hibernate
+
+           4.5.1 Présentation
+
+Hibernate est un framework open source gérant la persistance des objets en base de données relationnelle. 
+
+Hibernate est adaptable en terme d'architecture, il peut donc être utilisé aussi bien dans un développement client lourd, que dans un environnement web léger de type Apache Tomcat ou dans un environnement J2EE complet : WebSphere, JBoss Application Server et WebLogic de BEA Systems (voir (en) BEA Weblogic).
+
+Hibernate apporte une solution aux problèmes d'adaptation entre le paradigme objet et les SGBD en remplaçant les accès à la base de données par des appels à des méthodes objet de haut niveau.
+
+           4.5.2 Rôle dans le projet
+
+Hibernate, nous permet de manipuler la base de données grâce aux classes et aux méthodes qu’il propose.
+
+           4.5.3 Version utilisée
+
+La version utilisée dans ce projet est : Hibernate 3.2.1.
+
+               6. MySQL
+
+           4.6.1 Présentation
+
+MySQL est un système de gestion de base de données (SGDB). Il fait partie des logiciels de gestion de base de données les plus utilisés au monde, autant par le grand public (applications web principalement) que par des professionnels, au même titre que Oracle ou Microsoft SQL Server.
+
+           4.6.2 Rôle dans le projet
+
+MySQL a été le serveur de gestion de base de données que nous avons utilisé pour implémenter notre modèle (grâce à Hibernate) et stocker nos données.
+
+           4.6.3 Version utilisée
+
+La version utilisée dans ce projet est : MySQL 5.0
+
+               7. Tapestry
+
+           4.7.1 Présentation
+
+Tapestry est un framework libre facilitant la construction d'applications web Java basées sur J2EE. 
+
+Tapestry utilise XML pour implémenter des applications Web en suivant le motif de conception MVC. Il dispose d'une architecture à base de composants avec des idées que l'on retrouve notamment dans WebObjects. Il met l'accent sur la simplicité d'utilisation. Par une forte connectivité entre les éléments de la page Web et le code sous-jacent, il évite au développeur d'écrire d'énormes blocs de code de liaison.
+
+           4.7.2 Rôle dans le projet
+
+    * Aiguillage des requêtes HTTP)
+    * Génération des patrons de pages (ou templates)
+    * Persistance des données (sessions)
+
+           4.7.3 Version utilisée
+
+La version utilisée dans ce projet est : Tapestry 4.1.5
+
+               8. Tomcat
+
+           4.8.1 Présentation
+
+Lors de ce projet Tomcat avait pour rôle celui d’un serveur HTTP.
+
+           4.8.2 Rôle dans le projet
+
+Tomcat est un serveur Web qui gère les servlets et les JSP. C'est le compilateur Jasper qui compile les pages JSP pour en faire des servlets. Le moteur de servlet Tomcat est souvent employé en combinaison avec un serveur Web Apache ou d'autres serveurs Web. 
+
+Tomcat a été écrit en Java, il peut donc s'exécuter par la machine virtuelle java.
+
+           4.8.2 Version utilisée
+
+La version utilisée dans ce projet est : (à compléter) 
+5. Fonctionnalités Bonus
+ 
+
+    * L'application gère deux langues :
+          o Le français
+          o L'anglais.
+]]></mx:text>
+				</mx:TextArea>
+			
+			</mx:Panel>
+			<mx:Spacer height="5" />
+		</mx:VBox>
+	</mx:HBox>
+</mx:Canvas>

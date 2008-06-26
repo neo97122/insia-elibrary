@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="{refreshDataGrid();}" width="100%">
+	<mx:RemoteObject id="remoteObjectBookingManager" destination="reservationManager" fault="onFault(event)" result="reservationManagerHandler(event)"/>
+	<mx:DateFormatter id="dateFormater" formatString="DD-MM-YYYY" /> 
+
+    <mx:Script>
+		<![CDATA[
+			import mx.formatters.DateFormatter;
+			import mx.formatters.DateBase;
+			import mx.rpc.events.ResultEvent;
+			import mx.containers.TitleWindow;
+			import mx.validators.EmailValidator;
+			import mx.rpc.events.FaultEvent;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			import mx.controls.Spacer;
+			import mx.containers.ControlBar;
+			import mx.containers.Panel;
+			import mx.containers.VBox;
+			import mx.controls.Alert;
+			import org.insia.mdmsCorp.website.as3.Localizator;
+			
+			[Bindable]
+			[Embed(source='org/insia/mdmsCorp/website/ressources/img/exclamation.png')]
+			private var confirmIcon:Class;
+			
+			[Bindable]
+			[Embed(source='org/insia/mdmsCorp/website/ressources/img/refresh.gif')]
+			private var refreshImage:Class;
+				
+			/**
+			 * Inits the canvas
+			 **/
+			private function refreshDataGrid():void
+			{
+				remoteObjectBookingManager.getReservations();
+			}
+			
+			/**
+			 * Fills the datagrid on success.
+			 * 
+			 * @param result event
+			 * 
+			 **/ 
+			private function reservationManagerHandler(event:ResultEvent):void
+			{
+				backOfficeBookingCanvasDataGrid.dataProvider = event.result;
+			}
+			
+			private function formatDate(date:String):String
+			{
+				if (date == null)
+				{
+					return "";
+				}
+				else
+				{
+					return dateFormater.format(date);
+				}
+			}
+			
+			/**
+			 * Displays a message if the httpservice failed.
+			 * 
+			 * @param event FaultEvent
+			 * @param httpService String
+			 **/
+			private function onFault(event : FaultEvent):void
+			{
+				Alert.show("Error : " + event.fault.message);
+			}
+			
+			/**
+			 * First state of the form : it initializes the value of the inputText,
+			 * turns off buttons and display a confirm popup if we try to insert a new book.
+			 **/
+			private function buttonsState1():void
+			{
+				if (backOfficeAddNewButton.label == Localizator.getInstance(1).gT('backOfficeInsertButton'))
+				{
+					confirmPopup(Localizator.getInstance(1).gT('backOfficePopupConfirmInsertTitle'),Localizator.getInstance(1).gT('backOfficePopupConfirmInsertLabel'), doInsertNewBooking);
+				}
+				else
+				{
+					backOfficeUpdateButton.enabled = false;
+					backOfficeAddNewButton.label = Localizator.getInstance(1).gT('backOfficeInsertButton');
+					backOfficeDeleteButton.enabled = false;
+					backOfficeBookingCanvasDataGrid.selectedIndex = -1;
+					bookingId.text = "";
+					bookingMediaId.text = "";
+					bookingUserId.text = "";
+					bookingStartDate.text = "";
+					bookingEndDate.text = "";
+				}
+			} 
+			
+			/**
+			 * Second state of the form : it turns on buttons.
+			 **/
+			private function buttonsState2():void
+			{
+				backOfficeUpdateButton.enabled = true;
+				backOfficeAddNewButton.label = Localizator.getInstance(1).gT('backOfficeAddNewButton');
+				backOfficeDeleteButton.enabled = true;
+			}
+			
+			/**
+			 * Calls the webservice to update the booking.
+			 **/
+			private function doUpdateBooking(event:CloseEvent):void
+			{
+				if (event.detail == Alert.YES) 
+				{
+					remoteObjectBookingManager.updateReservation(backOfficeBookingCanvasDataGrid.selectedItem.id, parseInt(bookingUserId.text),	parseInt(bookingMediaId.text), bookingStartDate.text , bookingEndDate.text);
+					refreshDataGrid();
+				}
+			}
+			
+			/**
+			 * Calls the webservice to insert a new booking.
+			 **/
+			private function doInsertNewBooking(event:CloseEvent):void
+			{	
+				if (event.detail == Alert.YES) 
+				{
+					remoteObjectBookingManager.createReservation(parseInt(bookingUserId.text), parseInt(bookingMediaId.text));
+					refreshDataGrid();
+				}
+			}
+			
+			/**
+			 * Calls the webservice to delete the booking.
+			 **/
+			private function doDeleteBooking(event:CloseEvent):void
+			{
+				if (event.detail == Alert.YES) 
+				{
+					remoteObjectBookingManager.deleteReservation(backOfficeBookingCanvasDataGrid.selectedItem.id);
+					refreshDataGrid();
+				}
+			}
+			
+			/**
+			 * Opens a popup in order to choose a user from a list.
+			 **/ 
+			private function pickUser():void
+			{
+				var usersDialogBox:UsersDialogBox = UsersDialogBox(PopUpManager.createPopUp(this,UsersDialogBox,true));
+				PopUpManager.centerPopUp(usersDialogBox);
+			}
+			
+			/**
+			 * Opens a popup in order to choose a media from a list.
+			 **/ 
+			private function pickMedia():void
+			{
+				var mediaDialogBox:MediaDialogBox = MediaDialogBox(PopUpManager.createPopUp(this,MediaDialogBox,true));
+				PopUpManager.centerPopUp(mediaDialogBox);
+			}
+			
+			/**
+			 * Displays a confirming popup.
+			 * 
+			 * @param popupTitle String popup title
+			 * @param popupLabel String popup label
+			 * @param handler Function which is call after confirming the popup
+			 * 
+			 **/ 
+			private function confirmPopup(popupTitle:String, popupLabel:String, handler:Function):void 
+			{
+				var a:Alert = Alert.show(popupLabel, popupTitle, Alert.YES|Alert.NO, this, handler, confirmIcon, Alert.NO);
+			}
+			
+			/**
+			 * Displays a message if the httpservice failed.
+			 * 
+			 * @param event FaultEvent
+			 * @param httpService String
+			 **/
+			private function faultHandler(event:FaultEvent, httpService:String):void
+			{
+				Alert.show("HttpService " + httpService + " Failed : " + event.message);	
+			}
+			
+		]]>
+	</mx:Script>
+
+    <mx:Panel title="{Localizator.getInstance(1).gT('backOfficeBookingCanvasLabel')}" width="100%">
+		<mx:VBox horizontalAlign="center" width="100%">
+			<mx:Spacer height="10"/>
+			<mx:HBox width="100%">
+				<mx:Spacer width="10"/>
+				<mx:Button icon="{refreshImage}" click="{refreshDataGrid()}" />
+		        <mx:DataGrid id="backOfficeBookingCanvasDataGrid"  height="100%" change="{buttonsState2()}" width="50%">
+		       		<mx:columns>
+		                <mx:DataGridColumn dataField="id" headerText="{Localizator.getInstance(1).gT('backOfficeBookingCanvasBookingIdLabel')}" visible="false"/>
+		                <mx:DataGridColumn dataField="user" headerText="{Localizator.getInstance(1).gT('backOfficeBookingCanvasBookingUserIdLabel')}" width="90" sortable="false">
+		                	<mx:itemRenderer>
+			                    <mx:Component>
+			                        <mx:Label text="{data.user.id} | {data.user.login}" />
+			                    </mx:Component>
+			                </mx:itemRenderer>
+		                </mx:DataGridColumn>
+		                <mx:DataGridColumn dataField="media" headerText="{Localizator.getInstance(1).gT('backOfficeBookingCanvasBookingMediaIdLabel')}" width="90" sortable="false">
+		                	<mx:itemRenderer>
+			                    <mx:Component>
+			                        <mx:Label text="{data.media.id} | {data.media.reference}" />
+			                    </mx:Component>
+			                </mx:itemRenderer>
+		                </mx:DataGridColumn>
+		                <mx:DataGridColumn dataField="outDate" headerText="{Localizator.getInstance(1).gT('backOfficeBookingCanvasBookingStartDateLabel')}"/>
+		                <mx:DataGridColumn dataField="returnDate" headerText="{Localizator.getInstance(1).gT('backOfficeBookingCanvasBookingEndDateLabel')}"/>	
+		        	</mx:columns>
+		        </mx:DataGrid>
+		        <mx:Spacer width="10"/>
+		        <mx:HBox width="50%" height="100%" styleName="subBox" verticalAlign="middle" horizontalAlign="top">
+			        <mx:Form width="100%">    
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBookingCanvasBookingIdLabel')}" width="100%">
+			                <mx:Label id="bookingId" text="{backOfficeBookingCanvasDataGrid.selectedItem.id}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBookingCanvasBookingUserIdLabel')}" width="100%">
+			                <mx:HBox>
+			                	<mx:TextInput id="bookingUserId" text="{backOfficeBookingCanvasDataGrid.selectedItem.user.id}" width="75"/>
+			            		<mx:Button icon="@Embed(source='org/insia/mdmsCorp/website/ressources/img/searchIcon.png')" click="{pickUser()}"/>
+			                </mx:HBox>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBookingCanvasBookingMediaIdLabel')}" width="100%">
+			                <mx:HBox>
+			                	<mx:TextInput id="bookingMediaId" text="{backOfficeBookingCanvasDataGrid.selectedItem.media.id}" width="75"/>
+			                	<mx:Button icon="@Embed(source='org/insia/mdmsCorp/website/ressources/img/searchIcon.png')"  click="{pickMedia()}"/>
+			                </mx:HBox>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBookingCanvasBookingStartDateLabel')}" width="100%">
+			                <mx:DateField id="bookingStartDate" formatString="DD-MM-YYYY" yearNavigationEnabled="true" text="{formatDate(backOfficeBookingCanvasDataGrid.selectedItem.outDate)}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeBookingCanvasBookingEndDateLabel')}" width="100%">
+			                <mx:DateField id="bookingEndDate" formatString="DD-MM-YYYY" yearNavigationEnabled="true" text="{formatDate(backOfficeBookingCanvasDataGrid.selectedItem.returnDate)}"/>
+			            </mx:FormItem>
+			        </mx:Form>
+			        <mx:Spacer width="10"/>
+				</mx:HBox>
+
+		        <mx:Spacer width="10"/>
+	        </mx:HBox>
+	        <mx:Spacer height="5"/>
+	        <mx:HBox width="100%" horizontalAlign="center">
+	        	<mx:Button id="backOfficeUpdateButton" label="{Localizator.getInstance(1).gT('backOfficeUpdateButton')}" enabled="false" 
+	        		click="confirmPopup(Localizator.getInstance(1).gT('backOfficePopupComfirmUpdateTitle'),Localizator.getInstance(1).gT('backOfficePopupComfirmUpdateLabel'), doUpdateBooking)"/>
+	        	<mx:Button id="backOfficeAddNewButton" label="{Localizator.getInstance(1).gT('backOfficeAddNewButton')}" click="{buttonsState1()}"/>
+	        	<mx:Button id="backOfficeDeleteButton" label="{Localizator.getInstance(1).gT('backOfficeDeleteButton')}" enabled="false"
+	        		click="confirmPopup(Localizator.getInstance(1).gT('backOfficePopupConfirmDeleteTitle'),Localizator.getInstance(1).gT('backOfficePopupConfirmDeleteLabel'), doDeleteBooking)"/>
+	        </mx:HBox>
+	        <mx:Spacer height="10"/>
+		</mx:VBox>
+    </mx:Panel>
+
+    <mx:NumberValidator source="{bookingUserId}" property="text"/>
+    <mx:NumberValidator source="{bookingMediaId}" property="text"/>
+
+</mx:Canvas>  

@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="960" height="520" xmlns:views="org.insia.mdmsCorp.website.flex.*" creationComplete="{refreshDataGrid();}"  styleName="colorPanel">
+<mx:RemoteObject id="remoteObjectBookManager" destination="bookManager" fault="onFault(event)" result="bookManagerHandler(event)"/>
+<mx:RemoteObject id="remoteObjectEBookManager" destination="eBookManager" fault="onFault(event)" result="eBookManagerHandler(event)"/>
+<mx:RemoteObject id="remoteObjectMediaManager" destination="mediaManager" fault="onFault(event)" result="mediaManagerHandler(event)"/>
+
+<mx:Script>
+	<![CDATA[
+		import mx.core.Application;
+		import mx.formatters.SwitchSymbolFormatter;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		import org.insia.mdmsCorp.website.as3.Localizator;
+		import mx.controls.Alert;
+		
+		[Bindable]
+		[Embed(source='org/insia/mdmsCorp/website/ressources/img/exclamation.png')]
+		private var confirmIcon:Class;
+		
+		[Bindable]
+		[Embed(source='org/insia/mdmsCorp/website/ressources/img/refresh.gif')]
+		private var refreshImage:Class;
+		
+		[Bindable]
+		private var currentBooksList:Object;
+		[Bindable]
+		private var currentEBooksList:Object;
+		[Bindable]
+		private var currentMediasList:Object;
+		/**
+		 * Inits the canvas
+		 **/
+		public function refreshDataGrid():void
+		{
+			remoteObjectBookManager.getBooks();
+			remoteObjectEBookManager.getEBooks();
+			remoteObjectMediaManager.getMedias();
+			booksPanel.height = 500;
+		}	
+		
+		/**
+		 * Book Manager Handler.
+		 * 
+		 * @param result event
+		 * 
+		 **/ 
+		private function bookManagerHandler(event:ResultEvent):void
+		{
+			try
+			{
+				var object:Object = event.message.body;
+				if (object.message != null)
+				{
+					Alert.show(object.message, "Erreur", Alert.OK, this, null, confirmIcon, Alert.OK);
+				}
+			}
+			catch (error:Error)
+			{
+				//ignore
+			}
+			currentBooksList = event.result;
+		}
+		
+		/**
+		 * eBook Manager Handler.
+		 * 
+		 * @param result event
+		 * 
+		 **/ 
+		private function eBookManagerHandler(event:ResultEvent):void
+		{
+			try
+			{
+				var object:Object = event.message.body;
+				if (object.message != null)
+				{
+					Alert.show(object.message, "Erreur", Alert.OK, this, null, confirmIcon, Alert.OK);
+				}
+			}
+			catch (error:Error)
+			{
+				//ignore
+			}
+			currentEBooksList = event.result;
+		}
+		
+		/**
+		 * Media Manager Handler : set the Editors and Authors Comboboxes 
+		 * 
+		 * @param result event
+		 * 
+		 **/ 
+		private function mediaManagerHandler(event:ResultEvent):void
+		{
+			try
+			{
+				currentMediasList = event.result;
+				
+				var editorsList:Array = new Array();
+				var authorsList:Array = new Array();
+				
+				for each (var media:Object in currentMediasList) 
+				{
+					editorsList.push(media.editor);
+					authorsList.push(media.author);
+				}
+
+				editorCombobox.dataProvider = keepUniqueValue(editorsList);
+				authorCombobox.dataProvider = keepUniqueValue(authorsList);
+			}
+			catch (error:Error)
+			{
+				Alert.show("Error : " + error.message);
+			}
+		}
+		
+		/**
+		 * Displays a message if the httpservice failed.
+		 * 
+		 * @param event FaultEvent
+		 * @param httpService String
+		 **/
+		private function onFault(event : FaultEvent):void
+		{
+			Alert.show("Error : " + event.fault.message);
+		}
+		
+		private function keepUniqueValue(array:Array):Array
+		{
+			var tempArray:Array = new Array();
+			var tempIndex:int = 0;
+			
+			array.sort();
+			tempArray[0] = array[0];
+			tempIndex++;
+			
+			for(var i:int = 1; i < array.length; i++) 
+			{
+				if(array[i] != array[i-1]) 
+				{
+					tempArray[tempIndex] = array[i];
+					tempIndex++;
+				}
+			}
+			tempArray.push("...");
+			tempArray.sort();
+			return tempArray;
+		}
+		
+		/**
+		 * Sets the author filter on.
+		 **/
+		private function setAuthorFilterOn():void
+		{
+			editorCombobox.selectedIndex = 0;
+			if (authorCombobox.selectedItem == "...")
+			{
+				booksRepeater.dataProvider = currentBooksList;
+				eBooksRepeater.dataProvider = currentEBooksList;
+			}
+			else
+			{
+				var newBooksList:Array = new Array();
+				var newEBooksList:Array = new Array();
+				
+				for each (var book:Object in currentBooksList) 
+				{
+					if (book.author == authorCombobox.selectedItem)
+					{
+						newBooksList.push(book);
+					}
+				}
+				
+				for each (var ebook:Object in currentEBooksList) 
+				{
+					if (ebook.author == authorCombobox.selectedItem)
+					{
+						newEBooksList.push(ebook);
+					}
+				}
+				
+				booksRepeater.dataProvider = newBooksList;
+				eBooksRepeater.dataProvider = newEBooksList;
+			}
+		}
+		
+		/**
+		 * Sets the editor filter on.
+		 **/
+		private function setEditorFilterOn():void
+		{
+			authorCombobox.selectedIndex = 0;
+
+			if (editorCombobox.selectedItem == "...")
+			{
+				booksRepeater.dataProvider = currentBooksList;
+				eBooksRepeater.dataProvider = currentEBooksList;
+			}
+			else
+			{
+				var newBooksList:Array = new Array();
+				var newEBooksList:Array = new Array();
+				
+				for each (var book:Object in currentBooksList) 
+				{
+					if (book.editor == editorCombobox.selectedItem)
+					{
+						newBooksList.push(book);
+					}
+				}
+				
+				for each (var ebook:Object in currentEBooksList) 
+				{
+					if (ebook.editor == editorCombobox.selectedItem)
+					{
+						newEBooksList.push(ebook);
+					}
+				}
+				
+				booksRepeater.dataProvider = newBooksList;
+				eBooksRepeater.dataProvider = newEBooksList;
+			}
+		}
+		
+		/**
+		 *  Searches a media and displays result
+		 **/ 
+		private function searchMedia(mediaList:Object):void
+		{
+			var resultList:Array = new Array();
+			
+			for each (var media:Object in mediaList) 
+			{
+				var string1:String = (media.title as String).toLowerCase();
+				var string2:String = (keyword.text).toLowerCase();
+				
+				if (string1.search(string2) != -1)
+				{
+					resultList.push(media);
+				}
+			}
+			occurenciesDataGrid.dataProvider = resultList;
+			mediaTabNavigator.selectedIndex = 2;
+		} 
+	]]>
+</mx:Script>
+
+	<mx:HBox width="100%" height="100%">
+		<mx:Spacer width="4" />
+		
+		<mx:VBox width="230" height="100%">
+			<mx:Spacer height="4"/>
+			<mx:VBox width="100%" height="100" backgroundColor="#888888" styleName="homeSection" horizontalAlign="center" verticalAlign="middle">
+				<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceIndexSearchTitle')}" styleName="sectionHeader"/>
+				<mx:HBox>
+					<mx:TextInput id="keyword" height="20" width="150"/>
+					<mx:Button label="Go" width="47" height="20" styleName="glass" click="{searchMedia(userInterfaceRadioButtonGroup.selectedValue)}" buttonMode="true"/>
+				</mx:HBox>
+				<mx:HBox>
+					<mx:RadioButtonGroup id="userInterfaceRadioButtonGroup" />
+	           		<mx:RadioButton groupName="userInterfaceRadioButtonGroup" value="{currentBooksList}" id="bookRadioButton" label="{Localizator.getInstance(1).gT('userInterfaceIndexSearchBook')}" />
+	        		<mx:RadioButton groupName="userInterfaceRadioButtonGroup" value="{currentEBooksList}" id="eBookRadioButton" label="{Localizator.getInstance(1).gT('userInterfaceIndexSearchEBook')}" />  			
+					<mx:RadioButton groupName="userInterfaceRadioButtonGroup" selected="true" value="{currentMediasList}" id="bothRadioButton" label="{Localizator.getInstance(1).gT('userInterfaceIndexSearchBoth')}" />
+				</mx:HBox>
+			</mx:VBox>
+			<mx:VBox width="100%" height="180" backgroundColor="#ffffff" styleName="homeSection" horizontalAlign="center" verticalAlign="middle">
+				<mx:Box width="90%" height="90%"> 
+					<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceMediaFilter')}" styleName="sectionHeader"/>
+					<mx:HRule height="5" width="197"/>
+					<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceMediaEditorLabel')}" />
+					<mx:ComboBox id="editorCombobox" width="200" change="{setEditorFilterOn()}"/>
+					<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceMediaAuthorLabel')}" />
+					<mx:ComboBox labelField="author" id="authorCombobox"  width="200" change="{setAuthorFilterOn()}"/>		
+				</mx:Box>
+			</mx:VBox>			
+		</mx:VBox>
+		<mx:VBox width="100%" height="100%" horizontalAlign="center" label="Book">
+			<mx:Spacer height="5" />
+			<mx:Panel id="booksPanel" width="98%" title="{Localizator.getInstance(1).gT('userInterfaceMediaMediaExplorer')}" styleName="catalogPanel">	
+				<mx:Canvas width="100%" height="100%">
+					<mx:SWFLoader source="{refreshImage}" click="{refreshDataGrid()}" horizontalAlign="right" width="99%"/>
+					<mx:TabNavigator width="100%" height="100%" id="mediaTabNavigator">
+							<mx:Tile label="{Localizator.getInstance(1).gT('userInterfaceIndexSearchBook')}" direction="horizontal" horizontalGap="10" verticalGap="15" paddingLeft="10" paddingTop="10" paddingBottom="10" paddingRight="10" width="100%" height="100%">
+								<mx:Repeater id="booksRepeater" dataProvider="{currentBooksList}">
+									<views:BookView>
+										<views:bookId>{booksRepeater.currentItem.id}</views:bookId>
+										<views:bookIsbn>{booksRepeater.currentItem.reference}</views:bookIsbn>
+										<views:bookTitle>{booksRepeater.currentItem.title}</views:bookTitle>
+										<views:bookSummary>{booksRepeater.currentItem.description}</views:bookSummary>
+										<views:bookEditor>{booksRepeater.currentItem.editor}</views:bookEditor>
+										<views:bookAuthor>{booksRepeater.currentItem.author}</views:bookAuthor>
+										<views:bookQuantity>{booksRepeater.currentItem.quantity}</views:bookQuantity>
+										<views:imagePath>{booksRepeater.currentItem.image_url}</views:imagePath>
+									</views:BookView>
+								</mx:Repeater>
+							</mx:Tile>
+							<mx:Tile label="{Localizator.getInstance(1).gT('userInterfaceIndexSearchEBook')}" direction="horizontal" horizontalGap="10" verticalGap="15" paddingLeft="10" paddingTop="10" paddingBottom="10" paddingRight="10" width="100%" height="100%">
+								<mx:Repeater id="eBooksRepeater" dataProvider="{currentEBooksList}">
+									<views:EBookView>
+										<views:ebookTitle>{eBooksRepeater.currentItem.title}</views:ebookTitle>
+										<views:ebookSummary>{eBooksRepeater.currentItem.description}</views:ebookSummary>
+										<views:ebookEditor>{eBooksRepeater.currentItem.editor}</views:ebookEditor>
+										<views:ebookAuthor>{eBooksRepeater.currentItem.author}</views:ebookAuthor>
+										<views:urlPath>{eBooksRepeater.currentItem.url}</views:urlPath>
+										<views:imagePath>{eBooksRepeater.currentItem.image_url}</views:imagePath>
+									</views:EBookView>
+								</mx:Repeater>
+							</mx:Tile>
+							<mx:Tile label="{Localizator.getInstance(1).gT('userInterfaceOccurencies')}" direction="horizontal" horizontalGap="10" verticalGap="15" paddingLeft="10" paddingTop="10" paddingBottom="10" paddingRight="10" width="100%" height="100%">
+								<mx:DataGrid id="occurenciesDataGrid" width="650" height="415">
+									<mx:columns>
+										 <mx:DataGridColumn dataField="image_url" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEbookImageURLLabel')}" width="80">
+										 	<mx:itemRenderer>
+							                    <mx:Component>
+													<mx:Image horizontalAlign="center" width="50" height="80" source="{(data != '') ? 'org/insia/mdmsCorp/website/ressources/upload/' + data.image_url : 'org/insia/mdmsCorp/website/ressources/img/noImage.gif'}" />
+							                    </mx:Component>
+							                </mx:itemRenderer>
+										 </mx:DataGridColumn>
+										 <mx:DataGridColumn dataField="author" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookAuthorLabel')}"/>
+										 <mx:DataGridColumn dataField="title" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookTitleLabel')}"/>
+										 <mx:DataGridColumn dataField="description"  visible="false"/>
+										 <mx:DataGridColumn dataField="editor" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookEditorLabel')}"/>
+										 <mx:DataGridColumn dataField="id"  visible="false"/>
+										 <mx:DataGridColumn dataField="reference" headerText="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasEBookIsbnLabel')}"/>
+										 <mx:DataGridColumn dataField="url"  visible="false"/>
+									</mx:columns>
+								</mx:DataGrid>
+							</mx:Tile>
+					</mx:TabNavigator>
+				</mx:Canvas>
+			</mx:Panel>
+			<mx:Spacer height="5" />
+		</mx:VBox>
+	</mx:HBox>
+</mx:Canvas>

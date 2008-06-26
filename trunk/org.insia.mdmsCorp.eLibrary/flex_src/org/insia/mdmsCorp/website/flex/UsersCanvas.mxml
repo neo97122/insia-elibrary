@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="{refreshDataGrid();}" width="100%">
+    <mx:RemoteObject id="remoteObjectUserManager" destination="userManager" fault="onFault(event)" result="onResult(event)"/>
+    <mx:Script>
+		<![CDATA[
+			import mx.events.ValidationResultEvent;
+			import mx.controls.List;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			import mx.messaging.AbstractConsumer;
+			import mx.controls.Spacer;
+			import mx.containers.ControlBar;
+			import mx.containers.Panel;
+			import mx.containers.VBox;
+			import mx.charts.renderers.DiamondItemRenderer;
+			import mx.controls.Alert;
+			import mx.controls.DataGrid;
+			import org.insia.mdmsCorp.website.as3.Localizator;
+			import org.insia.mdmsCorp.website.as3.MD5;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Embed(source='org/insia/mdmsCorp/website/ressources/img/exclamation.png')]
+			private var confirmIcon:Class;
+			
+			[Bindable]
+			[Embed(source='org/insia/mdmsCorp/website/ressources/img/refresh.gif')]
+			private var refreshImage:Class;
+			
+			/**
+			 * Inits the canvas
+			 **/
+			private function refreshDataGrid():void
+			{
+				remoteObjectUserManager.getUsers();
+			}
+			
+			/**
+            * Validate the user.
+            * @return true | false
+            **/ 
+            private function validateUser():Boolean
+            {                
+				var validLoginEvent:ValidationResultEvent = loginValidator.validate();
+				var validPasswordEvent:ValidationResultEvent = passwordValidator.validate();
+				var validEmailEvent:ValidationResultEvent = emailValidator.validate();
+				
+				if (validLoginEvent.type == ValidationResultEvent.VALID && validPasswordEvent.type == ValidationResultEvent.VALID && validEmailEvent.type == ValidationResultEvent.VALID)
+				{
+					return true;
+				}
+				else
+				{
+					Alert.show(Localizator.getInstance(1).gT('backOfficeErrorUserIsNotValid'));
+					return false;
+				}
+            }
+			
+			/**
+			 * Fills the datagrid on success.
+			 * 
+			 * @param result event
+			 * 
+			 **/ 
+			private function onResult(event:ResultEvent):void
+			{
+				try
+				{
+					var object:Object = event.message.body;
+					if (object.message != null)
+					{
+						Alert.show(object.message, "Erreur", Alert.OK, this, null, confirmIcon, Alert.OK);
+					}
+				}
+				catch (error:Error)
+				{
+					//ignore
+				}
+				backOfficeUsersCanvasDataGrid.dataProvider = event.result;
+			}
+			
+			/**
+			 * First state of the form : it initializes the value of the inputText,
+			 * turns off buttons and display a confirm popup if we try to insert a new user.
+			 **/
+			private function buttonsState1():void
+			{
+				if (backOfficeAddNewButton.label == Localizator.getInstance(1).gT('backOfficeInsertButton'))
+				{
+					confirmPopup(Localizator.getInstance(1).gT('backOfficePopupConfirmInsertTitle'),Localizator.getInstance(1).gT('backOfficePopupConfirmInsertLabel'), doInsertNewUser);
+				}
+				else
+				{
+					backOfficeUpdateButton.enabled = false;
+					backOfficeAddNewButton.label = Localizator.getInstance(1).gT('backOfficeInsertButton');
+					backOfficeDeleteButton.enabled = false;
+					userId.text = "";
+					userLogin.text = "";
+					userPassword.text = "";
+					userName.text = "";
+					userFirstName.text = "";
+					userMail.text = "";
+					userRadioButton.selected = true;
+					backOfficeUsersCanvasDataGrid.selectedIndex = -1;
+				}
+			} 
+			
+			/**
+			 * Second state of the form : it turns on buttons.
+			 **/
+			private function buttonsState2():void
+			{
+				backOfficeUpdateButton.enabled = true;
+				backOfficeAddNewButton.label = Localizator.getInstance(1).gT('backOfficeAddNewButton');
+				backOfficeDeleteButton.enabled = true;
+				setUserAdminRadioButton();
+			}
+			
+			/**
+			 * Sets the value of the radio button (admin or user)
+			 **/
+			private function setUserAdminRadioButton():void
+			{
+				try 
+				{
+					if (backOfficeUsersCanvasDataGrid.selectedItem.admin)
+					{
+						adminRadioButton.selected = true;
+					}
+					else
+					{
+						userRadioButton.selected = true;
+					}
+				}
+				catch (error:Error)
+				{
+					trace("There is no selected item");
+				}
+			}
+			
+			/**
+			 * Calls the remote object to update the user.
+			 * 
+			 * @param close event
+			 **/
+			private function doUpdateUser(event:CloseEvent):void
+			{
+				if (event.detail == Alert.YES && validateUser()) 
+				{
+					remoteObjectUserManager.updateUser(backOfficeUsersCanvasDataGrid.selectedItem.login, backOfficeUsersCanvasDataGrid.selectedItem.password,  userName.text, userFirstName.text, userMail.text, (adminRadioButton.selected) ? true : false);
+					refreshDataGrid();
+				}
+			}
+			
+			/**
+			 * Calls the remoteObject to insert a new user.
+			 * 
+			 * @param close event
+			 **/
+			private function doInsertNewUser(event:CloseEvent):void
+			{
+				if (event.detail == Alert.YES && validateUser()) 
+				{
+	                remoteObjectUserManager.createUser(userLogin.text, MD5.calculate(userPassword.text),  userName.text, userFirstName.text, userMail.text, (adminRadioButton.selected) ? true : false);	                
+					refreshDataGrid();
+				}
+			}
+			
+			/**
+			 * Calls the remoteObject to delete the user.
+			 * 
+			 * @param closeEvent
+			 **/
+			private function doDeleteUser(event:CloseEvent):void
+			{
+				if (event.detail == Alert.YES && validateUser()) 
+				{
+					remoteObjectUserManager.deleteUser(userLogin.text);
+					refreshDataGrid();
+				}
+			}
+			
+			/**
+			 * Displays a confirming popup.
+			 * 
+			 * @param popupTitle String popup title
+			 * @param popupLabel String popup label
+			 * @param handler Function which is call after confirming the popup
+			 * 
+			 **/ 
+			private function confirmPopup(popupTitle:String, popupLabel:String, handler:Function):void 
+			{
+				var a:Alert = Alert.show(popupLabel, popupTitle, Alert.YES|Alert.NO, this, handler, confirmIcon, Alert.NO);
+			}
+			
+			/**
+			 * Displays a message if the httpservice failed.
+			 * 
+			 * @param event FaultEvent
+			 * @param httpService String
+			 **/
+			private function onFault(event : FaultEvent):void
+			{
+				Alert.show("Error : " + event.fault.message);
+			}
+		]]>
+	</mx:Script>
+
+    <mx:Panel title="{Localizator.getInstance(1).gT('backOfficeUsersCanvasLabel')}" width="100%">
+		<mx:VBox horizontalAlign="center" width="100%">
+			<mx:Spacer height="10"/>
+			<mx:HBox width="100%">
+				<mx:Spacer width="10"/>
+				<mx:Button icon="{refreshImage}" click="{refreshDataGrid()}" buttonMode="true"/>
+		        <mx:DataGrid id="backOfficeUsersCanvasDataGrid" height="100%" change="{buttonsState2()}" width="50%">
+		        	<mx:columns>
+		                <mx:DataGridColumn dataField="id" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserIdLabel')}" width="40"/>
+		                <mx:DataGridColumn dataField="login" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserLoginLabel')}"/>
+		                <mx:DataGridColumn dataField="admin" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserAdminLabel')}"/>		               
+		                <mx:DataGridColumn dataField="password" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserPasswordLabel')}" visible="false"/>
+		                <mx:DataGridColumn dataField="name" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserNameLabel')}"/>
+		                <mx:DataGridColumn dataField="firstname" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserFirstNameLabel')}" visible="false"/>
+		                <mx:DataGridColumn dataField="mail" headerText="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserMailLabel')}" visible="false"/>
+		            </mx:columns>
+		        </mx:DataGrid>
+		        <mx:Spacer width="10"/>
+		        <mx:Box width="50%" styleName="subBox">
+			        <mx:Form width="100%">
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserIdLabel')}" width="100%">
+			                <mx:Label id="userId" text="{backOfficeUsersCanvasDataGrid.selectedItem.id}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserLoginLabel')}" width="100%">
+			                <mx:TextInput id="userLogin" text="{backOfficeUsersCanvasDataGrid.selectedItem.login}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserPasswordLabel')}" width="100%">
+			                <mx:TextInput id="userPassword" displayAsPassword="true" text="{backOfficeUsersCanvasDataGrid.selectedItem.password}" width="160"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserNameLabel')}" width="100%">
+			                <mx:TextInput id="userName" text="{backOfficeUsersCanvasDataGrid.selectedItem.name}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserFirstNameLabel')}" width="100%">
+			                <mx:TextInput id="userFirstName" text="{backOfficeUsersCanvasDataGrid.selectedItem.firstname}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserMailLabel')}" width="100%">
+			                <mx:TextInput id="userMail" text="{backOfficeUsersCanvasDataGrid.selectedItem.mail}"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserAdminLabel')}" width="100%">
+							<mx:RadioButtonGroup id="userAdminRadioButtonGroup" />
+			                <mx:HBox>
+			                	<mx:RadioButton groupName="userAdminRadioButtonGroup" id="userRadioButton" label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasSimpleUserLabel')}" />
+			                	<mx:RadioButton groupName="userAdminRadioButtonGroup" id="adminRadioButton" label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasAdminUserLabel')}" />  			
+			                </mx:HBox>
+			            </mx:FormItem>
+			        </mx:Form>
+		        </mx:Box>
+		        <mx:Spacer width="10"/>
+	        </mx:HBox>
+	        <mx:Spacer height="5"/>
+	        <mx:HBox width="100%" horizontalAlign="center">
+	        	<mx:Button id="backOfficeUpdateButton" label="{Localizator.getInstance(1).gT('backOfficeUpdateButton')}" enabled="false" buttonMode="true"
+	        		click="confirmPopup(Localizator.getInstance(1).gT('backOfficePopupComfirmUpdateTitle'),Localizator.getInstance(1).gT('backOfficePopupComfirmUpdateLabel'), doUpdateUser)"/>
+	        	<mx:Button id="backOfficeAddNewButton" label="{Localizator.getInstance(1).gT('backOfficeAddNewButton')}" click="{buttonsState1()}" buttonMode="true"/>
+	        	<mx:Button id="backOfficeDeleteButton" label="{Localizator.getInstance(1).gT('backOfficeDeleteButton')}" enabled="false" buttonMode="true"
+	        		click="confirmPopup(Localizator.getInstance(1).gT('backOfficePopupConfirmDeleteTitle'),Localizator.getInstance(1).gT('backOfficePopupConfirmDeleteLabel'), doDeleteUser)"/>
+	        </mx:HBox>
+	        <mx:Spacer height="10"/>
+		</mx:VBox>
+    </mx:Panel>
+
+    <mx:StringValidator id="loginValidator" source="{userLogin}" property="text" minLength="4" maxLength="16"/>
+ 	<mx:StringValidator id="passwordValidator" source="{userPassword}" property="text" minLength="4" maxLength="100"/>
+    <mx:EmailValidator id="emailValidator" source="{userMail}" property="text"/>
+	
+</mx:Canvas>
