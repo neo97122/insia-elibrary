@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="600" height="400"
+	showCloseButton="false" title="{Localizator.getInstance(1).gT('backOfficeMediaDialogBoxTitle')}"
+	creationComplete="{initDialogBox()}" >
+
+    <mx:Script>
+    	<![CDATA[
+    		import mx.controls.Alert;
+    		import mx.core.Application;
+    		import mx.managers.PopUpManager;
+			import org.insia.mdmsCorp.website.as3.Localizator;
+			
+			
+			/**
+			 * Initializes the dialog box, retrieve the selected row in the data grid
+			 **/
+			private function initDialogBox():void
+			{
+				var i:int = 0;
+				for each (var book:Object in backOfficeMediaCanvasDataGrid.dataProvider) 
+				{
+				    if (book.id == Application.application.bookingCanvas.bookingMediaId.text)
+				    {
+				    	backOfficeMediaCanvasDataGrid.selectedIndex = i;
+				    }
+				    i++;
+				}
+			}
+			
+			/**
+			 * Enables the validate button
+			 **/
+			private function buttonState():void
+			{
+				validateButton.enabled = true;
+			}
+			
+			/**
+			 * Closes the popup
+			 **/  
+			private function closePopup():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+			
+			/**
+			 * Pick the selected media and close the popup
+			 **/ 
+			private function pickThisBook():void
+			{
+				Application.application.bookingCanvas.bookingMediaId.text = backOfficeMediaCanvasDataGrid.selectedItem.id;
+				closePopup();
+			}
+    	]]>
+    </mx:Script>
+    
+	<mx:VBox width="100%" height="100%" horizontalAlign="center">
+        <mx:Spacer height="10" />
+        <mx:HBox width="100%" height="100%" >
+        	<mx:Spacer width="10"/>
+	        <mx:DataGrid id="backOfficeMediaCanvasDataGrid" dataProvider="{Application.application.booksCanvas.backOfficeBooksCanvasDataGrid.dataProvider}" height="100%" click="{buttonState()}" width="100%">
+	            <mx:columns>
+	                <mx:DataGridColumn dataField="id" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIdLabel')}" width="50"/>
+	                <mx:DataGridColumn dataField="reference" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookIsbnLabel')}" width="60"/>
+	                <mx:DataGridColumn dataField="title" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookTitleLabel')}"/>
+	                <mx:DataGridColumn dataField="image_url" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookURLCoverLabel')}" visible="false"/>
+	                <mx:DataGridColumn dataField="description" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookSummaryLabel')}" visible="false"/>
+	                <mx:DataGridColumn dataField="author" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookAuthorLabel')}"/>
+	                <mx:DataGridColumn dataField="editor" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookEditorLabel')}"/>
+	           		<mx:DataGridColumn dataField="quantity" headerText="{Localizator.getInstance(1).gT('backOfficeBooksCanvasBookQuantityLabel')}" width="70"/>	
+	            </mx:columns>
+	        </mx:DataGrid>
+	        <mx:Spacer width="10"/>
+        </mx:HBox>
+        <mx:Spacer height="5" />
+        <mx:HBox>
+        	<mx:Button id="validateButton" label="{Localizator.getInstance(1).gT('backOfficeMediaDialogBoxValidateButton')}" enabled="false" click="{pickThisBook()}"/>
+        	<mx:Button label="{Localizator.getInstance(1).gT('backOfficeMediaDialogBoxCancelButton')}" click="{closePopup()}"/>
+        </mx:HBox>
+        <mx:Spacer height="10" />
+	</mx:VBox>
+</mx:TitleWindow>

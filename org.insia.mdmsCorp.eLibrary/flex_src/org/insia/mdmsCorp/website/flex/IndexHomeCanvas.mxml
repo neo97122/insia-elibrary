@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="*" width="960" height="520" initialize="{initCanvas()}"
+	xmlns:views="org.insia.mdmsCorp.website.flex.*">
+<mx:RemoteObject id="remoteObjectMediaManager" destination="mediaManager" fault="onFault(event)" result="mediaManagerHandler(event)"/>
+<mx:RemoteObject id="remoteObjectUserManager" destination="userManager" fault="onFault(event)" result="userManagerHandler(event)"/>
+
+<mx:Script>
+	<![CDATA[
+		import mx.managers.PopUpManager;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		import mx.core.Application;
+		import org.insia.mdmsCorp.website.as3.Localizator;
+		import mx.controls.Alert;
+		
+		private function initCanvas():void
+		{
+			remoteObjectMediaManager.getMedias();
+			remoteObjectUserManager.getUsers();
+		}
+		
+		/**
+		 * Media Manager Handler 
+		 * 
+		 * @param result event
+		 * 
+		 **/ 
+		private function mediaManagerHandler(event:ResultEvent):void
+		{
+			try
+			{
+				var lastMediaList:Array = new Array();
+				
+				for each (var media:Object in event.result) 
+				{
+					lastMediaList.push(media);
+				}
+				topMediaRepeater.dataProvider = lastMediaList.slice(0,2);//fixme
+				
+				lastMediaList.reverse();
+				lastMediaRepeater.dataProvider = lastMediaList.slice(0,3);
+			}
+			catch (error:Error)
+			{
+				Alert.show("Error : " + error.message);
+			}
+		}
+		
+		/**
+		 * User Manager Handler 
+		 * 
+		 * @param result event
+		 * 
+		 **/ 
+		private function userManagerHandler(event:ResultEvent):void
+		{			
+			try
+			{
+				var lastUserList:Array = new Array();
+				
+				for each (var user:Object in event.result) 
+				{
+					lastUserList.push(user);
+				}
+				lastUserList.reverse();
+				lastUserRepeater.dataProvider = lastUserList.slice(0,3);
+			}
+			catch (error:Error)
+			{
+				Alert.show("Error : " + error.message);
+			}
+		}
+		
+		/**
+		 * Displays a message if the httpservice failed.
+		 * 
+		 * @param event FaultEvent
+		 * @param httpService String
+		 **/
+		private function onFault(event : FaultEvent):void
+		{
+			Alert.show("Error : " + event.fault.message);
+		}
+		
+		private function subscribe():void
+		{
+			var subscribeDialogBoc:SubscribeDialogBox = SubscribeDialogBox(PopUpManager.createPopUp(this,SubscribeDialogBox,true));
+			PopUpManager.centerPopUp(subscribeDialogBoc);
+		}
+		
+	]]>
+</mx:Script>
+	<mx:HBox width="100%" height="100%" styleName="colorPanel">
+		<mx:Spacer width="4" />
+		<mx:VBox width="230" height="100%">
+			<mx:Spacer height="4"/>
+				
+			<mx:VBox width="100%" height="200" backgroundColor="#E9E9E9" styleName="homeSection" horizontalAlign="center" verticalAlign="top">
+				<mx:Spacer height="5"/>
+				<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceIndexLastUpdates')}"  styleName="sectionHeader" color="#008FD9"/>
+				<mx:Repeater id="lastMediaRepeater">
+					<views:LastMediaView>
+						<views:mediaTitle>{lastMediaRepeater.currentItem.title}</views:mediaTitle>
+						<views:mediaAuthor>{lastMediaRepeater.currentItem.author}</views:mediaAuthor>
+						<views:mediaEditor>{lastMediaRepeater.currentItem.editor}</views:mediaEditor>
+					</views:LastMediaView>
+				</mx:Repeater>
+			</mx:VBox>
+			
+			<mx:VBox width="100%" height="100" styleName="homeSection" horizontalAlign="center" verticalAlign="middle" buttonMode="true" click="{subscribe();}">
+				<mx:Canvas width="100%" height="100%">
+					<mx:Image source="@Embed(source='org/insia/mdmsCorp/website/ressources/img/subscription.jpg')"/>
+					<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceSubscription1')}"  x="8" y="8" color="#FFFFFF"/>
+					<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceSubscription2')}"  y="28" x="24" color="#FFFFFF"/>
+					<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceSubscription3')}" x="15" y="55" color="#FFFFFF"/>
+					<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceSubscription4')}" x="7" y="75" color="#FFFFFF"/>
+				</mx:Canvas>
+			</mx:VBox>
+			
+			<mx:VBox width="100%" height="188" backgroundColor="#E9E9E9" styleName="homeSection" horizontalAlign="center" verticalAlign="top">
+				<mx:Spacer height="5"/>
+				<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceIndexLastUsers')}" styleName="sectionHeader" color="#008FD9"/>
+				<mx:Repeater id="lastUserRepeater">
+					<views:LastUserView>
+						<views:userLogin>{lastUserRepeater.currentItem.login}</views:userLogin>
+						<views:userMail>{lastUserRepeater.currentItem.mail}</views:userMail>
+					</views:LastUserView>
+				</mx:Repeater>
+			</mx:VBox>
+		
+			
+		</mx:VBox>
+		
+		<mx:VBox width="100%" height="100%">
+			<mx:Spacer height="6" />
+			<mx:VBox width="100%" height="100%">
+				<mx:Canvas width="700" height="190" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+					<mx:Image width="100%" height="100%" source="@Embed(source='org/insia/mdmsCorp/website/ressources/img/homeBackground.jpg')"/>
+					<mx:Canvas width="100%" height="100%" >
+						<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceIndexH1')}"  fontWeight="bold" fontSize="22" color="#111111" fontFamily="Arial" x="108" y="110"/>
+						<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceIndexJoinUs')}" width="190" fontSize="12" fontFamily="Arial" x="385" y="159"/>
+						<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceIndexH2')}" fontSize="20" color="#E6FFA2" fontWeight="bold" fontFamily="Arial"  x="188" y="48"/>
+						<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceIndexH3')}" fontSize="20" color="#ffffff" fontFamily="Arial" fontWeight="bold" x="16" y="10"/>
+					</mx:Canvas>
+				</mx:Canvas>
+				
+				<mx:Panel width="700" height="300" y="210" styleName="catalogPanel" title="{Localizator.getInstance(1).gT('userInterfaceMediaMediaExplorer')}">
+					<mx:VBox width="100%" height="100%" backgroundColor="#ffffff" horizontalAlign="center" >
+						<mx:Spacer height="5"/>
+						<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceIndexTop3')}" width="173" height="25" styleName="sectionHeader"/>
+						<mx:Tile direction="horizontal" horizontalGap="10" verticalGap="15" paddingLeft="10" paddingTop="10" paddingBottom="10" paddingRight="10" width="100%" height="100%">
+							<mx:Repeater id="topMediaRepeater">
+								<views:TopMediaView>
+									<views:bookTitle>{topMediaRepeater.currentItem.title}</views:bookTitle>
+									<views:bookSummary>{topMediaRepeater.currentItem.description}</views:bookSummary>
+									<views:bookEditor>{topMediaRepeater.currentItem.editor}</views:bookEditor>
+									<views:bookAuthor>{topMediaRepeater.currentItem.author}</views:bookAuthor>
+									<views:imagePath>{topMediaRepeater.currentItem.image_url}</views:imagePath>
+								</views:TopMediaView>
+							</mx:Repeater>
+						</mx:Tile>
+					</mx:VBox>
+				</mx:Panel>
+				
+			</mx:VBox>
+		</mx:VBox>
+		
+	</mx:HBox>
+	
+</mx:Canvas>

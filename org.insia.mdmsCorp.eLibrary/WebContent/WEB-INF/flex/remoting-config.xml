@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="remoting-service"
+    class="flex.messaging.services.RemotingService">
+
+    <adapters>
+        <adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="true"/>
+    </adapters>
+
+    <default-channels>
+        <channel ref="my-amf"/>
+    </default-channels>
+
+    <destination id="userManager">
+		<properties>
+			<factory>SpringFactory</factory>
+			<source>userManager</source>
+		</properties>
+	</destination>
+
+	<destination id="bookManager">
+		<properties>
+			<factory>SpringFactory</factory>
+			<source>bookManager</source>
+		</properties>
+	</destination>
+
+	<destination id="eBookManager">
+		<properties>
+			<factory>SpringFactory</factory>
+			<source>eBookManager</source>
+		</properties>
+	</destination>
+
+	<destination id="reservationManager">
+		<properties>
+			<factory>SpringFactory</factory>
+			<source>reservationManager</source>
+		</properties>
+	</destination>
+
+	<destination id="mediaManager">
+		<properties>
+			<factory>SpringFactory</factory>
+			<source>mediaManager</source>
+		</properties>
+	</destination>
+
+
+</service>

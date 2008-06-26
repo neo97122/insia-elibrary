@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" horizontalScrollPolicy="off" verticalScrollPolicy="off" backgroundColor="#FFFFFF" 
+	width="100%" verticalGap="0" horizontalGap="0" horizontalAlign="center">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import mx.controls.Alert;
+			
+			[Bindable]
+			public var userLogin:String = "";
+			
+			[Bindable]
+			public var userMail:String = "";
+		]]>
+	</mx:Script>
+	<mx:Label text=":: {userLogin} ::"/>
+	<mx:Label text="{userMail}" styleName="h1"/>
+	<mx:Spacer height="5" width="100%"/>
+</mx:VBox>

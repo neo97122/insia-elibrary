@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+	layout="absolute" minWidth="990" minHeight="550"
+	xmlns:mdms="org.insia.mdmsCorp.website.flex.*"
+	preloader="org.insia.mdmsCorp.website.as3.CustomPreloader" 
+	styleName="indexApplication"
+	 creationPolicy="all">
+	
+	<mx:RemoteObject id="remoteObjectUserManager" destination="userManager" result="onResult(event)" fault="onFault(event)"/>
+	
+	<mx:Style source="org/insia/mdmsCorp/website/ressources/css/default_style.css"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import org.insia.mdmsCorp.website.as3.MD5;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.controls.TextInput;
+			import org.insia.mdmsCorp.website.as3.Localizator;
+			
+			[Embed(source='org/insia/mdmsCorp/website/ressources/img/exclamation.png')]
+			private var alertIcon:Class;
+			
+			public var currentUser:Object;
+			
+			private function checkLogin():void
+			{
+				remoteObjectUserManager.checkLogin(loginTextInput.text, MD5.calculate(passwordTextInput.text));
+			}
+			
+			private function onResult(event : ResultEvent):void
+			{
+				currentUser = event.result;
+				if(currentUser != null)
+            	{
+            		currentState = 'Register';
+            		Application.application.indexMediasCanvas.refreshDataGrid();
+            	}
+            	else
+            	{
+            		Alert.show(Localizator.getInstance(1).gT('userInterfaceLoginErrorLabel'), Localizator.getInstance(1).gT('userInterfaceLoginErrorTitle'), Alert.OK, this, null,  alertIcon, Alert.OK);
+            	}
+			}
+			
+			private function onFault(event : FaultEvent):void
+			{
+				Alert.show("Error : " + event.fault.message);
+			}
+			
+			private function logoutTheUser():void
+			{
+				currentState = '';
+				Application.application.indexMediasCanvas.refreshDataGrid();
+			}
+
+		]]>
+	</mx:Script>
+	
+	<mx:states>
+        <mx:State name="Register">
+            <mx:AddChild relativeTo="{indexControlBar}" position="lastChild">
+                <mx:target>
+                	<mx:HBox>
+	                	<mx:LinkButton label="{Localizator.getInstance(1).gT('userInterfaceWelcome')} {loginTextInput.text}" />
+						<mx:Button id="logout" label="logout" click="logoutTheUser()"/>
+					</mx:HBox>
+                </mx:target>
+            </mx:AddChild>
+            <mx:RemoveChild target="{loginForm}"/>
+        </mx:State>
+    </mx:states>
+	
+	<mx:VBox width="960" paddingLeft="0" paddingRight="0" horizontalCenter="0" top="12">
+	
+	    <mx:ApplicationControlBar width="100%" styleName="indexControlBar" id="indexControlBar">
+            <mx:Image id="image" source="@Embed(source='org/insia/mdmsCorp/website/ressources/img/logoBlue.png')"/>
+            <mx:ToggleButtonBar height="100%" dataProvider="{indexViewStack}" styleName="indexButtonBar"/>            
+       		<mx:Spacer width="100%"/>
+            <mx:HBox id="loginForm">
+            	<mx:TextInput id="loginTextInput" text="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserLoginLabel')}" width="60" click="{loginTextInput.text = ''}"/>
+	            <mx:TextInput id="passwordTextInput" text="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserPasswordLabel')}" width="60" displayAsPassword="true" click="{passwordTextInput.text = ''}"/>
+        	    <mx:Button label="{Localizator.getInstance(1).gT('userInterfaceLoginLabel')}" click="{checkLogin();}"/>
+           </mx:HBox>
+           <mx:Spacer width="6"/>
+        </mx:ApplicationControlBar>
+		
+		<mx:ViewStack width="100%" id="indexViewStack">	
+			<mx:Canvas label="{Localizator.getInstance(1).gT('userInterfaceHomeCanvasLabel')}" width="100%">
+				<mdms:IndexHomeCanvas id="indexHomeCanvas" verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+			<mx:Canvas label="{Localizator.getInstance(1).gT('userInterfaceMediasCanvasLabel')}" width="100%">
+				<mdms:IndexMediasCanvas id="indexMediasCanvas" verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+			<mx:Canvas label="{Localizator.getInstance(1).gT('userInterfaceAboutCanvasLabel')}" width="100%">
+				<mdms:IndexAboutCanvas id="indexAboutCanvas" verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+		</mx:ViewStack>
+		
+		<mx:HBox width="100%" horizontalAlign="center" verticalAlign="middle">
+			<mx:Label styleName="userInterfaceCopyright" text="{Localizator.getInstance(1).gT('userInterfaceCopyright')}"/>
+			<mx:LinkButton styleName="button" label="Insia" click="navigateToURL(new URLRequest('http://www.insia.org'), '_blank');"/>
+			<mx:LinkButton styleName="button" label="{Localizator.getInstance(1).gT('userInterfaceBackOfficeLink')}"  click="navigateToURL(new URLRequest('backOffice.html'), '_parent');" />
+			<mx:Spacer width="100%"/>
+            <mx:SWFLoader source="@Embed(source='org/insia/mdmsCorp/website/ressources/swf/flag_fr.swf')" click="{Localizator.getInstance(0).setLang(1)}"/>	
+			<mx:SWFLoader source="@Embed(source='org/insia/mdmsCorp/website/ressources/swf/flag_uk.swf')" click="{Localizator.getInstance(0).setLang(2)}"/>
+		</mx:HBox>
+		
+	</mx:VBox>
+</mx:Application>

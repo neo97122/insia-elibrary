@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="320" height="200" creationComplete="{init();}" 
+	horizontalScrollPolicy="off" verticalScrollPolicy="off">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import mx.controls.Alert;
+			[Bindable]
+			public var bookTitle:String = "";
+			
+			[Bindable]
+			public var bookSummary:String = "";
+			
+			[Bindable]
+			public var bookEditor:String = "";
+			
+			[Bindable]
+			public var bookAuthor:String = "";
+			
+			[Bindable]
+			public var imagePath:String = "";
+			
+			[Bindable]
+			[Embed(source='org/insia/mdmsCorp/website/ressources/img/noImage.gif')]
+			private var coverNoImage:Class;
+			
+			/**
+			 * Inits the canvas.
+			 **/
+			private function init():void
+			{
+				if (imagePath != "")
+				{
+					coverSwfLoader.source = 'org/insia/mdmsCorp/website/ressources/upload/' + imagePath;
+				}
+				else
+				{
+					coverSwfLoader.source = coverNoImage;
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:HBox width="100%" height="100%">
+		<mx:Box width="100" height="160">
+			<mx:SWFLoader id="coverSwfLoader" source="{coverNoImage}" />
+		</mx:Box>
+		<mx:VBox>
+			<mx:HBox>
+				<mx:Label text="{bookTitle}" />
+				<mx:Spacer width="100%"/>
+			</mx:HBox>
+			<mx:TextArea text="{bookSummary}" editable="false" width="180" height="112"/>
+			<mx:HBox width="100%">
+				<mx:Label text="{bookEditor}" />
+				<mx:Spacer width="100%"/>
+				<mx:Label text="{bookAuthor}" />
+			</mx:HBox>
+		</mx:VBox>
+	</mx:HBox>
+</mx:Canvas>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="horizontal" 
+	xmlns:mdms="org.insia.mdmsCorp.website.flex.*"
+	preloader="org.insia.mdmsCorp.website.as3.CustomPreloader" horizontalAlign="center" verticalAlign="top"
+	initialize="{initApplication()}"
+	 creationPolicy="all">
+	
+	<mx:Style source="org/insia/mdmsCorp/website/ressources/css/default_style.css"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.binding.utils.BindingUtils;
+			import mx.controls.Alert;
+			import mx.managers.PopUpManager;
+			import org.insia.mdmsCorp.website.flex.LoginDialogBox;
+			import org.insia.mdmsCorp.website.as3.Localizator;
+			
+			[Bindable]
+			public var loginDialogBox:LoginDialogBox;
+			
+			private function initApplication():void
+			{
+				//loginDialogBox = LoginDialogBox(PopUpManager.createPopUp(this,LoginDialogBox,true));
+				//PopUpManager.centerPopUp(loginDialogBox);
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="1000" height="740" verticalAlign="Top" horizontalAlign="center">
+	
+		<mx:HBox width="1000" height="50" horizontalAlign="center" verticalAlign="middle">
+			<mx:Label text="{Localizator.getInstance(1).gT('userInterfaceWelcome')} {loginDialogBox.currentUser.login}" color="#37DCFF"/>
+			<mx:Canvas>
+				<mx:LinkBar id="menu" dataProvider="{backOfficeViewStack}" styleName="linkBar"/>	
+			</mx:Canvas>
+			<mx:HBox>
+				<mx:SWFLoader source="@Embed(source='org/insia/mdmsCorp/website/ressources/swf/flag_fr.swf')" click="{Localizator.getInstance(0).setLang(1)}" buttonMode="true"/>	
+				<mx:SWFLoader source="@Embed(source='org/insia/mdmsCorp/website/ressources/swf/flag_uk.swf')" click="{Localizator.getInstance(0).setLang(2)}" buttonMode="true"/>
+			</mx:HBox>
+			<mx:Spacer width="100%" />
+			<mx:Button label="{Localizator.getInstance(1).gT('userInterfaceLogoutLabel')}" click="{initApplication()}" buttonMode="true"/>
+		</mx:HBox>
+		<mx:ViewStack width="1000" id="backOfficeViewStack" >	
+			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasLabel')}" width="100%">
+				<mdms:UsersCanvas id="usersCanvas" verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeBooksCanvasLabel')}" width="100%">
+				<mdms:BooksCanvas id="booksCanvas" verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeEBooksCanvasLabel')}" width="100%">
+				<mdms:EBooksCanvas id="eBooksCanvas" verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+			<mx:Canvas label="{Localizator.getInstance(1).gT('backOfficeBookingCanvasLabel')}" width="100%">
+				<mdms:BookingCanvas id="bookingCanvas" verticalScrollPolicy="off" horizontalScrollPolicy="off"/>
+			</mx:Canvas>
+		</mx:ViewStack>
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:Label styleName="backOfficeCopyright" text="{Localizator.getInstance(1).gT('backOfficeCopyright')}"/>
+			<mx:LinkButton label="Insia" click="navigateToURL(new URLRequest('http://www.insia.org'), '_blank');"/>
+		</mx:HBox>
+		
+	</mx:VBox>
+</mx:Application>

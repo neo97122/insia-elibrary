@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" horizontalScrollPolicy="off" verticalScrollPolicy="off" backgroundColor="#FFFFFF" 
+	width="100%" verticalGap="0" horizontalGap="0" horizontalAlign="center">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import mx.controls.Alert;
+			
+			[Bindable]
+			public var mediaTitle:String = "";
+			
+			[Bindable]
+			public var mediaEditor:String = "";
+			
+			[Bindable]
+			public var mediaAuthor:String = "";
+			
+		]]>
+	</mx:Script>
+	<mx:HBox width="100%" verticalGap="0" horizontalGap="0" horizontalAlign="center">
+		<mx:Label text="#{mediaEditor}"/>
+		<mx:Label text=" - "/>
+		<mx:Label text="{mediaAuthor}"/>
+	</mx:HBox>
+	<mx:Label text="{mediaTitle}" styleName="h1"/>
+	<mx:Spacer height="5" width="100%"/>
+</mx:VBox>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="350" height="250"
+	 showCloseButton="false" title="{Localizator.getInstance(1).gT('userInterfaceSubscriptionTitle')}" >
+ <mx:RemoteObject id="remoteObjectUserManager" destination="userManager" fault="onFault(event)" />
+    <mx:Script>
+    	<![CDATA[
+    		import org.insia.mdmsCorp.website.as3.MD5;
+    		import mx.rpc.events.FaultEvent;
+    		import mx.events.ValidationResultEvent;
+    		import mx.controls.Alert;
+    		import mx.core.Application;
+    		import mx.managers.PopUpManager;
+			import org.insia.mdmsCorp.website.as3.Localizator;
+			
+			[Bindable]
+			[Embed(source='org/insia/mdmsCorp/website/ressources/img/exclamation.png')]
+			private var confirmIcon:Class;
+			
+			/**
+            * Validate the user.
+            * @return true | false
+            **/ 
+            private function validateUser():Boolean
+            {                
+				var validLoginEvent:ValidationResultEvent = loginValidator.validate();
+				var validPasswordEvent:ValidationResultEvent = passwordValidator.validate();
+				var validEmailEvent:ValidationResultEvent = emailValidator.validate();
+				
+				if (validLoginEvent.type == ValidationResultEvent.VALID && validPasswordEvent.type == ValidationResultEvent.VALID && validEmailEvent.type == ValidationResultEvent.VALID)
+				{
+					return true;
+				}
+				else
+				{
+					Alert.show(Localizator.getInstance(1).gT('backOfficeErrorUserIsNotValid'));
+					return false;
+				}
+            }
+			
+			/**
+			 * Closes the popup
+			 **/  
+			private function closePopup():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+			
+			private function subscribe():void
+			{
+				if (validateUser()) 
+				{
+	                remoteObjectUserManager.createUser(userLogin.text, MD5.calculate(userPassword.text),  userName.text, userFirstName.text, userMail.text, false);	        
+	                Alert.show(Localizator.getInstance(1).gT('userInterfaceSubscriptionMessage')); 
+	                closePopup();
+				}
+			}
+			
+			/**
+			 * Displays a message if the httpservice failed.
+			 * 
+			 * @param event FaultEvent
+			 * @param httpService String
+			 **/
+			private function onFault(event : FaultEvent):void
+			{
+				Alert.show("Error : " + event.fault.message);
+			}
+			
+    	]]>
+    </mx:Script>
+    
+	<mx:VBox width="100%" height="100%" horizontalAlign="center">
+		 <mx:Form width="100%">
+		    <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserLoginLabel')}" width="100%">
+		        <mx:TextInput id="userLogin" />
+		    </mx:FormItem>
+		    <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserPasswordLabel')}" width="100%">
+		        <mx:TextInput id="userPassword" displayAsPassword="true"  width="160"/>
+		    </mx:FormItem>
+		    <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserNameLabel')}" width="100%">
+		        <mx:TextInput id="userName" />
+		    </mx:FormItem>
+		    <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserFirstNameLabel')}" width="100%">
+		        <mx:TextInput id="userFirstName" />
+		    </mx:FormItem>
+		    <mx:FormItem label="{Localizator.getInstance(1).gT('backOfficeUsersCanvasUserMailLabel')}" width="100%">
+		        <mx:TextInput id="userMail"/>
+		    </mx:FormItem>
+		</mx:Form>
+		<mx:HBox>
+			<mx:Button id="subscriptionValidButton" label="{Localizator.getInstance(1).gT('backOfficeMediaDialogBoxValidateButton')}"  buttonMode="true" click="{subscribe()}"/>
+    		<mx:Button id="subscriptionCancelButton" label="{Localizator.getInstance(1).gT('backOfficeUsersDialogBoxCancelButton')}" click="{closePopup()}" buttonMode="true"/>
+		</mx:HBox>
+	</mx:VBox>
+
+	
+	<mx:StringValidator id="loginValidator" source="{userLogin}" property="text" minLength="4" maxLength="16"/>
+ 	<mx:StringValidator id="passwordValidator" source="{userPassword}" property="text" minLength="4" maxLength="100"/>
+    <mx:EmailValidator id="emailValidator" source="{userMail}" property="text"/>
+    
+</mx:TitleWindow>
