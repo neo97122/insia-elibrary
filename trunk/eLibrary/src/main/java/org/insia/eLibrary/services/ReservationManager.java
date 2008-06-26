@@ -1,5 +1,6 @@
 package org.insia.eLibrary.services;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.insia.eLibrary.model.Media;
@@ -33,5 +34,7 @@ public interface ReservationManager {
 	 * @return created reservation
 	 */
 	public ActionMessage createReservation(int user_id, int media_id);
+
+	public ActionMessage updateReservation(long id, int user_id, int media_id, String outDate, String returnDate);
 
 }
